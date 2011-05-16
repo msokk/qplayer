@@ -7,8 +7,62 @@ html, body { height: 100%; }
   height: 1px;
 }
 
-
-
 #container {
   min-height: 100%;
-} 
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
+
+#upper { 
+  -webkit-box-flex: 1;
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;  
+}
+
+#sidebar {
+  width: 200px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+        border-right: solid 1px black;
+}
+
+#treeview {
+  -webkit-box-flex: 1; 
+}
+
+#song-data {
+  height: 50px;
+          border-top: solid 1px black;
+}
+
+#albumart {
+  height: 200px;
+        border-top: solid 1px black;
+}
+
+#content {
+  -webkit-box-flex: 1;
+}
+
+#control-bar {
+        border-top: solid 1px black;
+  height: 40px;
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+}
+
+#controls {
+  width: 200px;
+}
+
+#seek-bar {
+  -webkit-box-flex: 1;
+}
+
+#shuffle-repeat {
+  width: 120px;
+}
+
+#status {
+  width: 50px;
+}
