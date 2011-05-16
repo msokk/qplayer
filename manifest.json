@@ -1,0 +1,18 @@
+{
+  "name": "? Player",
+  "description": "Play music from GrooveShark, YouTube, SoundCloud and Server",
+  "version": "0.1",
+  "icons": { "128": "128.png" },
+  "app": {
+    "launch": {
+      "local_path": "main.html"
+    }
+  },
+  "permissions": [
+    "notifications",
+    "unlimitedStorage",
+    "cookies",
+    "http://*.grooveshark.com/",
+    "http://songs.sokk.ee/"
+  ]
+}

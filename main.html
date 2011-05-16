@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>?Player</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  Status: <span id="status">Not Authenticated</span>
+  <br />
+  <hr />
+  <input type="text" id="searchBox" value="Wildcookie - Heroine" /> 
+  <button id="searchBtn">Search</button><button id="openMicroPlayer">Open MiniMode</button>
+  <br />
+  Results:
+  <ul id="results">
+  </ul>
+  <hr />
+  <br />
+  Song: <span id="songName"></span>
+  <br />
+  <br />
+  <audio id="player" controls></audio>
+
+  <script src="js/jquery-1.6.1.min.js"></script>
+  <script src="js/sha1-min.js"></script>
+  <script src="js/md5-min.js"></script>
+  <script src="js/grooveshark.js"></script>
+  <script>
+    $(function() {
+      var player = document.getElementById('player');
+      
+      $('#openMicroPlayer').click(function() {
+        window.popWin = window.open('popup.html', 'Player', "menubar=no,location=no,resizable=no,scrollbars=no,status=no,height='350'");
+        console.log(popWin);
+      });
+      
+      $('#status').html('Authenticating...');
+      $('#searchBtn').click(function() {
+        $('#results').html('Searching...');
+        var text = $('#searchBox').val();
+        gs.getSearchResults(text, function(result) {
+          $('#results').html('');
+          for(var i = 0; i < result.length; i++) {
+            $('#results').append('<li>'+result[i].ArtistName+' - '+result[i].Name
+              +' <button class="songLink" data-id="'+result[i].SongID+'">Play</button></li>');
+          }
+        });       
+      });
+      
+      $('.songLink').live('click', function() {
+        $('#songName').html('Loading...');
+        var songId = $(this).data('id');
+        var songData = $(this).parent().text();
+        var song = new GrooveSharkSong(gs, songId);
+        song.getStreamURL(function(url) {
+          player.setAttribute('src', url);
+          player.play();
+          webkitNotifications.createNotification("",
+            "Now Playing", songData).show();
+          $('#songName').html(songData);
+        });    
+      });
+      
+      
+      window.gs = new GrooveShark(function() {
+        $('#status').html('Authenticated, please search.');
+
+      });
+    });
+  </script>
+</body>
+</html>
