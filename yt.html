@@ -1,0 +1,37 @@
+<!DOCTYPE html> 
+<html> 
+	<head> 
+		<title>Youtube Ultralight UI</title>	
+		<meta charset="UTF-8"> 
+		<style>#ytContainer { visibility: hidden; }</style>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script> 
+		<script>
+			var yt;		
+			$(document).ready(function() {
+				$('#qOK').click(function() {
+					playSong($('#qBox').val());
+				});
+			});
+			function onYouTubePlayerReady(playerId) {
+				yt = document.getElementById('ytPlayer');
+				var qName = "ewert+pastorale";
+				playSong(qName);
+			}
+			function playSong(query) {
+				$('#rName').html("Loading...");
+				$.getJSON('http://gdata.youtube.com/feeds/api/videos?q='+query+
+					'&max-results=1&v=2&alt=jsonc', function(result) {
+				  song = result.data.items[0];
+				  yt.loadVideoById(song.id);
+				  yt.setVolume(100);
+				  $('#rName').html(song.title);
+				});
+			}
+		</script>
+	</head>
+	<body>
+		<div id="rName">No Song</div>
+		Song name : <input type="text" id="qBox" placeholder="type it precisely.." /><input type="button" id="qOK" value="OK" />
+		<div id="ytContainer"><object type="application/x-shockwave-flash" id="ytPlayer" data="http://www.youtube.com/apiplayer?enablejsapi=1&amp;playerapiid=ytPlayer" width="1" height="1"><param name="allowScriptAccess" value="always"></object></div>
+	</body>
+</html>

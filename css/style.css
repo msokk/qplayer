@@ -1,0 +1,14 @@
+@import url("html5reset-1.6.1.css");
+
+html, body { height: 100%; }
+
+#players {
+  position: fixed;
+  height: 1px;
+}
+
+
+
+#container {
+  min-height: 100%;
+} 

@@ -1,8 +1,8 @@
 {
-  "name": "? Player",
-  "description": "Play music from GrooveShark, YouTube, SoundCloud and Server",
+  "name": "?Player",
+  "description": "Music Player (GrooveShark, YouTube, SoundCloud & custom server)",
   "version": "0.1",
-  "icons": { "128": "128.png" },
+  "icons": { "128": "img/icons/128.png" },
   "app": {
     "launch": {
       "local_path": "main.html"
