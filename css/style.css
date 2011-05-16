@@ -42,7 +42,24 @@ html, body { height: 100%; }
 
 #content {
   -webkit-box-flex: 1;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
 }
+
+#searchBar {
+  height: 30px;
+}
+
+#searchBox {
+  width: 300px;
+}
+
+
+#content-main {
+        border-top: solid 1px black;
+  -webkit-box-flex: 1;
+}
+
 
 #control-bar {
         border-top: solid 1px black;
