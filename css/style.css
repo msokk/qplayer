@@ -1,6 +1,14 @@
 @import url("html5reset-1.6.1.css");
+@import url("scrollbar.css");
+@import url("seekbar.css");
+@import url("buttons.css");
 
 html, body { height: 100%; }
+
+body {
+  color: hsl(0, 0%, 88%);
+  background-color: hsl(0, 0%, 22%); 
+}
 
 #players {
   position: fixed;
@@ -9,6 +17,7 @@ html, body { height: 100%; }
 
 #container {
   min-height: 100%;
+  max-height: 100%;
   display: -webkit-box;
   -webkit-box-orient: vertical;
 }
@@ -23,62 +32,110 @@ html, body { height: 100%; }
   width: 200px;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-        border-right: solid 1px black;
+  background-color: hsl(0, 0%, 28%);
+  border-right: solid 1px hsl(0, 0%, 16%);
+  border-bottom: solid 1px hsl(0, 0%, 16%);
 }
 
 #treeview {
   -webkit-box-flex: 1; 
+  border-bottom: solid 1px hsl(0, 0%, 16%);
+  overflow: auto;
 }
 
 #song-data {
   height: 50px;
-          border-top: solid 1px black;
+  border-top: solid 1px hsl(0, 0%, 46%);
+  background: -webkit-gradient(linear,left top,left bottom,color-stop(0, #656565),color-stop(1, #404040));
 }
 
 #albumart {
+  border-top: solid 1px hsl(0, 0%, 38%);
+  border-bottom: solid 1px hsl(0, 0%, 0%);
   height: 200px;
-        border-top: solid 1px black;
 }
 
 #content {
   -webkit-box-flex: 1;
   display: -webkit-box;
   -webkit-box-orient: vertical;
+  border-bottom: solid 1px hsl(0, 0%, 16%);
 }
 
 #searchBar {
-  height: 30px;
+  padding: 3px 3px 4px 3px;
+  border-bottom: solid 1px hsl(0, 0%, 16%);
+  background: -webkit-gradient(linear,left top,left bottom,color-stop(0, #b6b6b6),color-stop(1, #959595));
 }
 
 #searchBox {
-  width: 300px;
+  width: 400px;
+  padding: 0 5px 0 23px;
+  border-radius: 5px;
+  -webkit-appearance: none;
+  border: solid 1px #5e5e5e;
+  height: 24px;
+  outline: none;
+  box-shadow: inset 0px 2px 5px #d5d5d5, 0px 1px 1px #d5d5d5;
+  background: #fff url('../img/icons/search.png') no-repeat 3px center;
+}
+
+#filterBtns, #searchBtn {
+  vertical-align: middle;
 }
 
 
 #content-main {
-        border-top: solid 1px black;
+  border-top: solid 1px hsl(0, 0%, 47%);
   -webkit-box-flex: 1;
+  overflow: auto;
 }
 
 
 #control-bar {
-        border-top: solid 1px black;
+  border-top: solid 1px hsl(0, 0%, 47%);
+  line-height: 40px;
   height: 40px;
   display: -webkit-box;
   -webkit-box-orient: horizontal;
+  background: -webkit-gradient(linear,left top,left bottom,color-stop(0, #5f5f5f),color-stop(1, #4e4e4e));
 }
 
 #controls {
+
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
   width: 200px;
+  border-right: solid 1px hsl(0, 0%, 16%);
+}
+
+#control-btns {
+  padding-left: 16px;
+  -webkit-box-flex: 1;
+}
+
+#volume-bar {
+  padding: 16px;
+  -webkit-box-flex: 2;
 }
 
 #seek-bar {
+  border-left: solid 1px hsl(0, 0%, 47%);
   -webkit-box-flex: 1;
+  padding: 16px;
 }
+
+
 
 #shuffle-repeat {
   width: 120px;
 }
+
+#shuffle-repeat #shuffleBtn {
+background: #fff;
+
+}
+
 
 #status {
   width: 50px;
