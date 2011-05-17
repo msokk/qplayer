@@ -15,8 +15,9 @@
 .track .thumb {
   float: right;
   border-radius: 10px;
-  width: 9px;
-  height: 9px;
+  width: 11px;
+  height: 11px;
+  margin: -1px -1px 0 0;
   border: none;
-  background: -webkit-gradient(radial, center center, 5, center center, 1, from(#121212), to(#545454));
+  background: -webkit-gradient(radial, center center, 20, center center, 1, from(#b3defe), to(#9bd1fe));
 }

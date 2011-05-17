@@ -1,0 +1,12 @@
+#mini-controls {
+  height: 70px;
+  border-bottom: solid 1px #292929;
+  background: -webkit-gradient(linear,left top,left bottom,color-stop(0, #656565),color-stop(1, #404040));
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+}
+
+#mini-playlist  {
+  -webkit-box-flex: 1;
+  border-top: solid 1px #787878;
+}

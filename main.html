@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>?Player</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
   Status: <span id="status">Not Authenticated</span>
@@ -31,7 +31,12 @@
       var player = document.getElementById('player');
       
       $('#openMicroPlayer').click(function() {
-        window.popWin = window.open('popup.html', 'Player', "menubar=no,location=no,resizable=no,scrollbars=no,status=no,height='350'");
+        var width = 250;
+        var height = 500;
+        window.popWin = window.open('popup.html', 
+          'Player', 'menubar=no,location=no,resizable=no,scrollbars=no,status=no,'
+          + 'width=' + width + ',height=' + height + ',left=' + (window.outerWidth - (width+33))
+          + ',top=' + (window.screen.height - window.screen.availHeight+50));
         console.log(popWin);
       });
       
