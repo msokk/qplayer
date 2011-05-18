@@ -1,78 +1,117 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
 	<title>?Player</title>
+  <link href="http://fonts.googleapis.com/css?family=Ubuntu:300,300italic,regular,italic,500,500italic,bold,bolditalic" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  Status: <span id="status">Not Authenticated</span>
-  <br />
-  <hr />
-  <input type="text" id="searchBox" value="Wildcookie - Heroine" /> 
-  <button id="searchBtn">Search</button><button id="openMicroPlayer">Open MiniMode</button>
-  <br />
-  Results:
-  <ul id="results">
-  </ul>
-  <hr />
-  <br />
-  Song: <span id="songName"></span>
-  <br />
-  <br />
-  <audio id="player" controls></audio>
-
-  <script src="js/jquery-1.6.1.min.js"></script>
-  <script src="js/sha1-min.js"></script>
-  <script src="js/md5-min.js"></script>
+  <div id="container">
+    <div id="upper">
+      <div id="sidebar">
+        <div id="treeview">
+          <ul>
+            <li>Playlist</li>
+            <li class="selected">Active Playlist</li>
+            <li>Playlist</li>
+            <li>Long long long long playlist</li>
+            <li>Playlist</li>
+            <li>Playlist</li>
+            <li>Playlist</li>
+            <li>Playlist</li>
+            <li class="new">+ New Playlist</li>
+          </ul>
+        </div>
+        <div id="albumart">
+          <object type="application/x-shockwave-flash" id="ytPlayer" data="http://www.youtube.com/apiplayer?enablejsapi=1&amp;playerapiid=ytPlayer" width="1" height="1">
+          <param name="allowScriptAccess" value="always"></object>
+        </div>
+        <div id="song-data">
+          <div id="tracktitle">WildCookie - On The Road</div>
+          <div id="albumtitle">Cookie Dough</div>
+        </div>
+      </div>
+      <div id="content">
+        <div id="searchBar">
+          <input id="searchBox" type="search" /> 
+          <span id="filterBtns">GS YT LC</span>
+          <button id="searchBtn">Search</button>
+          <button id="miniBtn">Open mini</button>
+          <button id="settingsBtn"><img class="icon" src="img/icons/settings.png" />Settings</button>
+        </div>
+        <div id="content-main">
+          <table>
+            <tr>
+              <th>Src</th>
+              <th>Title</th>
+              <th>Sync</th>
+              <th>Artist</th>
+              <th>Length</th>
+              <th>Album</th>
+            </tr>
+            <tr>
+              <td>GS</td>
+              <td>Heroine</td>
+              <td>S</td>
+              <td>WildCookie</td>
+              <td>3:55</td>
+              <td>Cookie Dough</td>
+            </tr>
+            <tr>
+              <td>YT</td>
+              <td>Heroine</td>
+              <td>Sync</td>
+              <td>WildCookie</td>
+              <td>3:55</td>
+              <td>Cookie Dough</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div id="control-bar">
+      <div id="controls">
+       <div id="control-btns">
+         <button>Play</button>
+         <button>Pause</button>
+       </div>
+        <div id="volume-bar">
+          <div class="track">
+            <div class="track done" style="width: 40%;">
+            <div class="thumb"></div>
+            </div>
+          </div> 
+        </div>
+      </div>
+      <div id="seek-bar">
+        <div class="track">
+          <div class="track done" style="width: 20%;">
+          </div>
+        </div>
+      </div>
+      <div id="shuffle-repeat">
+        <div id="shuffle" class="light"></div>
+      </div>
+      <div id="status">
+        Status?
+      </div>
+    </div>
+  </div>
+  <div id="players">
+    <audio id="nativePlayer1" preload></audio>
+    <audio id="nativePlayer2" preload></audio>
+  </div>
+  <div class="settingsContainer">
+    Settings - Last.FM etc
+  </div>
+  <script src="js/libs/jquery-1.6.1.min.js"></script>
+  <script src="js/libs/sha1-min.js"></script>
+  <script src="js/libs/md5-min.js"></script>
+  <script src="js/helpers.js"></script>
   <script src="js/grooveshark.js"></script>
-  <script>
-    $(function() {
-      var player = document.getElementById('player');
-      
-      $('#openMicroPlayer').click(function() {
-        var width = 250;
-        var height = 500;
-        window.popWin = window.open('popup.html', 
-          'Player', 'menubar=no,location=no,resizable=no,scrollbars=no,status=no,'
-          + 'width=' + width + ',height=' + height + ',left=' + (window.outerWidth - (width+33))
-          + ',top=' + (window.screen.height - window.screen.availHeight+50));
-        console.log(popWin);
-      });
-      
-      $('#status').html('Authenticating...');
-      $('#searchBtn').click(function() {
-        $('#results').html('Searching...');
-        var text = $('#searchBox').val();
-        gs.getSearchResults(text, function(result) {
-          $('#results').html('');
-          for(var i = 0; i < result.length; i++) {
-            $('#results').append('<li>'+result[i].ArtistName+' - '+result[i].Name
-              +' <button class="songLink" data-id="'+result[i].SongID+'">Play</button></li>');
-          }
-        });       
-      });
-      
-      $('.songLink').live('click', function() {
-        $('#songName').html('Loading...');
-        var songId = $(this).data('id');
-        var songData = $(this).parent().text();
-        var song = new GrooveSharkSong(gs, songId);
-        song.getStreamURL(function(url) {
-          player.setAttribute('src', url);
-          player.play();
-          webkitNotifications.createNotification("",
-            "Now Playing", songData).show();
-          $('#songName').html(songData);
-        });    
-      });
-      
-      
-      window.gs = new GrooveShark(function() {
-        $('#status').html('Authenticated, please search.');
-
-      });
-    });
-  </script>
+  <script src="js/player.grooveshark.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>

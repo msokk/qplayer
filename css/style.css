@@ -7,6 +7,9 @@
 html, body { height: 100%; }
 
 body {
+  font-family: 'Ubuntu', serif;
+  font-size: 14px;
+  zoom: reset;
   color: hsl(0, 0%, 88%);
   background-color: hsl(0, 0%, 22%); 
 }
@@ -21,6 +24,30 @@ body {
   max-height: 100%;
   display: -webkit-box;
   -webkit-box-orient: vertical;
+}
+
+
+
+.settingsContainer {
+  position: fixed;
+  bottom: -211px;
+  right: 0px;
+  height: 200px;
+  width: 200px;
+  -webkit-transition: bottom 0.3s linear;
+  border-left: solid 1px #292929;
+  border-top: solid 1px #292929;
+  border-top-left-radius: 10px;
+  background-color: hsl(0, 0%, 22%);
+  padding: 5px;
+}
+
+.settingsContainer.show {
+  bottom: 0px;
+}
+
+#settingsBtn {
+  float: right;
 }
 
 #upper { 
@@ -44,16 +71,62 @@ body {
   overflow: auto;
 }
 
+#treeview li {
+  padding: 8px 8px 8px 22px;
+  border-top: solid 1px hsl(0, 0%, 46%);
+  border-bottom: solid 1px hsl(0, 0%, 16%);
+  background: url('../img/icons/note.png') no-repeat 4px center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#treeview li.selected {
+  font-weight: bold;
+  border-top: solid 1px #b3defe;
+  background: url('../img/icons/note2.png') no-repeat 4px center,-webkit-gradient(linear,left top,left bottom,color-stop(0, #b3defe),color-stop(1, #9bd1fe));
+  color: hsl(0, 0%, 22%);
+}
+
+#treeview li.new {
+  padding-left: 8px;
+  border-bottom: none;
+  background: none;
+  color: hsl(0, 0%, 55%);
+  cursor: pointer;
+}
+
+#treeview li.new:hover {
+  color: hsl(0, 0%, 75%);
+}
+
 #song-data {
-  height: 50px;
+  padding: 5px;
+  height: 30px;
   border-top: solid 1px hsl(0, 0%, 46%);
   background: -webkit-gradient(linear,left top,left bottom,color-stop(0, #656565),color-stop(1, #404040));
+
+}
+
+#song-data #tracktitle, #albumtitle {
+  text-align: center;
+  overflow: -webkit-marquee;
+  white-space: nowrap;
+  -webkit-marquee-speed: slow;
+  -webkit-marquee-style: alternate;
+  -webkit-marquee-increment: 3px;
+  height: 16px;
+}
+
+#albumtitle {
+  font-size: 12px;
 }
 
 #albumart {
   border-top: solid 1px hsl(0, 0%, 38%);
   border-bottom: solid 1px hsl(0, 0%, 0%);
   height: 200px;
+  background: url('../img/disc.png') no-repeat center center;
 }
 
 #content {
@@ -64,7 +137,7 @@ body {
 }
 
 #searchBar {
-  padding: 3px 3px 4px 3px;
+  padding: 3px 3px 4px 5px;
   border-bottom: solid 1px hsl(0, 0%, 16%);
   background: -webkit-gradient(linear,left top,left bottom,color-stop(0, #b6b6b6),color-stop(1, #959595));
 }
@@ -72,12 +145,13 @@ body {
 #searchBox {
   width: 400px;
   padding: 0 5px 0 23px;
-  border-radius: 5px;
+  border-radius: 8px;
   -webkit-appearance: none;
   border: solid 1px #5e5e5e;
   height: 24px;
   outline: none;
   box-shadow: inset 0px 2px 5px #d5d5d5, 0px 1px 1px #d5d5d5;
+  background-origin: content-box;
   background: #fff url('../img/icons/search.png') no-repeat 3px center;
 }
 
@@ -92,6 +166,24 @@ body {
   overflow: auto;
 }
 
+#content-main table {
+  width: 100%;
+}
+
+#content-main th, td {
+  padding: 5px;
+}
+
+
+#content-main th {
+  border-right: solid 1px gray;
+  background: -webkit-gradient(linear,left top,left bottom,color-stop(0, #b6b6b6),color-stop(1, #959595));
+}
+
+#content-main tr:nth-child(odd) {
+  background-color: hsl(0, 0%, 25%); 
+}
+
 
 #control-bar {
   border-top: solid 1px hsl(0, 0%, 47%);
@@ -99,6 +191,7 @@ body {
   height: 40px;
   display: -webkit-box;
   -webkit-box-orient: horizontal;
+  -webkit-user-select: none;
   background: -webkit-gradient(linear,left top,left bottom,color-stop(0, #5f5f5f),color-stop(1, #4e4e4e));
 }
 
@@ -140,4 +233,14 @@ background: #fff;
 
 #status {
   width: 50px;
+}
+
+#shuffle {
+  width: 20px;
+  height: 20px;
+	background: url(../img/icons/shuffle.png) no-repeat;
+}
+.light {
+
+	-webkit-mask: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
 }

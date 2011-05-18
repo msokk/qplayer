@@ -1,5 +1,5 @@
 /**
- * GrooveShark.JS for Google Chrome
+ * GrooveShark.JS for Google Chrome (atm)
  * TODO: Documentation, Login, Playlists
  * @constructor
  * @param {Function} ready callback
