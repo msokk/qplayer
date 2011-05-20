@@ -17,7 +17,12 @@
   border-radius: 10px;
   width: 11px;
   height: 11px;
-  margin: -1px -1px 0 0;
+  margin: -1.5px -1px 0 0;
   border: none;
-  background: -webkit-gradient(radial, center center, 20, center center, 1, from(#b3defe), to(#9bd1fe));
+  background:-webkit-gradient(radial, 5 5, 3, 5 5, 10, from(rgba(255,255,255,0)), to(rgba(255,255,255, .5))), -webkit-gradient(linear, 0% 0%, 0% 100%, from(#999), to(#222));
+	-webkit-box-shadow:  0 1px 4px rgba(0,0,0, 0.7);
+}
+
+.track .thumb:hover {
+  background:-webkit-gradient(radial, 5 5, 3, 5 5, 10, from(rgba(255,255,255,.3)), to(rgba(255,255,255, .5))), -webkit-gradient(linear, 0% 0%, 0% 100%, from(#999), to(#222)) !important;
 }

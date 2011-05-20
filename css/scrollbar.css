@@ -10,31 +10,29 @@
   -webkit-border-radius: 5px;
 }
 
-::-webkit-scrollbar-button:start:decrement,
-::-webkit-scrollbar-button:end:increment {
+::-webkit-scrollbar-button {
   display: block;
   height: 1px;
 }
 
-::-webkit-scrollbar-track-piece {
-  background: -webkit-gradient(
-    linear,
-    0 0,
-    100% 0,
-    from(hsl(0, 0%, 16%)),
-    to(hsl(0, 0%, 23%))
-  );
+::-webkit-scrollbar-track-piece:vertical {
+  background: -webkit-linear-gradient(left, hsl(0, 0%, 16%), hsl(0, 0%, 23%));
   -webkit-box-shadow: 0 1px 0 0 rgba(255,255,255,0.35);
   -webkit-border-radius: 5px;
 }
 
 
 ::-webkit-scrollbar-thumb:vertical{
-  background: -webkit-gradient(
-    linear,
-    0 0,
-    100% 0,
-    from(hsl(0, 0%, 64%)),
-    to(hsl(0, 0%, 55%))
-  );
+  background: -webkit-linear-gradient(left, hsl(0, 0%, 64%), hsl(0, 0%, 55%));
+}
+
+::-webkit-scrollbar-track-piece:horizontal {
+  background: -webkit-linear-gradient(top, hsl(0, 0%, 16%), hsl(0, 0%, 23%));
+  -webkit-box-shadow: 0 1px 0 0 rgba(255,255,255,0.35);
+  -webkit-border-radius: 5px;
+}
+
+
+::-webkit-scrollbar-thumb:horizontal{
+  background: -webkit-linear-gradient(top, hsl(0, 0%, 64%), hsl(0, 0%, 55%));
 }

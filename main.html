@@ -34,16 +34,18 @@
       </div>
       <div id="content">
         <div id="searchBar">
-          <input id="searchBox" type="search" /> 
-          <span id="filterBtns">GS YT LC</span>
+          <input id="searchBox" type="search">
+          <span id="filterBtns">
+            <span id="gsBtn" class="icon gs-active"></span><span id="ytBtn" class="icon yt-active"></span><span id="scBtn" class="icon sc-active"></span>
+            </span>
           <button id="searchBtn">Search</button>
           <button id="miniBtn">Open mini</button>
-          <button id="settingsBtn"><img class="icon" src="img/icons/settings.png" />Settings</button>
+          <button id="settingsBtn"><img class="icon" src="img/icons/settings.png">Settings</button>
         </div>
         <div id="content-main">
           <table>
             <tr>
-              <th>Src</th>
+              <th></th>
               <th>Title</th>
               <th>Sync</th>
               <th>Artist</th>
@@ -51,7 +53,7 @@
               <th>Album</th>
             </tr>
             <tr>
-              <td>GS</td>
+              <td><span class="icon gs-active"></span></td>
               <td>Heroine</td>
               <td>S</td>
               <td>WildCookie</td>
@@ -59,7 +61,15 @@
               <td>Cookie Dough</td>
             </tr>
             <tr>
-              <td>YT</td>
+              <td><span class="icon yt-active"></span></td>
+              <td>Heroine</td>
+              <td>Sync</td>
+              <td>WildCookie</td>
+              <td>3:55</td>
+              <td>Cookie Dough</td>
+            </tr>
+            <tr class="selected">
+              <td><span class="icon sc-active"></span></td>
               <td>Heroine</td>
               <td>Sync</td>
               <td>WildCookie</td>

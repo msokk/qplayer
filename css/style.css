@@ -79,13 +79,15 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-shadow: black 0px -1px 0px;
 }
 
 #treeview li.selected {
   font-weight: bold;
   border-top: solid 1px #b3defe;
-  background: url('../img/icons/note2.png') no-repeat 4px center,-webkit-gradient(linear,left top,left bottom,color-stop(0, #b3defe),color-stop(1, #9bd1fe));
+  background: url('../img/icons/note2.png') no-repeat 4px center,-webkit-linear-gradient(top, #65c5ef, #0292d1);
   color: hsl(0, 0%, 22%);
+  text-shadow: none;
 }
 
 #treeview li.new {
@@ -98,6 +100,13 @@ body {
 
 #treeview li.new:hover {
   color: hsl(0, 0%, 75%);
+}
+
+input#newPlaylist {
+  border: solid 1px #8C8C8C;
+  margin: -4px 1px 0px -1px;
+  outline: none;
+  -webkit-appearance: none;
 }
 
 #song-data {
@@ -118,7 +127,12 @@ body {
   height: 16px;
 }
 
+#tracktitle {
+  text-shadow: black 0px 1px 0px;
+}
+
 #albumtitle {
+  text-shadow: black 0px -1px 0px;
   font-size: 12px;
 }
 
@@ -138,52 +152,92 @@ body {
 
 #searchBar {
   padding: 3px 3px 4px 5px;
-  border-bottom: solid 1px hsl(0, 0%, 16%);
+  border-bottom: solid 1px black;
   background: -webkit-gradient(linear,left top,left bottom,color-stop(0, #b6b6b6),color-stop(1, #959595));
 }
 
 #searchBox {
-  width: 400px;
+  width: 300px;
   padding: 0 5px 0 23px;
-  border-radius: 8px;
+  border-radius: 8px 0px 0px 8px;
   -webkit-appearance: none;
   border: solid 1px #5e5e5e;
-  height: 24px;
+  height: 26px;
   outline: none;
   box-shadow: inset 0px 2px 5px #d5d5d5, 0px 1px 1px #d5d5d5;
   background-origin: content-box;
   background: #fff url('../img/icons/search.png') no-repeat 3px center;
 }
 
+#searchBox:focus {
+  box-shadow: inset 0px 2px 5px #d5d5d5, 0px 1px 1px #d5d5d5,
+    0px 3px 5px #65C5EF, 0px -1px 5px #65C5EF;
+}
+
 #filterBtns, #searchBtn {
+  margin-left: -3px;
+  -webkit-user-select: none;
+}
+
+#filterBtns > * {
+  box-shadow: 0px 1px 1px #d5d5d5;
+  -webkit-transition: box-shadow 0.3s ease;
+  border: solid 1px #5e5e5e;
+  border-left: none;
   vertical-align: middle;
 }
 
 
+#filterBtns span:hover {
+  box-shadow: 0px 3px 5px #65C5EF, 0px -3px 5px #65C5EF;
+}
+
+#filterBtns span:active {
+  -webkit-transform: scale(0.9);
+}
+
+#searchBtn {
+  border-radius: 0px 5px 5px 0px;
+  box-shadow: 0px 1px 1px #d5d5d5;
+  border-left: none;
+}
+
 #content-main {
-  border-top: solid 1px hsl(0, 0%, 47%);
   -webkit-box-flex: 1;
   overflow: auto;
 }
 
 #content-main table {
   width: 100%;
+  
 }
 
 #content-main th, td {
-  padding: 5px;
+  height: 20px;
+  vertical-align: middle;
+  padding-left: 3px;
 }
+
+#content-main tr  td:first-child span { vertical-align: top; }
+#content-main tr  td:first-child { padding: 0; width: 24px;}
 
 
 #content-main th {
-  border-right: solid 1px gray;
-  background: -webkit-gradient(linear,left top,left bottom,color-stop(0, #b6b6b6),color-stop(1, #959595));
+  color: black;
+  text-shadow: hsl(0, 0%, 79%) 0px 1px 0px;
+  text-align: left;
+  border-top: solid 1px hsl(0, 0%, 79%);
+  border-right: solid 1px black;
+  background: -webkit-gradient(linear,left top,left bottom,color-stop(0, #a8a8a8),color-stop(1, #868686));
 }
 
 #content-main tr:nth-child(odd) {
   background-color: hsl(0, 0%, 25%); 
 }
 
+#content-main tr.selected {
+  background: -webkit-linear-gradient(top, #65c5ef, #0292d1);
+}
 
 #control-bar {
   border-top: solid 1px hsl(0, 0%, 47%);
@@ -243,4 +297,33 @@ background: #fff;
 .light {
 
 	-webkit-mask: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
+}
+
+/*Icons*/
+.icon {
+  width: 24px;
+  height: 24px;
+  background-size: contain;
+  display: inline-block;
+}
+
+.gs-active {
+  background: url(../img/gs-active.png) no-repeat;
+}
+.gs-disabled {
+  background: url(../img/gs-disabled.png) no-repeat;
+}
+
+.yt-active {
+  background: url(../img/yt-active.png) no-repeat;
+}
+.yt-disabled {
+  background: url(../img/yt-disabled.png) no-repeat;
+}
+
+.sc-active {
+  background: url(../img/sc-active.png) no-repeat;
+}
+.sc-disabled {
+  background: url(../img/sc-disabled.png) no-repeat;
 }
