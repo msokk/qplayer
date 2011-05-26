@@ -32,7 +32,7 @@
         </div>
         <div id="albumart">
           <object type="application/x-shockwave-flash" id="ytPlayer" data="http://www.youtube.com/apiplayer?enablejsapi=1&amp;playerapiid=ytPlayer" width="1" height="1">
-          <param name="allowScriptAccess" value="always"></object>
+            <param name="allowScriptAccess" value="always"></object>
         </div>
         <div id="song-data">
           <div id="tracktitle">WildCookie - On The Road</div>
@@ -46,8 +46,10 @@
             <span id="gsBtn" class="icon gs-active"></span><span id="ytBtn" class="icon yt-active"></span><span id="scBtn" class="icon sc-active"></span>
             </span>
           <button id="searchBtn">Search</button>
-          <button id="miniBtn">Open mini</button>
-          <button id="settingsBtn"><img alt="Settings icon" class="icon" src="img/icons/settings.png">Settings</button>
+          <div style="float: right;">
+            <button id="miniBtn"><img alt="Mini icon" class="icon" src="img/icons/mini.png">Detach</button>
+            <button id="settingsBtn"><img alt="Settings icon" class="icon" src="img/icons/settings.png">Settings</button>
+          </div>
         </div>
         <div id="content-main">
           <table>
@@ -115,9 +117,7 @@
         <div id="shuffle"></div>
         <div id="repeat"></div>
       </div>
-      <div id="status">
-        Status?
-      </div>
+      <div id="status"><div></div></div>
     </div>
   </div>
   <div id="players">

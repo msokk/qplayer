@@ -13,8 +13,8 @@ Q.UIVolume = function(app) {
   this.elem = $('#volume-bar > .track:first-child');
   
   var volumeDrag = function(e) {
-    var perc = Math.ceil((((e.pageX+5) - 
-      that.elem.offset().left) / that.elem.width()) * 100);
+    var offsetX = e.screenX - that.elem.position().left;
+    var perc = Math.ceil(((offsetX+5) / that.elem.width()) * 100);
       
     if(perc >= 100) {
       perc = 100;
@@ -98,9 +98,8 @@ Q.UISeekbar = function(app) {
   this.elem = $('#seek-bar > .track:first-child');
   
   var seekDrag = function(e) {
-    var perc = Math.round((((e.pageX+5) - that.elem.offset()
-      .left) / that.elem.width()) * 100000)/1000;
-
+    var offsetX = e.screenX - that.elem.position().left;
+    var perc = Math.round( ( (offsetX+5) / that.elem.width()) * 100000)/1000;
     if(perc >= 100) {
       perc = 100;
     }
@@ -143,12 +142,51 @@ Q.UISeekbar.prototype.setProgress = function(perc) {
 };
 
 /**
- * Bind generic
+ * Bind generic small objects
  * @param {Q.App} QPlayer
  */
 Q.UIGeneric = function(app) {
-
+  //Play-Pause button
   $('#playBtn').click(function() {
     $(this).toggleClass('pause');
+    if($(this).hasClass('pause')) {
+      app.emit('UIPlayback', 'play');
+    } else {
+      app.emit('UIPlayback', 'pause');
+    }
+    
+  });
+  
+  app.ui.togglePlayButton = function() {
+    $('#playBtn').toggleClass('pause');
+  };
+  
+  //Previous song
+  $('#prevBtn').click(function() {
+    app.emit('UIPlayback', 'prev');
+  });
+  
+  //Next song
+  $('#nextBtn').click(function() {
+    app.emit('UIPlayback', 'next');
+  });
+  
+  //Shuffle - Repeat buttons
+  $('#shuffle').click(function() {
+    $(this).toggleClass('active');
+    if($(this).hasClass('active')) {
+      app.emit('UIPlayback', 'shuffleOn');
+    } else {
+      app.emit('UIPlayback', 'shuffleOff');
+    }
+  });
+  
+  $('#repeat').click(function() {
+    $(this).toggleClass('active');
+    if($(this).hasClass('active')) {
+      app.emit('UIPlayback', 'repeatOn');
+    } else {
+      app.emit('UIPlayback', 'repeatOff');
+    }
   });
 };

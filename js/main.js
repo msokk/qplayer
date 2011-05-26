@@ -16,12 +16,17 @@ Q.App = function() {
 
   this.initUI();
   
+  //Tests
   this.on('UIVolume', function(volume) {
     console.log('Volume: %s', volume);
   });
   
   this.on('UISeek', function(progress) {
     console.log('Progress: %s', progress);
+  });
+  
+  this.on('UIPlayback', function(state) {
+    console.log('Playback: %s', state);
   });
 };
 Q.inherit(Q.App, Q.Event);
@@ -39,7 +44,7 @@ Q.App.prototype.initUI = function() {
     window.popWin = window.open('popup.html', 
       'Player', 'menubar=no,location=no,resizable=no,scrollbars=no,status=no,'
       + 'width=' + width + ',height=' + height + ',left=' + (window.outerWidth - (width+33))
-      + ',top=' + (window.screen.height - window.screen.availHeight+50));
+      + ',top=' + (window.screen.height - window.screen.availHeight+55));
     console.log(popWin);
   });
   

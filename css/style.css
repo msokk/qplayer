@@ -52,10 +52,6 @@ body {
   bottom: 0px;
 }
 
-#settingsBtn {
-  float: right;
-}
-
 #upper { 
   -webkit-box-flex: 1;
   display: -webkit-box;
@@ -187,6 +183,7 @@ input#newPlaylist {
 #searchBox:focus {
   box-shadow: inset 0px 2px 5px #d5d5d5, 0px 1px 1px #d5d5d5,
     0px 3px 5px #65C5EF, 0px -1px 5px #65C5EF;
+  background: #fff url('../img/icons/search-loader.gif') no-repeat 3px center;
 }
 
 #filterBtns, #searchBtn {
@@ -298,7 +295,7 @@ input#newPlaylist {
   color: black;
   vertical-align: baseline;
   padding-top: 1px;
-  text-shadow: 0px 0px 1px gray;
+  text-shadow: 0px 0px 1px darkgray;
   font-size: 18px;
 }
 
@@ -389,10 +386,23 @@ input#newPlaylist {
   background: url(../img/icons/repeat2.png) no-repeat;
 }
 
+#shuffle:hover, #repeat:hover {
+  opacity: 0.4;
+}
+#shuffle.active, #repeat.active {
+  opacity: 1;
+}
+
 #status {
   border-left: solid 1px hsl(0, 0%, 47%);
-  width: 50px;
-  padding: 5px;
+  padding: 13px;
+}
+#status > div {
+  background-color: #fe0731;
+  width: 15px;
+  height: 15px;
+  border-radius: 15px;
+  box-shadow: 0px 0px 1px #fe0731;
 }
 
 /*Icons*/
