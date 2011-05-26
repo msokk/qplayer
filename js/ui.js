@@ -63,8 +63,14 @@ Q.UIVolume.prototype.setVolume = function(volume) {
  * @param {Q.App} QPlayer
  */
 Q.UISettings = function(app) {
+  //Settings dialog
   $('#settingsBtn').click(function() {
     $('.settingsContainer').toggleClass('show');
+    setTimeout(function() {
+      $('#container').one('click', function() {
+        $('.settingsContainer').toggleClass('show');
+      });
+    }, 1000);
   });
   
   //Accent selection
@@ -143,6 +149,6 @@ Q.UISeekbar.prototype.setProgress = function(perc) {
 Q.UIGeneric = function(app) {
 
   $('#playBtn').click(function() {
-    $(this).html('‖');
+    $(this).toggleClass('pause');
   });
 };

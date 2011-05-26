@@ -1,4 +1,4 @@
-@import url("html5reset-1.6.1.css");
+﻿@import url("html5reset-1.6.1.css");
 @import url("scrollbar.css");
 @import url("mini.css");
 @import url("seekbar.css");
@@ -319,6 +319,27 @@ input#newPlaylist {
 #control-btns button.bigger:active {
   padding-top: 3px;
 }
+
+#control-btns button.bigger:before {
+  content: "►";
+}
+
+#control-btns button.pause {
+  padding: 0 0 3px 0;
+  position: relative;
+  top: -4px;
+  font-size: 8px;
+}
+
+#control-btns button.pause:before {
+  content: "▌▐";
+}
+
+#control-btns button.pause:active {
+  top: -3px;
+  padding-top: 6px;
+}
+
 
 #controls img {
   vertical-align: middle;

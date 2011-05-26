@@ -31,3 +31,9 @@
 button:hover {
   box-shadow: 0px -1px 3px #c1f834, 0px 1px 3px #c1f834, -1px 0px 3px #c1f834, 1px 0px 3px #c1f834;
 }
+
+/*Popup playlist*/
+#mini-playlist li.selected {
+  border-top: solid 1px #c1f834;
+  background: -webkit-linear-gradient(top, #c1f834, #62cc35);
+}
