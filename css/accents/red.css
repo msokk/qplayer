@@ -1,0 +1,33 @@
+/* Blue accent - #fe8154 to #fe0731 */
+
+/*Playlist*/
+#treeview li.selected {
+  border-top: solid 1px #fe8154;
+  background: url('../../img/icons/note2.png') no-repeat 4px center,-webkit-linear-gradient(#fe8154, #fe0731);
+}
+
+/*Track*/
+#content-main tr.selected {
+  background: -webkit-linear-gradient(#fe8154, #fe0731);
+}
+
+/*Seekbar*/
+.track .done {
+  background: -webkit-linear-gradient(top, #fe8154, #fe0731);
+}
+
+/*Searchbox*/
+#searchBox:focus {
+  box-shadow: inset 0px 2px 5px #d5d5d5, 0px 1px 1px #d5d5d5,
+    0px 3px 5px #fe8154, 0px -1px 5px #fe8154;
+}
+
+/*Searchbox filter*/
+#filterBtns span:hover {
+  box-shadow: 0px 3px 5px #fe8154, 0px -3px 5px #fe8154;
+}
+
+/*Button glow*/
+button:hover {
+  box-shadow: 0px -1px 3px #fe8154, 0px 1px 3px #fe8154, -1px 0px 3px #fe8154, 1px 0px 3px #fe8154;
+}

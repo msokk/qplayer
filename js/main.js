@@ -1,25 +1,36 @@
-﻿$(function() { new Q.App(); });
+﻿$(function() { window.qp = new Q.App(); });
 
 Q.App = function() {
+  this.ui = {};
   Q.Audio = new audioElem('nativePlayer');
-  window.qp = new Q.Player([
+  /*window.qp = new Q.Player([
     new Q.GsPlayer()
   ]);
   
   setTimeout(function() {
   
     qp.loadItem(0);
-  }, 2000);
+  }, 2000);*/
 
   
 
-  this.bindMisc();
-};
-
-Q.App.prototype.bindMisc = function() {
-  $('#settingsBtn').click(function() {
-    $('.settingsContainer').toggleClass('show');
+  this.initUI();
+  
+  this.on('UIVolume', function(volume) {
+    console.log('Volume: %s', volume);
   });
+  
+  this.on('UISeek', function(progress) {
+    console.log('Progress: %s', progress);
+  });
+};
+Q.inherit(Q.App, Q.Event);
+
+Q.App.prototype.initUI = function() {
+  Q.UISettings(this); //Settings btn, tab
+  Q.UIVolume(this); //Volume bar
+  Q.UISeekbar(this); //Seek bar
+  Q.UIGeneric(this); //Generic
   
         
   $('#miniBtn').click(function() {
@@ -55,5 +66,15 @@ Q.App.prototype.bindMisc = function() {
     });
   });
   
+  $('#treeview li').click(function() {
+    $('#treeview li').removeClass('clicked');
+    $(this).toggleClass('clicked');
+  });
+  
+  $('#treeview li').dblclick(function() {
+    $('#treeview li').removeClass('selected');
+    $(this).removeClass('clicked');
+    $(this).toggleClass('selected');
+  });
 
 };

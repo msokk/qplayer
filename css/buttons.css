@@ -3,23 +3,24 @@ button {
   border: solid 1px #787878;
   padding: 4px 7px 4px 7px;
   border-radius: 5px;
-  color: #898989;
+  color: #383838;
   text-shadow: 1px 1px 1px white;
   font-weight: bold;
-  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, white),color-stop(1, #E6E6E6));
+  background-image: -webkit-linear-gradient(white, #E6E6E6);
   vertical-align: middle;
-  -webkit-transition: box-shadow 0.15s ease;
+  box-shadow: 0px 1px 1px #d5d5d5;
 }
 
 button:hover {
   box-shadow: 0px -1px 3px #65C5EF, 0px 1px 3px #65C5EF, -1px 0px 3px #65C5EF, 1px 0px 3px #65C5EF;
-  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #F8F8F8),color-stop(1, #D9D9D9));
+  background-image: -webkit-linear-gradient(#F8F8F8, #D9D9D9);
 }
 
 button:active {
   box-shadow: 0 0 2px #cecece, inset 0px -1px 0 0 #e6e6e6;
-  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #F8F8F8),color-stop(1, #F8F8F8));
+  background-image: -webkit-linear-gradient(#F8F8F8, #F8F8F8);
   -webkit-transform: scale(0.98);
+  color: #888888;
 }
 
 button .icon {

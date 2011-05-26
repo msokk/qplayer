@@ -3,8 +3,9 @@
 <head>
 	<meta charset="utf-8">
 	<title>?Player</title>
-  <link href="http://fonts.googleapis.com/css?family=Ubuntu:300,300italic,regular,italic,500,500italic,bold,bolditalic" rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=Ubuntu:300,300italic,regular,italic,500,500italic,bold,bolditalic" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css" />
+  <link id="accent" rel="stylesheet" href="css/accents/blue.css" />
 </head>
 <body>
   <div id="container">
@@ -18,10 +19,16 @@
             <li>Long long long long playlist</li>
             <li>Playlist</li>
             <li>Playlist</li>
+            <li class="clicked">Playlist</li>
             <li>Playlist</li>
             <li>Playlist</li>
-            <li class="new">+ New Playlist</li>
+            <li>Playlist</li>
+            <li>Playlist</li>
+            <li>Playlist</li>
+            <li>Playlist</li>
+            
           </ul>
+          <ul><li class="new">+ New Playlist</li></ul>
         </div>
         <div id="albumart">
           <object type="application/x-shockwave-flash" id="ytPlayer" data="http://www.youtube.com/apiplayer?enablejsapi=1&amp;playerapiid=ytPlayer" width="1" height="1">
@@ -40,7 +47,7 @@
             </span>
           <button id="searchBtn">Search</button>
           <button id="miniBtn">Open mini</button>
-          <button id="settingsBtn"><img class="icon" src="img/icons/settings.png">Settings</button>
+          <button id="settingsBtn"><img alt="Settings icon" class="icon" src="img/icons/settings.png">Settings</button>
         </div>
         <div id="content-main">
           <table>
@@ -52,44 +59,48 @@
               <th>Length</th>
               <th>Album</th>
             </tr>
-            <tr>
-              <td><span class="icon gs-active"></span></td>
-              <td>Heroine</td>
-              <td>S</td>
-              <td>WildCookie</td>
-              <td>3:55</td>
-              <td>Cookie Dough</td>
-            </tr>
-            <tr>
-              <td><span class="icon yt-active"></span></td>
-              <td>Heroine</td>
-              <td>Sync</td>
-              <td>WildCookie</td>
-              <td>3:55</td>
-              <td>Cookie Dough</td>
-            </tr>
-            <tr class="selected">
-              <td><span class="icon sc-active"></span></td>
-              <td>Heroine</td>
-              <td>Sync</td>
-              <td>WildCookie</td>
-              <td>3:55</td>
-              <td>Cookie Dough</td>
-            </tr>
+            <tbody>
+              <tr class="clicked">
+                <td><span class="icon gs-active"></span></td>
+                <td>Heroine</td>
+                <td>S</td>
+                <td>WildCookie</td>
+                <td>3:55</td>
+                <td>Cookie Dough</td>
+              </tr>
+              <tr>
+                <td><span class="icon yt-active"></span></td>
+                <td>Heroine</td>
+                <td>Sync</td>
+                <td>WildCookie</td>
+                <td>3:55</td>
+                <td>Cookie Dough</td>
+              </tr>
+              <tr class="selected">
+                <td><span class="icon sc-active"></span></td>
+                <td>Heroine</td>
+                <td>Sync</td>
+                <td>WildCookie</td>
+                <td>3:55</td>
+                <td>Cookie Dough</td>
+              </tr>
+            </tbody>
           </table>
         </div>
       </div>
     </div>
     <div id="control-bar">
       <div id="controls">
-       <div id="control-btns">
-         <button>Play</button>
-         <button>Pause</button>
-       </div>
+        <div id="control-btns">
+          <button id="prevBtn">‹‹</button>
+          <button id="playBtn" class="bigger">►</button>
+          <button id="nextBtn">››</button>
+        </div>
+                 <img src="/img/icons/speaker.png" alt="Volume" />
         <div id="volume-bar">
           <div class="track">
             <div class="track done" style="width: 40%;">
-            <div class="thumb"></div>
+              <div class="thumb"></div>
             </div>
           </div> 
         </div>
@@ -101,7 +112,8 @@
         </div>
       </div>
       <div id="shuffle-repeat">
-        <div id="shuffle" class="light"></div>
+        <div id="shuffle"></div>
+        <div id="repeat"></div>
       </div>
       <div id="status">
         Status?
@@ -114,11 +126,18 @@
   </div>
   <div class="settingsContainer">
     Settings - Last.FM etc
+    <br><br>
+    Skin: <select id="accentSelection">
+      <option value="blue" selected>Blue</option>
+      <option value="red">Red</option>
+      <option value="green">Green</option>
+    </select>
   </div>
   <script src="js/libs/jquery-1.6.1.min.js"></script>
   <script src="js/libs/sha1-min.js"></script>
   <script src="js/libs/md5-min.js"></script>
   <script src="js/helpers.js"></script>
+  <script src="js/ui.js"></script>
   <script src="js/grooveshark.js"></script>
   <script src="js/player.grooveshark.js"></script>
   <script src="js/player.js"></script>

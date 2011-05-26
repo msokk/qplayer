@@ -10,8 +10,14 @@ body {
   font-family: 'Ubuntu', serif;
   font-size: 14px;
   zoom: reset;
+  -webkit-user-select: none;
   color: hsl(0, 0%, 88%);
   background-color: hsl(0, 0%, 22%); 
+}
+
+::selection {
+  background-color: #101010;
+  color: #EEEEEE;
 }
 
 #players {
@@ -30,7 +36,7 @@ body {
 
 .settingsContainer {
   position: fixed;
-  bottom: -211px;
+  bottom: -221px;
   right: 0px;
   height: 200px;
   width: 200px;
@@ -38,8 +44,8 @@ body {
   border-left: solid 1px #292929;
   border-top: solid 1px #292929;
   border-top-left-radius: 10px;
-  background-color: hsl(0, 0%, 22%);
-  padding: 5px;
+  background-color: hsl(0, 0%, 28%);
+  padding: 10px;
 }
 
 .settingsContainer.show {
@@ -82,10 +88,20 @@ body {
   text-shadow: black 0px -1px 0px;
 }
 
+#treeview li:hover {
+  background: url('../img/icons/note.png') no-repeat 4px center, #545454;
+}
+
 #treeview li.selected {
   font-weight: bold;
   border-top: solid 1px #b3defe;
-  background: url('../img/icons/note2.png') no-repeat 4px center,-webkit-linear-gradient(top, #65c5ef, #0292d1);
+  background: url('../img/icons/note2.png') no-repeat 4px center,-webkit-linear-gradient(#65c5ef, #0292d1);
+  color: hsl(0, 0%, 22%);
+  text-shadow: none;
+}
+
+#treeview li.clicked {
+  background: url('../img/icons/note2.png') no-repeat 4px center,-webkit-linear-gradient(#c3c3c3, gray);
   color: hsl(0, 0%, 22%);
   text-shadow: none;
 }
@@ -113,8 +129,7 @@ input#newPlaylist {
   padding: 5px;
   height: 30px;
   border-top: solid 1px hsl(0, 0%, 46%);
-  background: -webkit-gradient(linear,left top,left bottom,color-stop(0, #656565),color-stop(1, #404040));
-
+  background: -webkit-linear-gradient(#656565, #404040);
 }
 
 #song-data #tracktitle, #albumtitle {
@@ -153,13 +168,13 @@ input#newPlaylist {
 #searchBar {
   padding: 3px 3px 4px 5px;
   border-bottom: solid 1px black;
-  background: -webkit-gradient(linear,left top,left bottom,color-stop(0, #b6b6b6),color-stop(1, #959595));
+  background: -webkit-linear-gradient(#dadada, #808080);
 }
 
 #searchBox {
   width: 300px;
   padding: 0 5px 0 23px;
-  border-radius: 8px 0px 0px 8px;
+  border-radius: 5px 0px 0px 5px;
   -webkit-appearance: none;
   border: solid 1px #5e5e5e;
   height: 26px;
@@ -176,7 +191,6 @@ input#newPlaylist {
 
 #filterBtns, #searchBtn {
   margin-left: -3px;
-  -webkit-user-select: none;
 }
 
 #filterBtns > * {
@@ -228,15 +242,28 @@ input#newPlaylist {
   text-align: left;
   border-top: solid 1px hsl(0, 0%, 79%);
   border-right: solid 1px black;
-  background: -webkit-gradient(linear,left top,left bottom,color-stop(0, #a8a8a8),color-stop(1, #868686));
+  background: -webkit-linear-gradient(#a8a8a8, #868686);
 }
 
 #content-main tr:nth-child(odd) {
   background-color: hsl(0, 0%, 25%); 
 }
 
+#content-main tr:hover {
+  background: #545454;
+}
+
+
 #content-main tr.selected {
-  background: -webkit-linear-gradient(top, #65c5ef, #0292d1);
+  color: hsl(0, 0%, 22%);
+  font-weight: bold;
+  background: -webkit-linear-gradient(#65c5ef, #0292d1);
+}
+
+#content-main tr.clicked {
+  border-top: solid 1px hsl(0, 0%, 25%);
+  background: -webkit-linear-gradient(#c3c3c3, gray);
+  color: black;
 }
 
 #control-bar {
@@ -245,58 +272,106 @@ input#newPlaylist {
   height: 40px;
   display: -webkit-box;
   -webkit-box-orient: horizontal;
-  -webkit-user-select: none;
-  background: -webkit-gradient(linear,left top,left bottom,color-stop(0, #5f5f5f),color-stop(1, #4e4e4e));
+  background: -webkit-linear-gradient(#5f5f5f, #4e4e4e);
 }
 
 #controls {
-
   display: -webkit-box;
   -webkit-box-orient: horizontal;
-  width: 200px;
+  width: 250px;
   border-right: solid 1px hsl(0, 0%, 16%);
 }
 
 #control-btns {
-  padding-left: 16px;
-  -webkit-box-flex: 1;
+  margin-top: 1px;
+  padding-left: 3px;
+  -webkit-box-flex: 0.5;
+}
+
+#control-btns button {
+  width: 28px;
+  height: 28px;
+  border-radius: 28px;
+  border: none;
+  background: -webkit-linear-gradient(#DADADA, gray);
+  box-shadow: inset 0px -2px 1px black;
+  color: black;
+  vertical-align: baseline;
+  padding-top: 1px;
+  text-shadow: 0px 0px 1px gray;
+  font-size: 18px;
+}
+
+#control-btns button:active {
+  padding-top: 4px;
+  box-shadow: inset 0px 2px 1px black;
+  color: #dadada;
+  text-shadow: 0px -1px 1px black;
+}
+
+#control-btns button.bigger {
+  width: 33px;
+  height: 33px;
+  border-radius: 33px;
+  padding: 0px 0 0 4px;
+}
+
+#control-btns button.bigger:active {
+  padding-top: 3px;
+}
+
+#controls img {
+  vertical-align: middle;
+  margin: -2px 3px 0 0;
+  
 }
 
 #volume-bar {
-  padding: 16px;
-  -webkit-box-flex: 2;
+  padding: 16px 10px 16px 0px;
+  -webkit-box-flex: 3;
 }
 
 #seek-bar {
   border-left: solid 1px hsl(0, 0%, 47%);
+  border-right: solid 1px hsl(0, 0%, 16%);
   -webkit-box-flex: 1;
   padding: 16px;
 }
 
-
-
 #shuffle-repeat {
-  width: 120px;
+  border-left: solid 1px hsl(0, 0%, 47%);
+  border-right: solid 1px hsl(0, 0%, 16%);
+  padding: 10px;
 }
 
-#shuffle-repeat #shuffleBtn {
-background: #fff;
-
-}
-
-
-#status {
-  width: 50px;
+#shuffle-repeat div {
+  display: inline-block;
+  vertical-align: top;
 }
 
 #shuffle {
-  width: 20px;
-  height: 20px;
-	background: url(../img/icons/shuffle.png) no-repeat;
+  width: 28px;
+  height: 22px;
+	background: url(../img/icons/shuffle.png) no-repeat center center;
+  margin-right: 5px;
 }
-.light {
+#shuffle:hover, #shuffle.active {
+  background: url(../img/icons/shuffle2.png) no-repeat center center;
+}
 
-	-webkit-mask: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
+#repeat {
+  width: 33px;
+  height: 22px;
+	background: url(../img/icons/repeat.png) no-repeat;
+}
+#repeat:hover, #repeat.active {
+  background: url(../img/icons/repeat2.png) no-repeat;
+}
+
+#status {
+  border-left: solid 1px hsl(0, 0%, 47%);
+  width: 50px;
+  padding: 5px;
 }
 
 /*Icons*/

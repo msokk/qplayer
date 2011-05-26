@@ -12,6 +12,9 @@ Q.inherit = function(ctor, superCtor) {
   }
 };
 
+/**
+ * EventEmitter
+ */
 Q.Event = (function () {
 
   var registry = {},
@@ -93,3 +96,45 @@ Q.Event = (function () {
 
   return Event;
 }());
+
+/**
+ * LocalStorage wrapper
+ */
+Q.Storage = {
+
+  /**
+   * Stores object to storage
+   * @param {Mixed} object
+   */
+  set : function(key, value) {
+    if(!window.localStorage) {
+      throw new Error('LocalStorage not supported here! Fallback missing!');
+    }
+    window.localStorage.setItem(key, JSON.stringify(value));
+  },
+
+  /**
+   * Fetches object or string from storage
+   * @param {String} key
+   * @return {Mixed} String/JSON
+   */
+  get : function(key) {
+    if(!window.localStorage) {
+      throw new Error('LocalStorage not supported here! Fallback missing!');
+    }
+    var str = window.localStorage.getItem(key);
+    if(str) {
+      return JSON.parse(str);
+    } else {
+      return null;
+    }
+  },
+
+  /**
+   * Deletes item from storage
+   * @param {String} key
+   */
+  clear : function(key) {
+    delete window.localStorage[key];
+  }
+};
