@@ -9,13 +9,12 @@ html, body { height: 100%; }
 body {
   font-family: 'Ubuntu', serif;
   font-size: 14px;
-  zoom: reset;
   -webkit-user-select: none;
   color: hsl(0, 0%, 88%);
   background-color: hsl(0, 0%, 22%); 
 }
 
-::selection {
+::selection{
   background-color: #101010;
   color: #EEEEEE;
 }
@@ -114,11 +113,21 @@ body {
   color: hsl(0, 0%, 75%);
 }
 
-input#newPlaylist {
+input.editBox {
   border: solid 1px #8C8C8C;
-  margin: -4px 1px 0px -1px;
   outline: none;
   -webkit-appearance: none;
+}
+
+input#newPlaylist {
+  margin: -4px 1px 0px -1px;
+}
+
+input#editPlaylist {
+  margin: -2px 0 -2px 0;
+  padding: 3px;
+  color: hsl(0, 0%, 22%);
+  font-size: 14px;
 }
 
 #song-data {
@@ -220,7 +229,7 @@ input#newPlaylist {
 
 #content-main table {
   width: 100%;
-  
+  border-collapse: separate;
 }
 
 #content-main th, td {
@@ -250,6 +259,17 @@ input#newPlaylist {
   background: #545454;
 }
 
+#content-main tr .plus {
+  position: absolute;
+  color: #C1F834;
+  top: -10px;
+  left: -5px;
+  font-size: 20px;
+  text-shadow: 1px 1px 1px black;
+}
+#content-main tr .plus:before {
+  content: '+';
+}
 
 #content-main tr.selected {
   color: hsl(0, 0%, 22%);
@@ -393,16 +413,25 @@ input#newPlaylist {
   opacity: 1;
 }
 
+#shuffle:active, #repeat:active {
+  margin-top: 1px;
+}
+
 #status {
   border-left: solid 1px hsl(0, 0%, 47%);
   padding: 13px;
 }
 #status > div {
-  background-color: #fe0731;
+  background: -webkit-radial-gradient(circle closest-side, #fe0731 0%, #ea062d 100%);
   width: 15px;
   height: 15px;
   border-radius: 15px;
-  box-shadow: 0px 0px 1px #fe0731;
+  box-shadow: 0px -1px 1px black;
+  opacity: 0.8;
+}
+
+#status.ready > div {
+  background: -webkit-radial-gradient(circle closest-side, #62CC35 0%, #56b32e 100%);
 }
 
 /*Icons*/

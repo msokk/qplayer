@@ -12,21 +12,17 @@
     <div id="upper">
       <div id="sidebar">
         <div id="treeview">
-          <ul>
-            <li>Playlist</li>
-            <li class="selected">Active Playlist</li>
-            <li>Playlist</li>
-            <li>Long long long long playlist</li>
-            <li>Playlist</li>
-            <li>Playlist</li>
-            <li class="clicked">Playlist</li>
-            <li>Playlist</li>
-            <li>Playlist</li>
-            <li>Playlist</li>
-            <li>Playlist</li>
-            <li>Playlist</li>
-            <li>Playlist</li>
-            
+          <ul id="list">
+            <li data-id="0">Playlist</li>
+            <li data-id="1" class="selected">Active Playlist</li>
+            <li data-id="2">Playlist</li>
+            <li data-id="3">Long long long long playlist</li>
+            <li data-id="4">Playlist</li>
+            <li data-id="5">Playlist</li>
+            <li data-id="6" class="clicked">Playlist</li>
+            <li data-id="7">Playlist</li>
+            <li data-id="8">Playlist</li>
+            <li data-id="9">Playlist</li>
           </ul>
           <ul><li class="new">+ New Playlist</li></ul>
         </div>
@@ -43,7 +39,7 @@
         <div id="searchBar">
           <input id="searchBox" type="search">
           <span id="filterBtns">
-            <span id="gsBtn" class="icon gs-active"></span><span id="ytBtn" class="icon yt-active"></span><span id="scBtn" class="icon sc-active"></span>
+            <span id="gsBtn" title="Grooveshark" class="icon gs-active"></span><span id="ytBtn" title="YouTube" class="icon yt-active"></span><span id="scBtn" title="SoundCloud" class="icon sc-active"></span>
             </span>
           <button id="searchBtn">Search</button>
           <div style="float: right;">
@@ -61,7 +57,7 @@
               <th>Length</th>
               <th>Album</th>
             </tr>
-            <tbody>
+            <tbody id="tracklist">
               <tr class="clicked">
                 <td><span class="icon gs-active"></span></td>
                 <td>Heroine</td>
@@ -98,7 +94,7 @@
           <button id="playBtn" class="bigger"></button>
           <button id="nextBtn">››</button>
         </div>
-                 <img src="/img/icons/speaker.png" alt="Volume" />
+       <img id="volume-icon" src="/img/icons/speaker.png" alt="Volume" />
         <div id="volume-bar">
           <div class="track">
             <div class="track done" style="width: 40%;">
@@ -117,7 +113,7 @@
         <div id="shuffle"></div>
         <div id="repeat"></div>
       </div>
-      <div id="status"><div></div></div>
+      <div id="status"><div title="Status"></div></div>
     </div>
   </div>
   <div id="players">
@@ -134,6 +130,7 @@
     </select>
   </div>
   <script src="js/libs/jquery-1.6.1.min.js"></script>
+  <script src="js/libs/jquery-ui-drag.min.js"></script>
   <script src="js/libs/sha1-min.js"></script>
   <script src="js/libs/md5-min.js"></script>
   <script src="js/helpers.js"></script>
