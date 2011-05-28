@@ -87,6 +87,12 @@ body {
   background: url('../img/icons/note.png') no-repeat 4px center, #545454;
 }
 
+#treeview li.addnew {
+  border: solid 1px gray !important;
+  border-bottom: none !important;
+  background: url('../img/icons/note.png') no-repeat 4px center, #545454 !important;
+}
+
 #treeview li.selected {
   font-weight: bold;
   border-top: solid 1px #b3defe;
@@ -192,6 +198,9 @@ input#editPlaylist {
 #searchBox:focus {
   box-shadow: inset 0px 2px 5px #d5d5d5, 0px 1px 1px #d5d5d5,
     0px 3px 5px #65C5EF, 0px -1px 5px #65C5EF;
+}
+
+#searchBox.ongoing {
   background: #fff url('../img/icons/search-loader.gif') no-repeat 3px center;
 }
 
@@ -257,18 +266,6 @@ input#editPlaylist {
 
 #content-main tr:hover {
   background: #545454;
-}
-
-#content-main tr .plus {
-  position: absolute;
-  color: #C1F834;
-  top: -10px;
-  left: -5px;
-  font-size: 20px;
-  text-shadow: 1px 1px 1px black;
-}
-#content-main tr .plus:before {
-  content: '+';
 }
 
 #content-main tr.selected {
@@ -395,6 +392,7 @@ input#editPlaylist {
 }
 #shuffle:hover, #shuffle.active {
   background: url(../img/icons/shuffle2.png) no-repeat center center;
+
 }
 
 #repeat {
@@ -410,6 +408,7 @@ input#editPlaylist {
   opacity: 0.4;
 }
 #shuffle.active, #repeat.active {
+  -webkit-transition: opacity .5s linear;
   opacity: 1;
 }
 
@@ -461,4 +460,9 @@ input#editPlaylist {
 }
 .sc-disabled {
   background: url(../img/sc-disabled.png) no-repeat;
+}
+
+
+#ytPlayer {
+  
 }

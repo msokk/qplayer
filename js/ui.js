@@ -207,35 +207,12 @@ Q.UIPlaylist = function(app) {
   });
   
   //Sort
-  $('#treeview #list li').live('mousedown', function(e) {
-    var that = this;
-    var orig = e;
-    var itemDrag = function(e) {
-      if(Math.abs(orig.pageY - e.pageY) > 15) {
-        var centerY = e.pageY - ($(that).height() / 2);
-        $(that).css({ 
-          'width': $(that).width(),
-          'position': 'absolute',
-          'top': centerY,
-          'z-index': 1000
-        });
-      }
-    };
-    
-    var itemRelease = function(e) {
-      $(that).css({ 
-        'position': '',
-        'width': '',
-        'top': '',
-        'z-index': ''
-      });
-      $(document).unbind('mousemove', itemDrag);
-      $(document).unbind('mouseup', itemRelease);
-    };
-    
-    $(document).bind('mousemove', itemDrag);
-    $(document).bind('mouseup', itemRelease);
-  });  
+  $('#treeview #list').sortable({ 
+    opacity: 0.6,
+    axis: 'y',
+    delay: 200,
+    containment: '#treeview'
+  });
     
   //Activate playlist
   app.ui.activatePlaylist = function(id) {
@@ -251,74 +228,66 @@ Q.UIPlaylist = function(app) {
  * @param {Q.App} QPlayer
  */
 Q.UITracklist = function(app) {
-  //Sort
-  $('#tracklist tr').live('mousedown', function(e) {
-    var orig = e;
-    var that = $(this);
-    var hasCloned = false;
-    var playListid = null;
-    
-    //Is it on a playlist
-    var playlistOver = function(e) {
-      console.log(e);
-    };
-    
-    var playlistOut = function(e) {
-      console.log(e);
-    };
-    
-    //Drag along
-    var itemDrag = function(e) {
-      if(Math.abs(orig.pageX - e.pageX) > 20 || Math.abs(orig.pageY - e.pageY) > 20) {
-        var centerY = e.pageY - (that.height() / 2);
-        var centerX = e.pageX - (that.height() / 2);
-        that.css({
-          'top': centerY,
-          'left': centerX
-        });
-      }
-    };
-    
-    //Delete on release
-    var itemRelease = function(e) {
-      if(hasCloned) {
-        that.remove();
-      }
-      $(document).unbind('mousemove', itemClone);
-      $(document).unbind('mousemove', itemDrag);
-      $(document).unbind('mouseup', itemRelease);
-      $('#treeview li').unbind('mouseover', playlistOver);
-      $('#treeview li').unbind('mouseout', playlistOut);
-    };
-    
-    //Make a duplicate
-    var itemClone = function(e) {
-      if(Math.abs(orig.pageX - e.pageX) > 20 || Math.abs(orig.pageY - e.pageY) > 20) {
-        var centerY = e.pageY - (that.height() / 2);
-        var centerX = e.pageX - (that.height() / 2);
-        that = that.clone();
-        that.find('td:first').prepend('<span class="plus"></span>');
-        hasCloned = true;
-        $('#tracklist').append(that);
-        that.css({
-          'position': 'absolute',
-          'z-index': 1000,
-          'top': centerY,
-          'left': centerX
-        });
-        
-        $('#treeview li').bind('mouseover', playlistOver);
-        $('#treeview li').bind('mouseout', playlistOut);
-        $(document).unbind('mousemove', itemClone);
-      }
-    };
-    
-
-    
-    $(document).bind('mousemove', itemClone);
-    $(document).bind('mousemove', itemDrag);
-    $(document).bind('mouseup', itemRelease);
+  $('#tracklist').sortable({ 
+    opacity: 0.6,
+    delay: 200
   });
+  
+  $('#treeview #list li').droppable({
+    drop: function(e) {
+      var songId = $(e.srcElement).parent().data('id');
+      var playlistId = $(e.target).data('id');
+      app.emit('UISongToPlaylist', playlistId, songId);
+    },
+    tolerance: 'pointer',
+    hoverClass: 'addnew'
+  });
+  
+  //Click
+  $('#tracklist tr').click(function() {
+    $('#tracklist tr').removeClass('clicked');
+    $(this).addClass('clicked');
+  });
+  
+  //Play song
+  $('#tracklist tr').dblclick(function() {
+    $('#tracklist tr').removeClass('clicked')
+                      .removeClass('selected');
+    $(this).addClass('selected').addClass('clicked');
+    app.emit('UISelectSong', $(this).data('id'));
+  });
+  
+  app.ui.selectSong = function(id) {
+    var elem = $('#tracklist tr[data-id='+id+']');
+    $('#tracklist tr').removeClass('selected');
+    elem.addClass('selected');
+  };
+  
+  $(window).keydown(function(e) {
+    var activeElem = $('#tracklist tr.clicked');
+    if(activeElem.length == 1 && $('*:focus').length == 0) {
+      //Enter
+      if(e.which == 13) {
+        $('#tracklist tr').removeClass('clicked')
+                          .removeClass('selected');
+        activeElem.addClass('selected').addClass('clicked');
+        app.emit('UISelectSong', activeElem.data('id'));
+      }
+      
+      //Up
+      if(e.which == 38 && activeElem.prev().length != 0) {
+        activeElem.removeClass('clicked');
+        activeElem.prev().addClass('clicked');
+      }
+      
+      //Down
+      if(e.which == 40 && activeElem.next().length != 0) {
+        activeElem.removeClass('clicked');
+        activeElem.next().addClass('clicked');
+      }
+    }
+  });
+
 };
 
 /**
@@ -373,6 +342,69 @@ Q.UIPlayback = function(app) {
 };
 
 /**
+ * Bind search bar
+ * @param {Q.App} QPlayer
+ */
+Q.UISearch = function(app) {
+  
+  //Grooveshark filter
+  $('#gsBtn').click(function() {
+    $(this).toggleClass('gs-active');
+    $(this).toggleClass('gs-disabled');
+    if($(this).hasClass('gs-active')) {
+      app.emit('UISearchFilter', { grooveshark: true });
+    } else {
+      app.emit('UISearchFilter', { grooveshark: false });
+    }
+  });
+  
+  //Youtube filter
+  $('#ytBtn').click(function() {
+    $(this).toggleClass('yt-active');
+    $(this).toggleClass('yt-disabled');
+    if($(this).hasClass('yt-active')) {
+      app.emit('UISearchFilter', { youtube: true });
+    } else {
+      app.emit('UISearchFilter', { youtube: false });
+    }
+  });
+  
+  //Soundcloud filter
+  $('#scBtn').click(function() {
+    $(this).toggleClass('sc-active');
+    $(this).toggleClass('sc-disabled');
+    if($(this).hasClass('sc-active')) {
+      app.emit('UISearchFilter', { soundcloud: true });
+    } else {
+      app.emit('UISearchFilter', { soundcloud: false });
+    }
+  });
+  
+  //Search input
+  var search = function() {
+    if($('#searchBox').val() != "") {
+      app.emit('UISearchValue', $('#searchBox').val());
+    }
+  }
+  
+  $('#searchBox').keypress(function(e) {
+    if(e.charCode == 13) {
+      search();
+    }
+  });
+  $('#searchBtn').click(search);
+  
+  //Indicator
+  app.ui.setSearchStatus = function(ongoing) {
+    if(ongoing) {
+      $('#searchBox').addClass('ongoing');
+    } else {
+      $('#searchBox').removeClass('ongoing');
+    }
+  }
+};
+
+/**
  * Bind generic small objects
  * @param {Q.App} QPlayer
  */
@@ -387,4 +419,12 @@ Q.UIGeneric = function(app) {
       + 'width=' + width + ',height=' + height + ',left=' + (window.outerWidth - (width+33))
       + ',top=' + (window.screen.height - window.screen.availHeight+55));
   });
+  
+  app.ui.setStatus = function(ready) {
+    if(ready) {
+      $('#status').addClass('ready');
+    } else {
+      $('#status').removeClass('ready');
+    }
+  };
 };

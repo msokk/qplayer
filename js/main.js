@@ -3,16 +3,6 @@
 Q.App = function() {
   this.ui = {};
   Q.Audio = new audioElem('nativePlayer');
-  /*window.qp = new Q.Player([
-    new Q.GsPlayer()
-  ]);
-  
-  setTimeout(function() {
-  
-    qp.loadItem(0);
-  }, 2000);*/
-
-  
 
   this.initUI();
   
@@ -40,6 +30,23 @@ Q.App = function() {
   this.on('UIEditPlaylist', function(id) {
     console.log('Edited playlist: %s', id);
   });
+  
+  this.on('UISongToPlaylist', function(playlistId, songId) {
+    console.log('Added song: %s to playlist %s', songId, playlistId);
+  });
+  
+  this.on('UISearchValue', function(value) {
+    console.log('Searching: %s', value);
+  });
+  
+  this.on('UISearchFilter', function(obj) {
+    console.log('Filterstate: %s', JSON.stringify(obj));
+  });
+  
+  this.on('UISelectSong', function(id) {
+    console.log('Playing song: %s', id);
+  });
+  
 };
 Q.inherit(Q.App, Q.Event);
 
@@ -50,22 +57,6 @@ Q.App.prototype.initUI = function() {
   Q.UIPlaylist(this); //Playlists
   Q.UITracklist(this); //Playlist tracks
   Q.UIPlayback(this); //Playback buttons, shuffle, etc.
-  Q.UIGeneric(this); //Generic
-  
-  
-  $('#gsBtn').click(function() {
-    $(this).toggleClass('gs-active');
-    $(this).toggleClass('gs-disabled');
-  });
-  
-  $('#ytBtn').click(function() {
-    $(this).toggleClass('yt-active');
-    $(this).toggleClass('yt-disabled');
-  });
-  
-  $('#scBtn').click(function() {
-    $(this).toggleClass('sc-active');
-    $(this).toggleClass('sc-disabled');
-  });
- 
+  Q.UISearch(this); //Search bar
+  Q.UIGeneric(this); //Generic 
 };
