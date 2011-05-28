@@ -4,16 +4,19 @@
 #treeview li.selected {
   border-top: solid 1px #B3DEFE;
   background: url('../../img/icons/note2.png') no-repeat 4px center,-webkit-linear-gradient(#65c5ef, #0292d1);
+  background: url('../../img/icons/note2.png') no-repeat 4px center,-moz-linear-gradient(#65c5ef, #0292d1);
 }
 
 /*Track*/
 #content-main tr.selected {
   background: -webkit-linear-gradient(#65c5ef, #0292d1);
+  background: -moz-linear-gradient(#65c5ef, #0292d1);
 }
 
 /*Seekbar*/
 .track .done {
   background: -webkit-linear-gradient(top, #65c5ef, #0292d1);
+  background: -moz-linear-gradient(top, #65c5ef, #0292d1);
 }
 
 /*Searchbox*/
@@ -36,4 +39,5 @@ button:hover {
 #mini-playlist li.selected {
   border-top: solid 1px #B3DEFE;
   background: -webkit-linear-gradient(top, #65c5ef, #0292d1);
+  background: -moz-linear-gradient(top, #65c5ef, #0292d1);
 }

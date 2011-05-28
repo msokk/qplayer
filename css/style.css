@@ -10,6 +10,7 @@ body {
   font-family: 'Ubuntu', serif;
   font-size: 14px;
   -webkit-user-select: none;
+  -moz-user-select: none;
   color: hsl(0, 0%, 88%);
   background-color: hsl(0, 0%, 22%); 
 }
@@ -29,6 +30,8 @@ body {
   max-height: 100%;
   display: -webkit-box;
   -webkit-box-orient: vertical;
+  display: -moz-box;
+  -moz-box-orient: vertical;
 }
 
 
@@ -40,6 +43,7 @@ body {
   height: 200px;
   width: 200px;
   -webkit-transition: bottom 0.3s linear;
+  -moz-transition: bottom 0.3s linear;
   border-left: solid 1px #292929;
   border-top: solid 1px #292929;
   border-top-left-radius: 10px;
@@ -54,20 +58,26 @@ body {
 #upper { 
   -webkit-box-flex: 1;
   display: -webkit-box;
-  -webkit-box-orient: horizontal;  
+  -webkit-box-orient: horizontal;
+  -moz-box-flex: 1;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
 }
 
 #sidebar {
   width: 200px;
   display: -webkit-box;
   -webkit-box-orient: vertical;
+  display: -moz-box;
+  -moz-box-orient: vertical;
   background-color: hsl(0, 0%, 28%);
   border-right: solid 1px hsl(0, 0%, 16%);
   border-bottom: solid 1px hsl(0, 0%, 16%);
 }
 
 #treeview {
-  -webkit-box-flex: 1; 
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1; 
   border-bottom: solid 1px hsl(0, 0%, 16%);
   overflow: auto;
 }
@@ -97,12 +107,14 @@ body {
   font-weight: bold;
   border-top: solid 1px #b3defe;
   background: url('../img/icons/note2.png') no-repeat 4px center,-webkit-linear-gradient(#65c5ef, #0292d1);
+  background: url('../img/icons/note2.png') no-repeat 4px center,-moz-linear-gradient(#65c5ef, #0292d1);
   color: hsl(0, 0%, 22%);
   text-shadow: none;
 }
 
 #treeview li.clicked {
   background: url('../img/icons/note2.png') no-repeat 4px center,-webkit-linear-gradient(#c3c3c3, gray);
+  background: url('../img/icons/note2.png') no-repeat 4px center,-moz-linear-gradient(#c3c3c3, gray);
   color: hsl(0, 0%, 22%);
   text-shadow: none;
 }
@@ -123,6 +135,7 @@ input.editBox {
   border: solid 1px #8C8C8C;
   outline: none;
   -webkit-appearance: none;
+  -moz-appearance: none;
 }
 
 input#newPlaylist {
@@ -141,6 +154,7 @@ input#editPlaylist {
   height: 30px;
   border-top: solid 1px hsl(0, 0%, 46%);
   background: -webkit-linear-gradient(#656565, #404040);
+  background: -moz-linear-gradient(#656565, #404040);
 }
 
 #song-data #tracktitle, #albumtitle {
@@ -173,6 +187,9 @@ input#editPlaylist {
   -webkit-box-flex: 1;
   display: -webkit-box;
   -webkit-box-orient: vertical;
+  -moz-box-flex: 1;
+  display: -moz-box;
+  -moz-box-orient: vertical;
   border-bottom: solid 1px hsl(0, 0%, 16%);
 }
 
@@ -180,6 +197,7 @@ input#editPlaylist {
   padding: 3px 3px 4px 5px;
   border-bottom: solid 1px black;
   background: -webkit-linear-gradient(#dadada, #808080);
+  background: -moz-linear-gradient(#dadada, #808080);
 }
 
 #searchBox {
@@ -187,6 +205,7 @@ input#editPlaylist {
   padding: 0 5px 0 23px;
   border-radius: 5px 0px 0px 5px;
   -webkit-appearance: none;
+  -moz-appearance: none;
   border: solid 1px #5e5e5e;
   height: 26px;
   outline: none;
@@ -211,6 +230,7 @@ input#editPlaylist {
 #filterBtns > * {
   box-shadow: 0px 1px 1px #d5d5d5;
   -webkit-transition: box-shadow 0.3s ease;
+  -moz-transition: box-shadow 0.3s ease;
   border: solid 1px #5e5e5e;
   border-left: none;
   vertical-align: middle;
@@ -223,6 +243,7 @@ input#editPlaylist {
 
 #filterBtns span:active {
   -webkit-transform: scale(0.9);
+  -moz-transform: scale(0.9);
 }
 
 #searchBtn {
@@ -233,6 +254,7 @@ input#editPlaylist {
 
 #content-main {
   -webkit-box-flex: 1;
+  -moz-box-flex: 1;
   overflow: auto;
 }
 
@@ -258,6 +280,7 @@ input#editPlaylist {
   border-top: solid 1px hsl(0, 0%, 79%);
   border-right: solid 1px black;
   background: -webkit-linear-gradient(#a8a8a8, #868686);
+  background: -moz-linear-gradient(#a8a8a8, #868686);
 }
 
 #content-main tr:nth-child(odd) {
@@ -272,11 +295,13 @@ input#editPlaylist {
   color: hsl(0, 0%, 22%);
   font-weight: bold;
   background: -webkit-linear-gradient(#65c5ef, #0292d1);
+  background: -moz-linear-gradient(#65c5ef, #0292d1);
 }
 
 #content-main tr.clicked {
   border-top: solid 1px hsl(0, 0%, 25%);
   background: -webkit-linear-gradient(#c3c3c3, gray);
+  background: -moz-linear-gradient(#c3c3c3, gray);
   color: black;
 }
 
@@ -286,12 +311,17 @@ input#editPlaylist {
   height: 40px;
   display: -webkit-box;
   -webkit-box-orient: horizontal;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
   background: -webkit-linear-gradient(#5f5f5f, #4e4e4e);
+  background: -moz-linear-gradient(#5f5f5f, #4e4e4e);
 }
 
 #controls {
   display: -webkit-box;
   -webkit-box-orient: horizontal;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
   width: 250px;
   border-right: solid 1px hsl(0, 0%, 16%);
 }
@@ -300,6 +330,7 @@ input#editPlaylist {
   margin-top: 1px;
   padding-left: 3px;
   -webkit-box-flex: 0.5;
+  -moz-box-flex: 0.5;
 }
 
 #control-btns button {
@@ -308,6 +339,7 @@ input#editPlaylist {
   border-radius: 28px;
   border: none;
   background: -webkit-linear-gradient(#DADADA, gray);
+  background: -moz-linear-gradient(#DADADA, gray);
   box-shadow: inset 0px -2px 1px black;
   color: black;
   vertical-align: baseline;
@@ -364,12 +396,14 @@ input#editPlaylist {
 #volume-bar {
   padding: 16px 10px 16px 0px;
   -webkit-box-flex: 3;
+  -moz-box-flex: 3;
 }
 
 #seek-bar {
   border-left: solid 1px hsl(0, 0%, 47%);
   border-right: solid 1px hsl(0, 0%, 16%);
   -webkit-box-flex: 1;
+  -moz-box-flex: 1;
   padding: 16px;
 }
 
@@ -409,6 +443,7 @@ input#editPlaylist {
 }
 #shuffle.active, #repeat.active {
   -webkit-transition: opacity .5s linear;
+  -moz-transition: opacity .5s linear;
   opacity: 1;
 }
 
@@ -422,6 +457,7 @@ input#editPlaylist {
 }
 #status > div {
   background: -webkit-radial-gradient(circle closest-side, #fe0731 0%, #ea062d 100%);
+  background: -moz-radial-gradient(circle closest-side, #fe0731 0%, #ea062d 100%);
   width: 15px;
   height: 15px;
   border-radius: 15px;
@@ -431,6 +467,7 @@ input#editPlaylist {
 
 #status.ready > div {
   background: -webkit-radial-gradient(circle closest-side, #62CC35 0%, #56b32e 100%);
+  background: -moz-radial-gradient(circle closest-side, #62CC35 0%, #56b32e 100%);
 }
 
 /*Icons*/
