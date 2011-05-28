@@ -7,6 +7,7 @@ button {
   text-shadow: 1px 1px 1px white;
   font-weight: bold;
   background-image: -webkit-linear-gradient(white, #E6E6E6);
+  background-image: -moz-linear-gradient(white, #E6E6E6);
   vertical-align: middle;
   box-shadow: 0px 1px 1px #d5d5d5;
 }

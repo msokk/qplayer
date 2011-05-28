@@ -474,7 +474,6 @@ input#editPlaylist {
 .icon {
   width: 24px;
   height: 24px;
-  background-size: contain;
   display: inline-block;
 }
 
