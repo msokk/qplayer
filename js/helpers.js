@@ -12,6 +12,18 @@ Q.inherit = function(ctor, superCtor) {
   }
 };
 
+
+/**
+ * Convert seconds to minutestring
+ * @param {Number} seconds
+ * @return {String} minutes
+ */
+Q.toMinutes = function(seconds) {
+  var m = Math.floor((seconds / 60));
+  var s = seconds % 60;
+  return m + ':' + _.lpad(s+'', 2, '0');
+}; 
+
 /**
  * EventEmitter
  */

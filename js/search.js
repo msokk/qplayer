@@ -29,34 +29,28 @@ Q.Search.prototype.bindHandlers = function() {
 
 Q.Search.prototype.renderResult = function() {
   var result = '';
-  console.log(this.searchPlaylist);
-  for(var i = 0; i < this.searchPlaylist.length; i++) {
-    var item = this.searchPlaylist[i];
+  var keys = Object.keys(this.searchPlaylist);
+  for(var i = 0; i < keys.length; i++) {
+    var item = this.searchPlaylist[keys[i]];
     var type = this.app.ui.filterMap[item.resource.type];
     result += '<tr data-type="'+item.resource.type+'" data-id="'+item.id+'">'+
                 '<td><span class="icon '+type+'-active"></span></td>'+
                 '<td>'+_.truncate(item.metadata.title, 50, ' ')+'</td>'+
                 '<td>'+item.metadata.artist+'</td>'+
-                '<td>'+this.toMinutes(item.metadata.duration)+'</td>'+
+                '<td>'+Q.toMinutes(item.metadata.duration)+'</td>'+
                 '<td>'+item.metadata.album+'</td>'+
-                '<td>Sync</td>'+
               '</tr>';
   }
   $('#tracklist').append(result);
   this.app.ui.setSearchStatus(false);
 };
 
-Q.Search.prototype.toMinutes = function(seconds) {
-  var m = Math.floor((seconds / 60));
-  var s = seconds % 60;
-  return m + ':' + _.lpad(s+'', 2, '0');
-}; 
-
 Q.Search.prototype.doSearch = function(value) {
   Q.Storage.set('lastsearch', value);
   Q.Storage.set('currentPlaylist', -1);
   this.app.playlist.currentId = -1;
   this.app.ui.activatePlaylist(-1);
+  $('#list li').removeClass('clicked');
   this.searchPlaylist = [];
   
   $('#tracklist').empty();
@@ -81,7 +75,7 @@ Q.Search.prototype.youtube = function(value) {
     if(items) {
       for(var i = 0; i < items.length; i++) {
         var id = hex_sha1(JSON.stringify(items[i]));
-        that.searchPlaylist.push({
+        that.searchPlaylist[id] = {
           id: id,
           metadata: {
             title: items[i].title,
@@ -94,7 +88,7 @@ Q.Search.prototype.youtube = function(value) {
             type: 'youtube',
             videoId: items[i].id 
           }
-        });
+        };
       }
       that.renderResult();
     }
@@ -113,8 +107,7 @@ Q.Search.prototype.soundcloud = function(value) {
           if(cover) {
             cover = cover.replace('large', 't300x300');
           }
-          
-          that.searchPlaylist.push({
+          that.searchPlaylist[id] = {
             id: id,
             metadata: {
               title: data[i].title,
@@ -127,7 +120,7 @@ Q.Search.prototype.soundcloud = function(value) {
               type: 'soundcloud',
               stream_url: data[i].stream_url
             }
-          });
+          };
         }
         that.renderResult();
       }

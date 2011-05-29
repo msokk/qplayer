@@ -252,16 +252,19 @@ Q.UITracklist = function(app) {
     delay: 200
   });
   
-  $('#treeview #list li').droppable({
-    drop: function(e) {
-      var songId = $(e.srcElement).parent().data('id');
-      var playlistId = $(e.target).data('id');
-      app.emit('UISongToPlaylist', playlistId, songId);
-    },
-    tolerance: 'pointer',
-    hoverClass: 'addnew',
-    accept: 'tr'
-  });
+  app.ui.attachDrop = function() {
+    $('#treeview #list li').droppable({
+      drop: function(e) {
+        var songId = $(e.srcElement).parent().data('id');
+        var playlistId = $(e.target).data('id');
+        app.emit('UISongToPlaylist', playlistId, songId);
+      },
+      tolerance: 'pointer',
+      hoverClass: 'addnew',
+      accept: 'tr'
+    });
+  };
+  app.ui.attachDrop();
   
   //Click
   $('#tracklist tr').live('click', function() {
@@ -304,6 +307,13 @@ Q.UITracklist = function(app) {
       if(e.which == 40 && activeElem.next().length != 0) {
         activeElem.removeClass('clicked');
         activeElem.next().addClass('clicked');
+      }
+      
+      //Delete
+      if(e.which == 46) {
+        app.emit('UIDeleteSong', activeElem.data('id'));
+        activeElem.next().addClass('clicked');
+        activeElem.remove();
       }
     }
   });

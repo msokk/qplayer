@@ -5,22 +5,10 @@ Q.Playlist = function(app) {
   this.playlists = {};
   this.loadPlaylists();
   
-  this.currentId = Q.Storage.get('currentPlaylist') || 0;
-  /*[
-    {
-      metadata: {
-        title: 'On The Road',
-        artist: 'WildCookie',
-        length: '',
-        album: ''
-      
-      },
-      resource: {
-        type: 'grooveshark',
-        songId: 29345932 
-      }
-    }
-  ];*/
+  this.currentId = (Q.Storage.get('currentPlaylist') != undefined) ? Q.Storage.get('currentPlaylist') : -1;
+  if(this.currentId != -1) {
+    this.renderPlaylist(this.currentId);
+  }
   
   this.renderIndex();
    
@@ -35,6 +23,13 @@ Q.Playlist.prototype.loadPlaylists = function() {
   }
 };
 
+Q.Playlist.prototype.getPlaylist = function(id) {
+  if(id == -1) {
+    return this.app.search.searchPlaylist;
+  }
+  return this.playlists[id];
+};
+
 Q.Playlist.prototype.renderIndex = function() {
   $('#treeview #list').empty();
   for(var i = 0; i < this.playlistIndex.length; i++) {
@@ -43,10 +38,27 @@ Q.Playlist.prototype.renderIndex = function() {
   }
   $('li[data-id='+this.currentId+']').addClass('clicked');
   this.renderPlaylist(this.currentId);
+  this.app.ui.attachDrop();
 };
 
 Q.Playlist.prototype.renderPlaylist = function(id) {
-  console.log('Rendering playlist: %s', id);
+  var result = '';
+  var pl = this.getPlaylist(id);
+  var keys = Object.keys(pl);
+  
+  for(var i = 0; i < keys.length; i++) {
+    var item = pl[keys[i]];
+    var type = this.app.ui.filterMap[item.resource.type];
+    result += '<tr data-type="'+item.resource.type+'" data-id="'+item.id+'">'+
+                '<td><span class="icon '+type+'-active"></span></td>'+
+                '<td>'+_.truncate(item.metadata.title, 50, ' ')+'</td>'+
+                '<td>'+item.metadata.artist+'</td>'+
+                '<td>'+Q.toMinutes(item.metadata.duration)+'</td>'+
+                '<td>'+item.metadata.album+'</td>'+
+              '</tr>';
+  }
+  $('#tracklist').empty();
+  $('#tracklist').append(result);
 };
 
 Q.Playlist.prototype.bindHandlers = function() {
@@ -61,6 +73,10 @@ Q.Playlist.prototype.bindHandlers = function() {
       title: elem.html()
     });
     Q.Storage.set('playlistIndex', that.playlistIndex);
+    Q.Storage.set('pl_' + newId, {});
+    that.playlists[newId] = {};
+    that.app.ui.attachDrop();
+    elem.attr('data-id', newId);
   });
   
   this.on('UIEditPlaylist', function(id) {
@@ -76,6 +92,8 @@ Q.Playlist.prototype.bindHandlers = function() {
   this.on('UIDeletePlaylist', function(id) {
     that.playlistIndex.splice(id, 1);
     Q.Storage.set('playlistIndex', that.playlistIndex);
+    Q.Storage.clear('pl_' + id);
+    Q.Storage.set('currentPlaylist', -1);
   });
   
   this.on('UIViewPlaylist', function(id) {
@@ -87,5 +105,22 @@ Q.Playlist.prototype.bindHandlers = function() {
         Q.Storage.set('currentPlaylist', id);
       }
     }
+  });
+  
+  this.on('UISongToPlaylist', function(playlistId, songId) {
+    var song = that.getPlaylist(that.currentId)[songId];
+    var target = that.getPlaylist(playlistId);
+    target[songId] = song;
+    Q.Storage.set('pl_' + playlistId, target);
+  });
+  
+  this.on('UIDeleteSong', function(id) {
+    if(that.currentId == -1) {
+      return;
+    }
+  
+    var pl = that.getPlaylist(that.currentId);
+    delete pl[id];
+    Q.Storage.set('pl_' + that.currentId, pl);
   });
 };

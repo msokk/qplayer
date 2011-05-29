@@ -3,8 +3,8 @@
 Q.App = function() {
   this.scKey = "46q8ZDUJD6nbBsaka0DgfA";
   this.initUI();
-  this.playlist = new Q.Playlist(this);
   this.search = new Q.Search(this);
+  this.playlist = new Q.Playlist(this);
   
   //Tests
   this.on('UIVolume', function(volume) {
@@ -19,10 +19,6 @@ Q.App = function() {
     console.log('Playback: %s', state);
   });
   
-  this.on('UISongToPlaylist', function(playlistId, songId) {
-    console.log('Added song: %s to playlist %s', songId, playlistId);
-  });
-
   this.on('UISelectSong', function(id) {
     console.log('Playing song: %s', id);
   });
