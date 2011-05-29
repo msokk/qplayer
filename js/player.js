@@ -1,24 +1,7 @@
 ﻿
-Q.Player = function(backends) {
-  backends = backends || [];
+Q.Player = function() {
   this.backends = {};
   this.currentBackend = '';
-  this.currentPlaylist = [
-    {
-      metadata: {
-        title: 'On The Road',
-        artist: 'WildCookie',
-        length: '',
-        album: ''
-      
-      },
-      resource: {
-        type: 'grooveshark',
-        songId: 29345932 
-      }
-    }
-  ];
-
 };
 Q.inherit(Q.Player, Q.Event);
 

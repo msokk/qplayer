@@ -41,6 +41,7 @@ Q.Search.prototype.renderResult = function() {
                 '<td>'+item.metadata.album+'</td>'+
               '</tr>';
   }
+  $('#tracklist').empty();
   $('#tracklist').append(result);
   this.app.ui.setSearchStatus(false);
 };
@@ -63,7 +64,33 @@ Q.Search.prototype.doSearch = function(value) {
 };
 
 Q.Search.prototype.grooveshark = function(value) {
-  console.log('gs');
+  this.app.ui.setSearchStatus(true);
+  var that = this;
+  var api = this.app.gsApi;
+  if(api.ready) {
+    api.getSearchResults(value, function(data) {
+      if(data) {
+        for(var i = 0; i < data.length; i++) {
+          var id = hex_sha1(JSON.stringify(data[i]));
+            that.searchPlaylist[id] = {
+            id: id,
+            metadata: {
+              title: data[i].Name,
+              artist: data[i].ArtistName,
+              duration: '',
+              album: data[i].AlbumName,
+              coverart: ''
+            },
+            resource: {
+              type: 'grooveshark',
+              songId: data[i].SongID 
+            }
+          };
+        }
+      }
+      that.renderResult();
+    });
+  }
 };
 
 Q.Search.prototype.youtube = function(value) {
@@ -96,6 +123,7 @@ Q.Search.prototype.youtube = function(value) {
 };
 
 Q.Search.prototype.soundcloud = function(value) {
+  this.app.ui.setSearchStatus(true);
   var that = this;
   $.getJSON("http://api.soundcloud.com/tracks.json?filter=streamable&q=" + value + "&consumer_key=" + 
     this.app.scKey, function(data) {

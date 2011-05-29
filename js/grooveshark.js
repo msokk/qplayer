@@ -1,6 +1,6 @@
 /**
  * GrooveShark.JS for Google Chrome (atm)
- * TODO: Documentation, Login, Playlists
+ * TODO: User login, Playlists
  * @constructor
  * @param {Function} ready callback
  */
@@ -38,14 +38,23 @@ var GrooveShark = function(callback) {
  * @param {Function} Callback with ID
  */
 GrooveShark.prototype.getSessionID = function(cb) {
-  $.get('http://' + this.DOMAIN + '/', function() {
-    chrome.cookies.get({
-      name: 'PHPSESSID',
-      url: 'http://grooveshark.com'
-    }, function(cookie){
-      cb && cb(cookie.value);
-    });  
-  });
+  var gsCookie = JSON.parse(window.localStorage.getItem('gsCookie') || '{}');
+  if(gsCookie.timestamp && (new Date().getTime() - gsCookie.timestamp) < (86400 * 6)) {
+    cb && cb(gsCookie.value);
+  } else {
+    $.get('http://' + this.DOMAIN + '/', function() {
+      chrome.cookies.get({
+        name: 'PHPSESSID',
+        url: 'http://grooveshark.com'
+      }, function(cookie){
+        window.localStorage.setItem('gsCookie', JSON.stringify({ 
+          timestamp: new Date().getTime(),
+          value: cookie.value
+        }));
+        cb && cb(cookie.value);
+      });  
+    });
+  }
 };
 
 
