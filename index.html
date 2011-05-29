@@ -1,8 +1,8 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-	<title>qPlayer</title>
+  <meta charset="utf-8">
+  <title>qPlayer</title>
   <link href="http://fonts.googleapis.com/css?family=Ubuntu:300,300italic,regular,italic,500,500italic,bold,bolditalic" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css" />
   <link id="accent" rel="stylesheet" href="css/accents/blue.css" />
@@ -13,21 +13,11 @@
       <div id="sidebar">
         <div id="treeview">
           <ul id="list">
-            <li data-id="0">Playlist</li>
-            <li data-id="1" class="selected">Active Playlist</li>
-            <li data-id="2">Playlist</li>
-            <li data-id="3">Long long long long playlist</li>
-            <li data-id="4">Playlist</li>
-            <li data-id="5">Playlist</li>
-            <li data-id="6">Playlist</li>
-            <li data-id="7">Playlist</li>
-            <li data-id="8">Playlist</li>
-            <li data-id="9">Playlist</li>
           </ul>
           <ul><li class="new">+ New Playlist</li></ul>
         </div>
         <div id="albumart">
-         <object type="application/x-shockwave-flash" id="ytPlayer" data="http://www.youtube.com/apiplayer?enablejsapi=1&amp;version=3&amp;playerapiid=ytPlayer" width="1" height="1">
+         <object type="application/x-shockwave-flash" id="ytPlayer" data="http://www.youtube.com/apiplayer?enablejsapi=1&amp;version=3&amp;playerapiid=ytPlayer" width="200" height="200">
             <param name="allowScriptAccess" value="always"></object>
         </div>
         <div id="song-data">
@@ -52,35 +42,35 @@
             <tr>
               <th></th>
               <th>Title</th>
-              <th>Sync</th>
               <th>Artist</th>
               <th>Length</th>
               <th>Album</th>
+              <th>Sync</th>
             </tr>
             <tbody id="tracklist">
               <tr data-id="12321" class="clicked">
                 <td><span class="icon gs-active"></span></td>
                 <td>Heroine</td>
-                <td>S</td>
                 <td>WildCookie</td>
                 <td>3:55</td>
                 <td>Cookie Dough</td>
+                <td>S</td>
               </tr>
               <tr data-id="12333">
                 <td><span class="icon yt-active"></span></td>
                 <td>Heroine</td>
-                <td>Sync</td>
                 <td>WildCookie</td>
                 <td>3:55</td>
                 <td>Cookie Dough</td>
+                <td>S</td>
               </tr>
               <tr data-id="154645" class="selected">
                 <td><span class="icon sc-active"></span></td>
                 <td>Heroine</td>
-                <td>Sync</td>
                 <td>WildCookie</td>
                 <td>3:55</td>
                 <td>Cookie Dough</td>
+                <td>S</td>
               </tr>
             </tbody>
           </table>
@@ -116,10 +106,6 @@
       <div id="status"><div title="Status"></div></div>
     </div>
   </div>
-  <div id="players">
-    <audio id="nativePlayer1" preload></audio>
-    <audio id="nativePlayer2" preload></audio>
-  </div>
   <div class="settingsContainer">
     Settings - Last.FM etc
     <br><br>
@@ -128,13 +114,19 @@
       <option value="red">Red</option>
       <option value="green">Green</option>
     </select>
+    <br><br>
+    <button id="resetAppBtn">Reset Player</button>
   </div>
   <script src="js/libs/jquery-1.6.1.min.js"></script>
   <script src="js/libs/jquery-ui-drag.min.js"></script>
+  <script src="js/libs/underscore-min.js"></script>
+  <script src="js/libs/underscore.string.min.js"></script>
   <script src="js/libs/sha1-min.js"></script>
   <script src="js/libs/md5-min.js"></script>
   <script src="js/helpers.js"></script>
   <script src="js/ui.js"></script>
+  <script src="js/playlist.js"></script>
+  <script src="js/search.js"></script>
   <script src="js/grooveshark.js"></script>
   <script src="js/player.grooveshark.js"></script>
   <script src="js/player.js"></script>

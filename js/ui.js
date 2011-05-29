@@ -83,6 +83,14 @@ Q.UISettings = function(app) {
   });
   
   $('#accentSelection').change();
+  
+  //Settings flush
+  $('#resetAppBtn').click(function(e) {
+    if(confirm('This clears everything - playlists, songs, accounts! Are you sure?')) {
+      window.localStorage.clear();
+      window.location.href = '';
+    }
+  });
 };
 
 /**
@@ -178,19 +186,30 @@ Q.UIPlaylist = function(app) {
     }
   });
   
-  //Change name
+  //Change name and delete
   $('#treeview #list li').live('dblclick', function(e) {
     
     if($(this).hasClass('clicked')) {
       var oldname = $(this).html();
       var that = this;
-      $(this).html('<input class="editBox" id="editPlaylist" type="text" value="'+oldname+'" /> X');
+      $(this).html('<input class="editBox" id="editPlaylist" type="text" value="'+oldname+'" />');
       $('#editPlaylist').select();
       var editOne = function() {
         if($('#editPlaylist').length != 0 && $('#editPlaylist').val() != oldname) {
-          app.emit('UIEditPlaylist', $(that).data('id'));
+          if($('#editPlaylist').val() == '') {
+            if(confirm('Delete?')) {
+              app.emit('UIDeletePlaylist', $(that).data('id'));
+              $(that).remove();
+            } else {
+              $(that).html(oldname);
+            }
+          } else {
+            $(that).html($('#editPlaylist').val());
+            app.emit('UIEditPlaylist', $(that).data('id'));
+          }
+        } else {
+          $(that).html($('#editPlaylist').val());
         }
-        $(that).html($('#editPlaylist').val());
       };
       
       $('#editPlaylist').blur(editOne);
@@ -240,17 +259,18 @@ Q.UITracklist = function(app) {
       app.emit('UISongToPlaylist', playlistId, songId);
     },
     tolerance: 'pointer',
-    hoverClass: 'addnew'
+    hoverClass: 'addnew',
+    accept: 'tr'
   });
   
   //Click
-  $('#tracklist tr').click(function() {
+  $('#tracklist tr').live('click', function() {
     $('#tracklist tr').removeClass('clicked');
     $(this).addClass('clicked');
   });
   
   //Play song
-  $('#tracklist tr').dblclick(function() {
+  $('#tracklist tr').live('dblclick', function() {
     $('#tracklist tr').removeClass('clicked')
                       .removeClass('selected');
     $(this).addClass('selected').addClass('clicked');
@@ -379,6 +399,26 @@ Q.UISearch = function(app) {
       app.emit('UISearchFilter', { soundcloud: false });
     }
   });
+  
+  var filterMap = app.ui.filterMap = {
+    'soundcloud': 'sc',
+    'youtube': 'yt',
+    'grooveshark': 'gs'
+  };
+  
+  app.ui.setFilters = function(obj) {
+    var keys = Object.keys(obj);
+    for(var i = 0; i < keys.length; i++) {
+      var shrt = filterMap[keys[i]];
+      if(obj[keys[i]]) {
+        $('#'+shrt+'Btn').addClass(shrt+'-active')
+           .removeClass(shrt+'-disabled');
+      } else {
+        $('#'+shrt+'Btn').removeClass(shrt+'-active')
+           .addClass(shrt+'-disabled');
+      }
+    };
+  };
   
   //Search input
   var search = function() {

@@ -1,5 +1,5 @@
 {
-  "name": "?Player",
+  "name": "qPlayer",
   "description": "Music Player (GrooveShark, YouTube, SoundCloud & custom server)",
   "version": "0.1",
   "icons": {
@@ -10,7 +10,8 @@
   "launch_path": "/",
   "app": {
     "launch": {
-      "web_url": "http://qp.sokk.ee"
+      //"web_url": "http://qp.sokk.ee",
+      "local_path": "index.html"
     }
   },
   "permissions": [

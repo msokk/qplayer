@@ -20,10 +20,6 @@ body {
   color: #EEEEEE;
 }
 
-#players {
-  position: fixed;
-  height: 1px;
-}
 
 #container {
   min-height: 100%;
@@ -73,6 +69,7 @@ body {
   background-color: hsl(0, 0%, 28%);
   border-right: solid 1px hsl(0, 0%, 16%);
   border-bottom: solid 1px hsl(0, 0%, 16%);
+  cursor: default;
 }
 
 #treeview {
@@ -272,7 +269,6 @@ input#editPlaylist {
 #content-main tr  td:first-child span { vertical-align: top; }
 #content-main tr  td:first-child { padding: 0; width: 24px;}
 
-
 #content-main th {
   color: black;
   text-shadow: hsl(0, 0%, 79%) 0px 1px 0px;
@@ -306,6 +302,7 @@ input#editPlaylist {
 }
 
 #control-bar {
+  cursor: default;
   border-top: solid 1px hsl(0, 0%, 47%);
   line-height: 40px;
   height: 40px;
@@ -426,7 +423,6 @@ input#editPlaylist {
 }
 #shuffle:hover, #shuffle.active {
   background: url(../img/icons/shuffle2.png) no-repeat center center;
-
 }
 
 #repeat {
@@ -439,7 +435,7 @@ input#editPlaylist {
 }
 
 #shuffle:hover, #repeat:hover {
-  opacity: 0.4;
+  opacity: 0.3;
 }
 #shuffle.active, #repeat.active {
   -webkit-transition: opacity .5s linear;
@@ -500,5 +496,5 @@ input#editPlaylist {
 
 
 #ytPlayer {
-  
+  visibility: hidden;
 }

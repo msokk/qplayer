@@ -1,10 +1,10 @@
 ﻿$(function() { window.qp = new Q.App(); });
 
 Q.App = function() {
-  this.ui = {};
-  Q.Audio = new audioElem('nativePlayer');
-
+  this.scKey = "46q8ZDUJD6nbBsaka0DgfA";
   this.initUI();
+  this.playlist = new Q.Playlist(this);
+  this.search = new Q.Search(this);
   
   //Tests
   this.on('UIVolume', function(volume) {
@@ -19,38 +19,18 @@ Q.App = function() {
     console.log('Playback: %s', state);
   });
   
-  this.on('UINewPlaylist', function(elem) {
-    console.log('New playlist: %s', elem.html());
-  });
-  
-  this.on('UIViewPlaylist', function(id) {
-    console.log('Viewing playlist: %s', id);
-  });
-  
-  this.on('UIEditPlaylist', function(id) {
-    console.log('Edited playlist: %s', id);
-  });
-  
   this.on('UISongToPlaylist', function(playlistId, songId) {
     console.log('Added song: %s to playlist %s', songId, playlistId);
   });
-  
-  this.on('UISearchValue', function(value) {
-    console.log('Searching: %s', value);
-  });
-  
-  this.on('UISearchFilter', function(obj) {
-    console.log('Filterstate: %s', JSON.stringify(obj));
-  });
-  
+
   this.on('UISelectSong', function(id) {
     console.log('Playing song: %s', id);
   });
-  
 };
 Q.inherit(Q.App, Q.Event);
 
 Q.App.prototype.initUI = function() {
+  this.ui = {};
   Q.UISettings(this); //Settings btn, tab
   Q.UIVolume(this); //Volume bar
   Q.UISeekbar(this); //Seek bar
