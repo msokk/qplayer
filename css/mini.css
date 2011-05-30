@@ -1,16 +1,21 @@
 #mini-controls {
   height: 70px;
   border-bottom: solid 1px #292929;
-  background: -webkit-gradient(linear,left top,left bottom,color-stop(0, #656565),color-stop(1, #404040));
+  background: -webkit-linear-gradient(#656565, #404040);
+  background: -moz-linear-gradient(#656565, #404040);
+  background: -ms-linear-gradient(#656565, #404040);
   display: -webkit-box;
-  -webkit-box-orient: horizontal;
   display: -moz-box;
+  display: -ms-box;
+  -webkit-box-orient: horizontal;
   -moz-box-orient: horizontal;
+  -ms-box-orient: horizontal;
 }
 
 #mini-playlist  {
   -webkit-box-flex: 1;
   -moz-box-flex: 1;
+  -ms-box-flex: 1;
   width: 100%;
 }
 
@@ -27,8 +32,9 @@
 #mini-playlist li.selected {
   font-weight: bold;
   border-top: solid 1px #b3defe;
-  background: -webkit-linear-gradient(top, #65c5ef, #0292d1);
-  background: -moz-linear-gradient(top, #65c5ef, #0292d1);
+  background: -webkit-linear-gradient(#65c5ef, #0292d1);
+  background: -moz-linear-gradient(#65c5ef, #0292d1);
+  background: -ms-linear-gradient(#65c5ef, #0292d1);
   color: hsl(0, 0%, 22%);
   text-shadow: none;
 }
