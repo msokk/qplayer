@@ -5,18 +5,21 @@
   border-top: solid 1px #c1f834;
   background: url('../../img/icons/note2.png') no-repeat 4px center,-webkit-linear-gradient(#c1f834, #62cc35);
   background: url('../../img/icons/note2.png') no-repeat 4px center,-moz-linear-gradient(#c1f834, #62cc35);
+  background: url('../../img/icons/note2.png') no-repeat 4px center,-ms-linear-gradient(#c1f834, #62cc35);
 }
 
 /*Track*/
 #content-main tr.selected {
   background: -webkit-linear-gradient(#c1f834, #62cc35);
   background: -moz-linear-gradient(#c1f834, #62cc35);
+  background: -ms-linear-gradient(#c1f834, #62cc35);
 }
 
 /*Seekbar*/
 .track .done {
   background: -webkit-linear-gradient(top, #c1f834, #62cc35);
   background: -moz-linear-gradient(top, #c1f834, #62cc35);
+  background: -ms-linear-gradient(top, #c1f834, #62cc35);
 }
 
 /*Searchbox*/
@@ -40,4 +43,5 @@ button:hover {
   border-top: solid 1px #c1f834;
   background: -webkit-linear-gradient(top, #c1f834, #62cc35);
   background: -moz-linear-gradient(top, #c1f834, #62cc35);
+  background: -ms-linear-gradient(top, #c1f834, #62cc35);
 }

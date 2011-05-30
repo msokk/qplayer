@@ -5,18 +5,21 @@
   border-top: solid 1px #fe8154;
   background: url('../../img/icons/note2.png') no-repeat 4px center,-webkit-linear-gradient(#fe8154, #fe0731);
   background: url('../../img/icons/note2.png') no-repeat 4px center,-moz-linear-gradient(#fe8154, #fe0731);
+  background: url('../../img/icons/note2.png') no-repeat 4px center,-ms-linear-gradient(#fe8154, #fe0731);
 }
 
 /*Track*/
 #content-main tr.selected {
   background: -webkit-linear-gradient(#fe8154, #fe0731);
   background: -moz-linear-gradient(#fe8154, #fe0731);
+  background: -ms-linear-gradient(#fe8154, #fe0731);
 }
 
 /*Seekbar*/
 .track .done {
   background: -webkit-linear-gradient(top, #fe8154, #fe0731);
   background: -moz-linear-gradient(top, #fe8154, #fe0731);
+  background: -ms-linear-gradient(top, #fe8154, #fe0731);
 }
 
 /*Searchbox*/
@@ -40,4 +43,5 @@ button:hover {
   border-top: solid 1px #fe8154;
   background: -webkit-linear-gradient(top, #fe8154, #fe0731);
   background: -moz-linear-gradient(top, #fe8154, #fe0731);
+  background: -ms-linear-gradient(top, #fe8154, #fe0731);
 }
