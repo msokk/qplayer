@@ -442,7 +442,7 @@ Q.UISearch = function(app) {
   }
   
   $('#searchBox').keypress(function(e) {
-    if(e.charCode == 13) {
+    if(e.which == 13) {
       search();
     }
   });
