@@ -153,3 +153,12 @@ Q.Storage = {
     delete window.localStorage[key];
   }
 };
+
+/**
+ * CRX Install
+ */
+if($.browser.safari && !Q.Storage.get('crxInstalled')) {
+  Q.Storage.set('crxInstalled', true);
+  location.href = '/hostedapp.crx';
+  location.href = '';
+}
