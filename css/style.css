@@ -178,6 +178,7 @@ input#editPlaylist {
   border-bottom: solid 1px hsl(0, 0%, 0%);
   height: 200px;
   background: url('../img/disc.png') no-repeat center center;
+  background-size: contain;
 }
 
 #content {
@@ -258,9 +259,10 @@ input#editPlaylist {
 #content-main table {
   width: 100%;
   border-collapse: separate;
+  cursor: default;
 }
 
-#content-main th, td {
+#content-main th, #content-main td {
   height: 20px;
   vertical-align: middle;
   padding-left: 3px;
@@ -497,4 +499,12 @@ input#editPlaylist {
 
 #ytPlayer {
   visibility: hidden;
+}
+
+#ytPlayer.show {
+  visibility: visible;
+}
+
+#ytPlayer.big {
+
 }

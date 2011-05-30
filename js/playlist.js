@@ -1,21 +1,24 @@
-﻿
+﻿/**
+ * qPlayer Playlist manager
+ * @param {Q.App} qPlayer
+ */
 Q.Playlist = function(app) {
   this.app = app;
+  
   this.playlistIndex = Q.Storage.get('playlistIndex') || [];
+  this.currentId = (Q.Storage.get('currentPlaylist') != undefined) ? Q.Storage.get('currentPlaylist') : -1;
+  
   this.playlists = {};
   this.loadPlaylists();
   
-  this.currentId = (Q.Storage.get('currentPlaylist') != undefined) ? Q.Storage.get('currentPlaylist') : -1;
-  if(this.currentId != -1) {
-    this.renderPlaylist(this.currentId);
-  }
-  
   this.renderIndex();
-   
+  this.renderPlaylist(this.currentId);
   this.bindHandlers();
 };
-Q.inherit(Q.Playlist, Q.Event);
 
+/**
+ * Restore playlists
+ */
 Q.Playlist.prototype.loadPlaylists = function() {
   for(var i = 0; i < this.playlistIndex.length; i++) {
     this.playlists[this.playlistIndex[i].id] = Q.Storage.get('pl_' 
@@ -23,6 +26,11 @@ Q.Playlist.prototype.loadPlaylists = function() {
   }
 };
 
+/**
+ * Get Playlist by Id
+ * @param {Number} Id
+ * @return {Object} Playlist
+ */
 Q.Playlist.prototype.getPlaylist = function(id) {
   if(id == -1) {
     return this.app.search.searchPlaylist;
@@ -30,18 +38,33 @@ Q.Playlist.prototype.getPlaylist = function(id) {
   return this.playlists[id];
 };
 
+/**
+ * Get Current Playlist
+ * @return {Object} Current playlist
+ */
+Q.Playlist.prototype.getCurrentPlaylist = function() {
+  return this.getPlaylist(this.currentId);
+};
+
+/**
+ * Render playlist index
+ */
 Q.Playlist.prototype.renderIndex = function() {
   $('#treeview #list').empty();
+  
   for(var i = 0; i < this.playlistIndex.length; i++) {
     var item = this.playlistIndex[i];
     $('<li data-id="'+item.id+'">'+item.title+'</li>').appendTo('#treeview #list');
   }
+  
   $('li[data-id='+this.currentId+']').addClass('clicked');
-  this.renderPlaylist(this.currentId);
   this.app.ui.attachDrop();
 };
 
 Q.Playlist.prototype.renderPlaylist = function(id) {
+  if(this.currentId == -1) {
+    return;
+  }
   var result = '';
   var pl = this.getPlaylist(id);
   var keys = Object.keys(pl);
@@ -79,7 +102,7 @@ Q.Playlist.prototype.bindHandlers = function() {
     elem.attr('data-id', newId);
   });
   
-  this.on('UIEditPlaylist', function(id) {
+  this.app.on('UIEditPlaylist', function(id) {
     for(var i = 0; i < that.playlistIndex.length; i++) {
       var item = that.playlistIndex[i];
       if(item.id == id) {
@@ -89,32 +112,32 @@ Q.Playlist.prototype.bindHandlers = function() {
     }
   });
   
-  this.on('UIDeletePlaylist', function(id) {
+  this.app.on('UIDeletePlaylist', function(id) {
     that.playlistIndex.splice(id, 1);
     Q.Storage.set('playlistIndex', that.playlistIndex);
     Q.Storage.clear('pl_' + id);
     Q.Storage.set('currentPlaylist', -1);
   });
   
-  this.on('UIViewPlaylist', function(id) {
+  this.app.on('UIViewPlaylist', function(id) {
     for(var i = 0; i < that.playlistIndex.length; i++) {
       var item = that.playlistIndex[i];
       if(item.id == id) {
-        that.renderPlaylist(id);
         that.currentId = id;
+        that.renderPlaylist(id);
         Q.Storage.set('currentPlaylist', id);
       }
     }
   });
   
-  this.on('UISongToPlaylist', function(playlistId, songId) {
+  this.app.on('UISongToPlaylist', function(playlistId, songId) {
     var song = that.getPlaylist(that.currentId)[songId];
     var target = that.getPlaylist(playlistId);
     target[songId] = song;
     Q.Storage.set('pl_' + playlistId, target);
   });
   
-  this.on('UIDeleteSong', function(id) {
+  this.app.on('UIDeleteSong', function(id) {
     if(that.currentId == -1) {
       return;
     }

@@ -6,7 +6,7 @@
   this.lastSearch = Q.Storage.get('lastsearch') || '';
   $('#searchBox').val(this.lastSearch);
   
-  this.searchPlaylist = [];
+  this.searchPlaylist = {};
   
   app.ui.setFilters(this.filterstate);
   
@@ -24,6 +24,10 @@ Q.Search.prototype.bindHandlers = function() {
     var key = Object.keys(obj)[0];
     that.filterstate[key] = obj[key];
     Q.Storage.set('filterstate', that.filterstate);
+  });
+  
+  $('#searchBox').blur(function() {
+    Q.Storage.set('lastsearch', $(this).val());
   });
 };
 
@@ -52,7 +56,7 @@ Q.Search.prototype.doSearch = function(value) {
   this.app.playlist.currentId = -1;
   this.app.ui.activatePlaylist(-1);
   $('#list li').removeClass('clicked');
-  this.searchPlaylist = [];
+  this.searchPlaylist = {};
   
   $('#tracklist').empty();
   var filters = Object.keys(this.filterstate);
@@ -70,16 +74,19 @@ Q.Search.prototype.grooveshark = function(value) {
   if(api.ready) {
     api.getSearchResults(value, function(data) {
       if(data) {
-        for(var i = 0; i < data.length; i++) {
+        var limit = (data.length >= 25) ? 25: data.length;
+        for(var i = 0; i < limit; i++) {
           var id = hex_sha1(JSON.stringify(data[i]));
-            that.searchPlaylist[id] = {
+          var cover = (data[i].CoverArtFilename)? 'http://beta.grooveshark.com/static/amazonart/m' 
+              + data[i].CoverArtFilename: '';
+          that.searchPlaylist[id] = {
             id: id,
             metadata: {
               title: data[i].Name,
               artist: data[i].ArtistName,
               duration: '',
               album: data[i].AlbumName,
-              coverart: ''
+              coverart: cover
             },
             resource: {
               type: 'grooveshark',
@@ -125,7 +132,7 @@ Q.Search.prototype.youtube = function(value) {
 Q.Search.prototype.soundcloud = function(value) {
   this.app.ui.setSearchStatus(true);
   var that = this;
-  $.getJSON("http://api.soundcloud.com/tracks.json?filter=streamable&q=" + value + "&consumer_key=" + 
+  $.getJSON('http://api.soundcloud.com/tracks.json?filter=streamable&q=' + value + '&consumer_key=' + 
     this.app.scKey, function(data) {
       if(data) {
         for(var i = 0; i < data.length; i++) {

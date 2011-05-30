@@ -299,14 +299,18 @@ Q.UITracklist = function(app) {
       
       //Up
       if(e.which == 38 && activeElem.prev().length != 0) {
+        e.preventDefault();
         activeElem.removeClass('clicked');
         activeElem.prev().addClass('clicked');
+        $('#content-main').scrollTop(activeElem.position().top);
       }
       
       //Down
       if(e.which == 40 && activeElem.next().length != 0) {
+        e.preventDefault();
         activeElem.removeClass('clicked');
         activeElem.next().addClass('clicked');
+        $('#content-main').scrollTop(activeElem.position().top);
       }
       
       //Delete
@@ -475,6 +479,20 @@ Q.UIGeneric = function(app) {
       $('#status').addClass('ready');
     } else {
       $('#status').removeClass('ready');
+    }
+  };
+  
+  app.ui.setMetadata = function(metadata) {
+    console.log(metadata);
+    if(metadata.title.indexOf(metadata.artist) == -1) {
+      metadata.title = metadata.artist + ' - ' + metadata.title;
+    }    
+    $('#tracktitle').html(metadata.title);
+    $('#albumtitle').html(metadata.album);
+    if(metadata.coverart) {
+      $('#albumart').css('background', 'url('+metadata.coverart+') no-repeat center center');
+    } else {
+      $('#albumart').css('background', 'url(../img/disc.png) no-repeat center center');
     }
   };
 };
