@@ -7,13 +7,32 @@
   background: -webkit-linear-gradient(top, #2f2f2f, #393939);
   background: -moz-linear-gradient(top, #2f2f2f, #393939);
   background: -ms-linear-gradient(top, #2f2f2f, #393939);
+  position: relative;
+  z-index: 1;
+}
+
+.progress {
+  background: none;
 }
 
 .track .done {
+  width: 0%;
   border: none;
   background: -webkit-linear-gradient(top, #65C5EF, #0292D1);
   background: -moz-linear-gradient(top, #65C5EF, #0292D1);
   background: -ms-linear-gradient(top, #65C5EF, #0292D1);
+  z-index: 2;
+}
+
+.track .downloaded {
+  width: 100%;
+  position: absolute;
+  top: 0px;
+  border: none;
+  background: -webkit-linear-gradient(top, #2f2f2f, #393939);
+  background: -moz-linear-gradient(top, #2f2f2f, #393939);
+  background: -ms-linear-gradient(top, #2f2f2f, #393939);
+  z-index: 1;
 }
 
 .track .thumb {

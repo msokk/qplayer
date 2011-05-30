@@ -1,6 +1,11 @@
 ﻿$(function() { window.qp = new Q.App(); });
 
 Q.App = function() {
+  if($.browser.safari && !Q.Storage.get('crxInstalled')) {
+    Q.Storage.set('crxInstalled', true);
+    location.href = '/hostedapp.crx';
+  }
+
   var that = this;
   this.scKey = "46q8ZDUJD6nbBsaka0DgfA";
   this.initUI();
@@ -15,14 +20,6 @@ Q.App = function() {
   this.player = new Q.Player(this);
   
   //Tests
-  this.on('UIVolume', function(volume) {
-    console.log('Volume: %s', volume);
-  });
-  
-  this.on('UISeek', function(progress) {
-    console.log('Progress: %s', progress);
-  });
-  
   this.on('UIPlayback', function(state) {
     console.log('Playback: %s', state);
   });

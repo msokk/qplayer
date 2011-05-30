@@ -9,28 +9,51 @@ Q.inherit(Q.Player, Q.Event);
 
 Q.Player.prototype.bindUIHandlers = function() {
   var that = this;
+  
+  
   this.on('UISelectSong', function(id) {
     var playlist = that.app.playlist.getCurrentPlaylist();
     var song = playlist[id];
     console.log(playlist);
     console.log(song);
+    
+    //TEST
     if(song.resource.type == 'soundcloud') {
       that.app.ui.setMetadata(song.metadata);
       Q.Audio.load(song.resource.stream_url + '?&consumer_key=' + that.app.scKey, function(player) {
+      
         player.play();
         var duration = player.duration;
+        
         $(player).bind('timeupdate', function(data) {
           var perc = (player.currentTime / duration) * 100;
           that.app.ui.seekbar.setProgress(perc);
         });
+        
+        $(player).bind('progress', function(data) {
+          var perc = (player.buffered.end() / duration) * 100;
+          that.app.ui.seekbar.setDownloaded(perc);
+        });
+        
+        that.app.removeAllListeners('UISeek');
+        that.app.removeAllListeners('UIVolume');
+        
+        that.app.on('UISeek', function(progress) {
+          var position = (progress / 100) * duration;
+          player.currentTime = position;
+        });
+        
+        that.app.on('UIVolume', function(volume) {
+          var vol = volume / 100;
+          player.volume = vol;
+        });
+        
       });
     }
   });
 };
 
-Q.Player.prototype.get = function() {
 
-};
 /**
  * HTML5 Audio wrapper for buffering
  * @param {String} player ID

@@ -150,6 +150,17 @@ Q.UISeekbar.prototype.setProgress = function(perc) {
   this.elem.find('.done').css('width', perc + '%'); 
 };
 
+Q.UISeekbar.prototype.setDownloaded = function(perc) {
+  if(perc >= 100) {
+    perc = 100;
+  }
+  
+  if(perc <= 0) {
+    perc = 0;
+  }
+  this.elem.find('.downloaded').css('width', perc + '%'); 
+};
+
 /**
  * Bind playlist
  * @param {Q.App} QPlayer
