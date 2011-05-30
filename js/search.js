@@ -1,26 +1,31 @@
-﻿Q.Search = function(app) {
+﻿/**
+ * qPlayer Search Module
+ * @param {Q.App} qPlayer
+ */
+Q.Search = function(app) {
   this.app = app;
-  this.filterstate = Q.Storage.get('filterstate') || 
-    { grooveshark: true, youtube: true, soundcloud: true };
-    
-  this.lastSearch = Q.Storage.get('lastsearch') || '';
-  $('#searchBox').val(this.lastSearch);
-  
   this.searchPlaylist = {};
   
+  this.filterstate = Q.Storage.get('filterstate') || 
+    { grooveshark: true, youtube: true, soundcloud: true };
   app.ui.setFilters(this.filterstate);
   
-  this.bindHandlers();
-};
-Q.inherit(Q.Search, Q.Event);
+  this.lastSearch = Q.Storage.get('lastsearch') || '';
+  $('#searchBox').val(this.lastSearch);
 
-Q.Search.prototype.bindHandlers = function() {
+  this.bindUIHandlers();
+};
+
+/**
+ * Bind UI Events
+ */
+Q.Search.prototype.bindUIHandlers = function() {
   var that = this;
-  this.on('UISearchValue', function(value) {
+  this.app.on('UISearchValue', function(value) {
     that.doSearch(_.trim(value));
   });
   
-  this.on('UISearchFilter', function(obj) {
+  this.app.on('UISearchFilter', function(obj) {
     var key = Object.keys(obj)[0];
     that.filterstate[key] = obj[key];
     Q.Storage.set('filterstate', that.filterstate);
@@ -31,6 +36,9 @@ Q.Search.prototype.bindHandlers = function() {
   });
 };
 
+/**
+ * Render search result
+ */
 Q.Search.prototype.renderResult = function() {
   var result = '';
   var keys = Object.keys(this.searchPlaylist);
@@ -45,11 +53,16 @@ Q.Search.prototype.renderResult = function() {
                 '<td>'+item.metadata.album+'</td>'+
               '</tr>';
   }
+  
   $('#tracklist').empty();
   $('#tracklist').append(result);
   this.app.ui.setSearchStatus(false);
 };
 
+/**
+ * Make search with active sources
+ * @param {String} query
+ */
 Q.Search.prototype.doSearch = function(value) {
   Q.Storage.set('lastsearch', value);
   Q.Storage.set('currentPlaylist', -1);
@@ -67,6 +80,10 @@ Q.Search.prototype.doSearch = function(value) {
   }
 };
 
+/**
+ * Search from GrooveShark
+ * @param {String} query
+ */
 Q.Search.prototype.grooveshark = function(value) {
   this.app.ui.setSearchStatus(true);
   var that = this;
@@ -100,6 +117,10 @@ Q.Search.prototype.grooveshark = function(value) {
   }
 };
 
+/**
+ * Search from YouTube
+ * @param {String} query
+ */
 Q.Search.prototype.youtube = function(value) {
   this.app.ui.setSearchStatus(true);
   var that = this;
@@ -129,6 +150,10 @@ Q.Search.prototype.youtube = function(value) {
   });
 };
 
+/**
+ * Search from SoundCloud
+ * @param {String} query
+ */
 Q.Search.prototype.soundcloud = function(value) {
   this.app.ui.setSearchStatus(true);
   var that = this;

@@ -1,5 +1,5 @@
 ﻿/**
- * qPlayer Playlist manager
+ * qPlayer Playlist module
  * @param {Q.App} qPlayer
  */
 Q.Playlist = function(app) {
@@ -13,7 +13,7 @@ Q.Playlist = function(app) {
   
   this.renderIndex();
   this.renderPlaylist(this.currentId);
-  this.bindHandlers();
+  this.bindUIHandlers();
 };
 
 /**
@@ -61,6 +61,10 @@ Q.Playlist.prototype.renderIndex = function() {
   this.app.ui.attachDrop();
 };
 
+/**
+ * Render playlist by index
+ * @param {Number} Id
+ */
 Q.Playlist.prototype.renderPlaylist = function(id) {
   if(this.currentId == -1) {
     return;
@@ -80,12 +84,18 @@ Q.Playlist.prototype.renderPlaylist = function(id) {
                 '<td>'+item.metadata.album+'</td>'+
               '</tr>';
   }
+  
   $('#tracklist').empty();
   $('#tracklist').append(result);
 };
 
-Q.Playlist.prototype.bindHandlers = function() {
+/**
+ * Bind UI Events
+ */
+Q.Playlist.prototype.bindUIHandlers = function() {
   var that = this;
+  
+  //Create new playlist
   this.app.on('UINewPlaylist', function(elem) {
     var newId = 0;
     if(that.playlistIndex[that.playlistIndex.length-1]) {
@@ -102,6 +112,7 @@ Q.Playlist.prototype.bindHandlers = function() {
     elem.attr('data-id', newId);
   });
   
+  //Edit a playlist
   this.app.on('UIEditPlaylist', function(id) {
     for(var i = 0; i < that.playlistIndex.length; i++) {
       var item = that.playlistIndex[i];
@@ -112,6 +123,7 @@ Q.Playlist.prototype.bindHandlers = function() {
     }
   });
   
+  //Delete a playlist
   this.app.on('UIDeletePlaylist', function(id) {
     that.playlistIndex.splice(id, 1);
     Q.Storage.set('playlistIndex', that.playlistIndex);
@@ -119,6 +131,7 @@ Q.Playlist.prototype.bindHandlers = function() {
     Q.Storage.set('currentPlaylist', -1);
   });
   
+  //View a playlist
   this.app.on('UIViewPlaylist', function(id) {
     for(var i = 0; i < that.playlistIndex.length; i++) {
       var item = that.playlistIndex[i];
@@ -130,6 +143,7 @@ Q.Playlist.prototype.bindHandlers = function() {
     }
   });
   
+  //Add new song to playlist
   this.app.on('UISongToPlaylist', function(playlistId, songId) {
     var song = that.getPlaylist(that.currentId)[songId];
     var target = that.getPlaylist(playlistId);
@@ -137,11 +151,11 @@ Q.Playlist.prototype.bindHandlers = function() {
     Q.Storage.set('pl_' + playlistId, target);
   });
   
+  //Delete song from playlist
   this.app.on('UIDeleteSong', function(id) {
     if(that.currentId == -1) {
       return;
     }
-  
     var pl = that.getPlaylist(that.currentId);
     delete pl[id];
     Q.Storage.set('pl_' + that.currentId, pl);

@@ -351,8 +351,12 @@ Q.UIPlayback = function(app) {
     
   });
   
-  app.ui.togglePlayButton = function() {
-    $('#playBtn').toggleClass('pause');
+  app.ui.setPlayButton = function(play) {
+    if(play) {
+      $('#playBtn').removeClass('pause');
+    } else {
+      $('#playBtn').addClass('pause');
+    }
   };
   
   //Previous song
@@ -494,11 +498,14 @@ Q.UIGeneric = function(app) {
   };
   
   app.ui.setMetadata = function(metadata) {
-    console.log(metadata);
-    if(metadata.title.indexOf(metadata.artist) == -1) {
+    console.log(metadata); //DEBUG
+    if(metadata.title.indexOf(metadata.artist) == -1 && metadata.album) {
       metadata.title = metadata.artist + ' - ' + metadata.title;
     }    
     $('#tracktitle').html(metadata.title);
+    if(!metadata.album) {
+      metadata.album = metadata.artist;
+    }
     $('#albumtitle').html(metadata.album);
     if(metadata.coverart) {
       $('#albumart').css('background', 'url('+metadata.coverart+') no-repeat center center');
