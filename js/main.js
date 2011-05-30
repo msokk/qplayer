@@ -1,11 +1,13 @@
-﻿$(function() { window.qp = new Q.App(); });
-
-Q.App = function() {
+﻿$(function() { 
   if($.browser.safari && !Q.Storage.get('crxInstalled')) {
     Q.Storage.set('crxInstalled', true);
     location.href = '/hostedapp.crx';
+    location.href = '';
   }
+  window.qp = new Q.App(); 
+});
 
+Q.App = function() {
   var that = this;
   this.scKey = "46q8ZDUJD6nbBsaka0DgfA";
   this.initUI();
