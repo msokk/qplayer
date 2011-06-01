@@ -5,7 +5,7 @@
 Q.Player = function(app) {
   this.app = app;
   this.repeat = false;
-  this.shuffle = true;  
+  this.shuffle = false;  
   this.backends = {
     grooveshark: new Q.gsPlayer(app),
     youtube: new Q.ytPlayer(app),
@@ -55,10 +55,7 @@ Q.Player.prototype.bindUIHandlers = function() {
   this.app.on('UISelectSong', function(id) {
     that.playlist = that.app.playlist.getCurrentPlaylist();
     var song = that.song = that.playlist[id];
-    
-    console.log(that.playlist); //DEBUG
-    console.log(song); //DEBUG
-    
+
     if(that.currentBackend.unload) {
       that.currentBackend.unload();
     }
@@ -70,6 +67,7 @@ Q.Player.prototype.bindUIHandlers = function() {
     that.currentBackend.load(song.resource);
   });
   
+  //Volume change
   this.app.on('UIVolume', function(volume) {
     Q.Storage.set('lastVolume', (volume == 0)? 0: volume / 100);
     if(that.currentBackend.setVolume) {
@@ -77,6 +75,7 @@ Q.Player.prototype.bindUIHandlers = function() {
     }
   });
   
+  //Track seeking
   this.app.on('UISeek', function(progress) {
     if(that.currentBackend.seek) {
       that.currentBackend.seek(progress);
@@ -85,6 +84,7 @@ Q.Player.prototype.bindUIHandlers = function() {
     }
   });
   
+  //Play next song
   this.app.on('PlayNext', function() {
     that.go(1);
   });
@@ -99,9 +99,14 @@ Q.Player.prototype.go = function(offset) {
   for(var i = 0; i < keys.length; i++) {
     if(keys[i] == songId) {
       nextSong = this.playlist[keys[i + offset]];
+      if(this.repeat && !nextSong) {
+        nextSong = this.playlist[keys[0]];
+      }
     }
   }
-  this.app.ui.selectSong(nextSong.id);
+  if(nextSong) {
+    this.app.ui.selectSong(nextSong.id);
+  }
 };
 
 /**
@@ -166,12 +171,9 @@ Q.ytPlayer = function(app) {
   Q.Youtube.ready = function(player) {
     this.player = player;
   };
-  
-  if(Q.Youtube.player) {
-    this.player = Q.Youtube.player;
-    this.player.setVolume(Q.Storage.get('lastVolume')*100 || 50);
-    this.bindEvents();
-  }
+  this.player = Q.Youtube.player;
+  this.player.setVolume(Q.Storage.get('lastVolume')*100 || 50);
+  this.bindEvents();
 };
   
 Q.ytPlayer.prototype.bindEvents = function() {
@@ -243,7 +245,6 @@ Q.ytPlayer.prototype.setSize = function(width, height) {
 Q.ytPlayer.prototype.load = function(resource) {
   $('#ytPlayer').addClass('show');
   $('#ytOverlay').addClass('show');
-  this.startedLoading = false;
   this.player.cueVideoById(resource.videoId, 0, 'highres');
   this.player.playVideo();
   this.app.ui.setPlayButton(false);
