@@ -172,7 +172,7 @@ Q.ytPlayer = function(app) {
     this.player = player;
   };
   this.player = Q.Youtube.player;
-  this.player.setVolume(Q.Storage.get('lastVolume')*100 || 50);
+  //this.player.setVolume(Q.Storage.get('lastVolume')*100 || 50);
   this.bindEvents();
 };
   
