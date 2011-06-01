@@ -57,7 +57,9 @@ Q.Player.prototype.bindUIHandlers = function() {
     console.log(that.playlist); //DEBUG
     console.log(song); //DEBUG
     
+    that.currentBackend.pause();
     that.currentBackend = that.backends[song.resource.type];
+    $('#ytPlayer').removeClass('show');
     that.app.ui.setPlayButton(true);
     that.app.ui.seekbar.setProgress('0');
     that.app.ui.seekbar.setDownloaded('100');
@@ -119,17 +121,15 @@ Q.ytPlayer = function(app) {
   this.player = null;
   
   window.onYouTubePlayerReady = function(playerid) {
-    console.log(playerid);
-    this.player = playerid;
+    this.player = window[playerid];
     this.player.setVolume(Q.Storage.get('lastVolume')*100 || 50);
+    this.bindEvents();
   }
-  this.bindEvents();
 };
   
 Q.ytPlayer.prototype.bindEvents = function() {
   var that = this;
   this.startedLoading = false;
-  this.playing = false;
   that.duration = 0;
   
   $(this.player).bind('onStateChange', function(state) {
@@ -163,18 +163,18 @@ Q.ytPlayer.prototype.bindEvents = function() {
 };
 
 Q.ytPlayer.prototype.load = function(resource) {
+  $('#ytPlayer').addClass('show');
   this.startedLoading = false;
   this.player.cueVideoById(resource.videoId, 0, 'highres');
+  this.player.playVideo();
 };
 
 Q.ytPlayer.prototype.play = function() {
   this.player.playVideo();
-  this.playing = true;
 };
 
 Q.ytPlayer.prototype.pause = function() {
   this.player.pauseVideo();
-  this.playing = false;
 };
 
 Q.ytPlayer.prototype.go = function(offset) {
@@ -208,7 +208,6 @@ Q.scPlayer = function(app) {
 Q.scPlayer.prototype.bindEvents = function() {
   var that = this;
   this.startedLoading = false;
-  this.playing = false;
   that.duration = 0;
   
   Q.Audio.bind('timeupdate', function(data) {
@@ -255,12 +254,10 @@ Q.scPlayer.prototype.load = function(resource) {
 
 Q.scPlayer.prototype.play = function() {
   this.player().play();
-  this.playing = true;
 };
 
 Q.scPlayer.prototype.pause = function() {
   this.player().pause();
-  this.playing = false;
 };
 
 Q.scPlayer.prototype.go = function(offset) {

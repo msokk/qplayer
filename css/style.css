@@ -534,7 +534,7 @@ input#editPlaylist {
 }
 
 #ytPlayer.show {
-  visibility: visible;
+  visibility: initial;
 }
 
 #ytPlayer.big {
