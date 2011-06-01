@@ -29,15 +29,16 @@ Q.inherit(Q.Player, Q.Event);
 Q.Player.prototype.bindUIHandlers = function() {
   var that = this;
   
+  //Playback buttons
   this.app.on('UIPlayback', function(state) {
     switch(state) {
       case 'play': if(that.currentBackend.play) that.currentBackend.play();
         break;
       case 'pause': if(that.currentBackend.pause) that.currentBackend.pause();
         break;
-      case 'prev': if(that.currentBackend.go) that.currentBackend.go(-1);
+      case 'prev': that.go(-1);
         break;
-      case 'next': if(that.currentBackend.go) that.currentBackend.go(1);
+      case 'next': that.go(1);
         break;
       case 'shuffleOn': that.shuffle = true;
         break;
@@ -50,6 +51,7 @@ Q.Player.prototype.bindUIHandlers = function() {
     }
   });
   
+  //Song selection
   this.app.on('UISelectSong', function(id) {
     that.playlist = that.app.playlist.getCurrentPlaylist();
     var song = that.song = that.playlist[id];
@@ -57,9 +59,10 @@ Q.Player.prototype.bindUIHandlers = function() {
     console.log(that.playlist); //DEBUG
     console.log(song); //DEBUG
     
-    that.currentBackend.pause();
+    if(that.currentBackend.unload) {
+      that.currentBackend.unload();
+    }
     that.currentBackend = that.backends[song.resource.type];
-    $('#ytPlayer').removeClass('show');
     that.app.ui.setPlayButton(true);
     that.app.ui.seekbar.setProgress('0');
     that.app.ui.seekbar.setDownloaded('100');
@@ -81,6 +84,24 @@ Q.Player.prototype.bindUIHandlers = function() {
       that.app.ui.seekbar.setProgress('0');
     }
   });
+  
+  this.app.on('PlayNext', function() {
+    that.go(1);
+  });
+};
+
+Q.Player.prototype.go = function(offset) {
+  var keys = Object.keys(this.playlist);
+  var songId = this.song.id;
+  
+  var nextSong = this.song;
+  
+  for(var i = 0; i < keys.length; i++) {
+    if(keys[i] == songId) {
+      nextSong = this.playlist[keys[i + offset]];
+    }
+  }
+  this.app.ui.selectSong(nextSong.id);
 };
 
 /**
@@ -91,8 +112,19 @@ Q.gsPlayer = function(app) {
 
 };
 
-Q.gsPlayer.prototype.load = function() {
+Q.gsPlayer.prototype.bindEvents = function() {
+  var that = this;
 
+};
+
+
+Q.gsPlayer.prototype.load = function(resource) {
+
+};
+
+Q.gsPlayer.prototype.unload = function() {
+
+  this.pause();
 };
 
 Q.gsPlayer.prototype.play = function() {
@@ -103,11 +135,11 @@ Q.gsPlayer.prototype.pause = function() {
 
 };
 
-Q.gsPlayer.prototype.go = function(offset) {
+Q.gsPlayer.prototype.seek = function(time) {
 
 };
 
-Q.gsPlayer.prototype.seek = function(time) {
+Q.gsPlayer.prototype.setVolume = function(volume) {
 
 };
 
@@ -119,9 +151,24 @@ Q.ytPlayer = function(app) {
   this.app = app;
   this.duration = 0;
   this.player = null;
+  this.progressTimer = 0;
+  this.expanded = false;
   
-  window.onYouTubePlayerReady = function(playerid) {
-    this.player = window[playerid];
+  this.sizeMap = {
+    small: [ 320, 240 ],
+    medium: [ 640, 360 ],
+    large: [ 853, 480 ],
+    hd720: [ 853, 480 ],
+    hd1080: [ 853, 480 ],
+    highres: [ 853, 480 ]
+  }
+  
+  Q.Youtube.ready = function(player) {
+    this.player = player;
+  };
+  
+  if(Q.Youtube.player) {
+    this.player = Q.Youtube.player;
     this.player.setVolume(Q.Storage.get('lastVolume')*100 || 50);
     this.bindEvents();
   }
@@ -129,44 +176,84 @@ Q.ytPlayer = function(app) {
   
 Q.ytPlayer.prototype.bindEvents = function() {
   var that = this;
-  this.startedLoading = false;
-  that.duration = 0;
   
-  $(this.player).bind('onStateChange', function(state) {
-    console.log(state);
-
-  });
-  /*
-  Q.Audio.bind('progress', function(data) {
-    if($(this)[0] == that.player() && that.startedLoading) {
-      var perc = (that.player().buffered.end() / that.duration) * 100;
-      that.app.ui.seekbar.setDownloaded(perc);
-    }
-  });
-
-  Q.Audio.bind('loadedmetadata', function() {
-    that.startedLoading = true;
-    that.duration = that.player().duration;
-  });
-
-  Q.Audio.bind('canplay', function() {
-    that.player().play();
-    that.app.ui.setPlayButton(false);
-  });
+  var videoBuffering = function() {
+    that.duration = that.player.getDuration();
+    clearInterval(that.progressTimer);
+    that.progressTimer = setInterval(function() {
+      var perc = (that.player.getCurrentTime() / that.duration) * 100;
+      that.app.ui.seekbar.setProgress(perc);
+      
+      var perc2 = ((that.player.getVideoStartBytes() + that.player.getVideoBytesLoaded()) / that.player.getVideoBytesTotal()) * 100;
+      that.app.ui.seekbar.setDownloaded(perc2);
+    }, 1000);
+  };
   
-  Q.Audio.bind('ended', function() {
+  
+  var videoEnded = function() {
+    clearInterval(that.progressTimer);
     that.app.ui.setPlayButton(true);
     that.app.ui.seekbar.setProgress('0');
     that.app.ui.seekbar.setDownloaded('100');
-    console.log('Finished playing, get next');
-  });*/
+    that.app.emit('PlayNext');
+  };
+  
+  Q.Youtube.onStateChange = function(state) {
+    switch(state) {
+      case 3: videoBuffering();
+        break;
+      case 0: videoEnded();
+        break;
+    }
+  };
+
+  $('#ytOverlay').click(function() {
+    var size = that.sizeMap[that.player.getPlaybackQuality()];
+    if(that.expanded) {
+      that.setSize(200, 200);
+      that.expanded = false;
+    } else {
+      that.setSize(size[0], size[1]);
+      that.expanded = true;
+    }
+  });
+  
+  $('#ytOverlay').dblclick(function() {
+    that.setSize(true);
+    that.expanded = true;
+  });
+};
+
+Q.ytPlayer.prototype.setSize = function(width, height) {
+  if(typeof width == 'boolean') {
+    $('#ytPlayer, #ytOverlay').width($('#content-main').width())
+      .height($('#content-main').height())
+      .css({ 
+        'top': $('#content-main').position().top, 
+        'left': $('#content-main').position().left, 
+        'position': 'fixed'  
+      });
+    return;
+  }
+  $('#ytPlayer, #ytOverlay').width(width)
+    .height(height)
+    .css({ 'top': 200 - height, 'left': 0, 'position': 'absolute' });
 };
 
 Q.ytPlayer.prototype.load = function(resource) {
   $('#ytPlayer').addClass('show');
+  $('#ytOverlay').addClass('show');
   this.startedLoading = false;
   this.player.cueVideoById(resource.videoId, 0, 'highres');
   this.player.playVideo();
+  this.app.ui.setPlayButton(false);
+};
+
+Q.ytPlayer.prototype.unload = function() {
+  clearInterval(this.progressTimer);
+  $('#ytPlayer').removeClass('show');
+  $('#ytOverlay').removeClass('show');
+  this.pause();
 };
 
 Q.ytPlayer.prototype.play = function() {
@@ -177,13 +264,8 @@ Q.ytPlayer.prototype.pause = function() {
   this.player.pauseVideo();
 };
 
-Q.ytPlayer.prototype.go = function(offset) {
-
-};
-
 Q.ytPlayer.prototype.seek = function(time) {
   var position = (time / 100) * this.duration;
-  console.log(position);
   this.player.seekTo(position);
 };
 
@@ -238,7 +320,7 @@ Q.scPlayer.prototype.bindEvents = function() {
     that.app.ui.setPlayButton(true);
     that.app.ui.seekbar.setProgress('0');
     that.app.ui.seekbar.setDownloaded('100');
-    console.log('Finished playing, get next');
+    that.app.emit('PlayNext');
   });
 };
 
@@ -252,16 +334,16 @@ Q.scPlayer.prototype.load = function(resource) {
   Q.Audio.load(url);
 };
 
+Q.scPlayer.prototype.unload = function() {
+  this.pause();
+};
+
 Q.scPlayer.prototype.play = function() {
   this.player().play();
 };
 
 Q.scPlayer.prototype.pause = function() {
   this.player().pause();
-};
-
-Q.scPlayer.prototype.go = function(offset) {
-
 };
 
 Q.scPlayer.prototype.seek = function(time) {

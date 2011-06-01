@@ -295,6 +295,7 @@ Q.UITracklist = function(app) {
     var elem = $('#tracklist tr[data-id='+id+']');
     $('#tracklist tr').removeClass('selected');
     elem.addClass('selected');
+    app.emit('UISelectSong', id);
   };
   
   $(window).keydown(function(e) {
@@ -396,8 +397,8 @@ Q.UIPlayback = function(app) {
  */
 Q.UISearch = function(app) {
   
-  //Grooveshark filter
-  $('#gsBtn').click(function() {
+  //Grooveshark filter -- DISABLED
+  /*$('#gsBtn').click(function() {
     $(this).toggleClass('gs-active');
     $(this).toggleClass('gs-disabled');
     if($(this).hasClass('gs-active')) {
@@ -405,7 +406,7 @@ Q.UISearch = function(app) {
     } else {
       app.emit('UISearchFilter', { grooveshark: false });
     }
-  });
+  });*/
   
   //Youtube filter
   $('#ytBtn').click(function() {

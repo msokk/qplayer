@@ -7,7 +7,7 @@ Q.Search = function(app) {
   this.searchPlaylist = {};
   
   this.filterstate = Q.Storage.get('filterstate') || 
-    { grooveshark: true, youtube: true, soundcloud: true };
+    { grooveshark: false, youtube: true, soundcloud: true }; //DISABLE Grooveshark for now
   app.ui.setFilters(this.filterstate);
   
   this.lastSearch = Q.Storage.get('lastsearch') || '';
