@@ -118,7 +118,9 @@ Q.ytPlayer = function(app) {
   this.duration = 0;
   this.player = null;
   
-  window.onYouTubePlayerReady = function() {
+  window.onYouTubePlayerReady = function(playerid) {
+    console.log(playerid);
+    this.player = playerid;
     this.player.setVolume(Q.Storage.get('lastVolume')*100 || 50);
   }
   this.bindEvents();
@@ -161,7 +163,6 @@ Q.ytPlayer.prototype.bindEvents = function() {
 };
 
 Q.ytPlayer.prototype.load = function(resource) {
-
   this.startedLoading = false;
   this.player.cueVideoById(resource.videoId, 0, 'highres');
 };

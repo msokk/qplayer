@@ -1,23 +1,25 @@
-var gsapi = require('gs');
+var gsapi = require(__dirname +'/gs');
+var express = require('express');
+
 var GrooveShark = gsapi.api;
 var GrooveSharkSong = gsapi.song;
-
 
 var gs = new GrooveShark(function() {
   var that = this;
   console.log('GrooveShark Authenticated!');
+  var app = express.createServer(); 
   
-  
-  var song = null;
-  this.getSearchResults('wildcookie heroine', function(result) {
-    console.log(result)
-    song = new GrooveSharkSong(that, result[0].SongID);
-
-    song.getStreamURL(function(url) {
-      console.log(url);
+  app.get('/gs/search/:query', function(req, res){
+    this.getSearchResults(req.params.query, function(result) {
+      res.send(result);
     });
   });
-  this.getSearchResults('jamie woon', function(result) {
-    console.log(result)
-  });    
+
+  app.get('/gs/streamurl/:songid', function(req, res){
+    new GrooveSharkSong(that, req.params.songid).getStreamURL(function(url) {
+      res.send(url);
+    });
+  });
+  
+  app.listen(3000);
 });
