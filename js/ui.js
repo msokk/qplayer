@@ -314,7 +314,9 @@ Q.UITracklist = function(app) {
         e.preventDefault();
         activeElem.removeClass('clicked');
         activeElem.prev().addClass('clicked');
-        //$('#content-main').scrollTop(activeElem.position().top);
+        if(activeElem.prev().offset().top < $('#searchBar').height()*2) {
+          $('#content-main').scrollTop($('#content-main').scrollTop() - activeElem.height());
+        }
       }
       
       //Down
@@ -322,7 +324,9 @@ Q.UITracklist = function(app) {
         e.preventDefault();
         activeElem.removeClass('clicked');
         activeElem.next().addClass('clicked');
-        //$('#content-main').scrollTop(activeElem.position().top);
+        if(activeElem.next().offset().top > $('#seek-bar').offset().top - activeElem.height()*2) {
+          $('#content-main').scrollTop($('#content-main').scrollTop() + activeElem.height());
+        }
       }
       
       //Delete
@@ -330,6 +334,11 @@ Q.UITracklist = function(app) {
         app.emit('UIDeleteSong', activeElem.data('id'));
         activeElem.next().addClass('clicked');
         activeElem.remove();
+      }
+      
+      //Space
+      if(e.which == 32) {
+        $('#playBtn').click();
       }
     }
   });

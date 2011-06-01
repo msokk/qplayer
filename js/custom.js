@@ -17,13 +17,13 @@ Q.Custom = {
  * Handles ytPlayer events
  */
 Q.Youtube = {
-  player: ytPlayer,
+  player: null,
   hasLoaded: false,
   state: -1,
   
   ready: function() {},
   trigger: function(playerId) {
-    Q.Youtube.player = window[playerId];
+    Q.Youtube.player = document.getElementById(playerId);
     Q.Youtube.ready(Q.Youtube.player);
     Q.Youtube.hasLoaded = true;
   },
@@ -32,6 +32,13 @@ Q.Youtube = {
   triggerState: function(state) {
     Q.Youtube.state = state;
     Q.Youtube.onStateChange(state);
+  },
+  
+  getPlayer: function() {
+    if(Q.Youtube.player) {
+      return Q.Youtube.player;
+    }
+    return document.getElementById('ytPlayer');
   }
 };
 

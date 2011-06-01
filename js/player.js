@@ -171,7 +171,7 @@ Q.ytPlayer = function(app) {
   Q.Youtube.ready = function(player) {
     this.player = player;
   };
-  this.player = Q.Youtube.player;
+  this.player = Q.Youtube.getPlayer();
   //this.player.setVolume(Q.Storage.get('lastVolume')*100 || 50);
   this.bindEvents();
 };
@@ -228,7 +228,9 @@ Q.ytPlayer.prototype.bindEvents = function() {
 
 Q.ytPlayer.prototype.setSize = function(width, height) {
   if(typeof width == 'boolean') {
-    $('#ytPlayer, #ytOverlay').width($('#content-main').width())
+    $('#ytPlayer, #ytOverlay').attr('width', $('#content-main').width())
+      .attr('height', $('#content-main').height())
+      .width($('#content-main').width())
       .height($('#content-main').height())
       .css({ 
         'top': $('#content-main').position().top, 
@@ -237,7 +239,9 @@ Q.ytPlayer.prototype.setSize = function(width, height) {
       });
     return;
   }
-  $('#ytPlayer, #ytOverlay').width(width)
+  $('#ytPlayer, #ytOverlay').attr('width', width)
+    .attr('height', height)
+    .width(width)
     .height(height)
     .css({ 'top': 200 - height, 'left': 0, 'position': 'absolute' });
 };

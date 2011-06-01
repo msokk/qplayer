@@ -1,4 +1,4 @@
-﻿$(function() { 
+﻿$(function() {
   window.qp = new Q.App(); 
 });
 
