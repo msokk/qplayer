@@ -5,13 +5,14 @@
 Q.Player = function(app) {
   this.app = app;
   this.repeat = false;
-  this.shuffle = true;
-  
+  this.shuffle = true;  
   this.backends = {
     grooveshark: new Q.gsPlayer(app),
     youtube: new Q.ytPlayer(app),
     soundcloud: new Q.scPlayer(app)
   };
+  
+  app.ui.volume.setVolume(Q.Storage.get('lastVolume')*100 || 50);
   
   this.currentBackend = {};
   
@@ -30,13 +31,13 @@ Q.Player.prototype.bindUIHandlers = function() {
   
   this.app.on('UIPlayback', function(state) {
     switch(state) {
-      case 'play': that.currentBackend.play();
+      case 'play': if(that.currentBackend.play) that.currentBackend.play();
         break;
-      case 'pause': that.currentBackend.pause();
+      case 'pause': if(that.currentBackend.pause) that.currentBackend.pause();
         break;
-      case 'prev': that.currentBackend.go(-1);
+      case 'prev': if(that.currentBackend.go) that.currentBackend.go(-1);
         break;
-      case 'next': that.currentBackend.go(1);
+      case 'next': if(that.currentBackend.go) that.currentBackend.go(1);
         break;
       case 'shuffleOn': that.shuffle = true;
         break;
@@ -60,16 +61,23 @@ Q.Player.prototype.bindUIHandlers = function() {
     that.app.ui.setPlayButton(true);
     that.app.ui.seekbar.setProgress('0');
     that.app.ui.seekbar.setDownloaded('100');
-    that.currentBackend.load(song.resource);
     that.app.ui.setMetadata(song.metadata);
+    that.currentBackend.load(song.resource);
   });
   
   this.app.on('UIVolume', function(volume) {
-    that.currentBackend.setVolume(volume);
+    Q.Storage.set('lastVolume', (volume == 0)? 0: volume / 100);
+    if(that.currentBackend.setVolume) {
+      that.currentBackend.setVolume(volume);
+    }
   });
   
   this.app.on('UISeek', function(progress) {
-    that.currentBackend.seek(progress);
+    if(that.currentBackend.seek) {
+      that.currentBackend.seek(progress);
+    } else {
+      that.app.ui.seekbar.setProgress('0');
+    }
   });
 };
 
@@ -106,19 +114,66 @@ Q.gsPlayer.prototype.seek = function(time) {
  * @param {Q.App} qPlayer
  */
 Q.ytPlayer = function(app) {
+  this.app = app;
+  this.duration = 0;
+  this.player = null;
+  
+  window.onYouTubePlayerReady = function() {
+    this.player.setVolume(Q.Storage.get('lastVolume')*100 || 50);
+  }
+  this.bindEvents();
+};
+  
+Q.ytPlayer.prototype.bindEvents = function() {
+  var that = this;
+  this.startedLoading = false;
+  this.playing = false;
+  that.duration = 0;
+  
+  $(this.player).bind('onStateChange', function(state) {
+    console.log(state);
 
+  });
+  /*
+  Q.Audio.bind('progress', function(data) {
+    if($(this)[0] == that.player() && that.startedLoading) {
+      var perc = (that.player().buffered.end() / that.duration) * 100;
+      that.app.ui.seekbar.setDownloaded(perc);
+    }
+  });
+
+  Q.Audio.bind('loadedmetadata', function() {
+    that.startedLoading = true;
+    that.duration = that.player().duration;
+  });
+
+  Q.Audio.bind('canplay', function() {
+    that.player().play();
+    that.app.ui.setPlayButton(false);
+  });
+  
+  Q.Audio.bind('ended', function() {
+    that.app.ui.setPlayButton(true);
+    that.app.ui.seekbar.setProgress('0');
+    that.app.ui.seekbar.setDownloaded('100');
+    console.log('Finished playing, get next');
+  });*/
 };
 
-Q.ytPlayer.prototype.load = function() {
+Q.ytPlayer.prototype.load = function(resource) {
 
+  this.startedLoading = false;
+  this.player.cueVideoById(resource.videoId, 0, 'highres');
 };
 
 Q.ytPlayer.prototype.play = function() {
-
+  this.player.playVideo();
+  this.playing = true;
 };
 
 Q.ytPlayer.prototype.pause = function() {
-
+  this.player.pauseVideo();
+  this.playing = false;
 };
 
 Q.ytPlayer.prototype.go = function(offset) {
@@ -126,7 +181,13 @@ Q.ytPlayer.prototype.go = function(offset) {
 };
 
 Q.ytPlayer.prototype.seek = function(time) {
+  var position = (time / 100) * this.duration;
+  console.log(position);
+  this.player.seekTo(position);
+};
 
+Q.ytPlayer.prototype.setVolume = function(volume) {
+  this.player.setVolume(volume);
 };
 
 /**
@@ -136,6 +197,9 @@ Q.ytPlayer.prototype.seek = function(time) {
 Q.scPlayer = function(app) {
   this.app = app;
   this.duration = 0;
+  
+  Q.Audio.player1[0].volume = Q.Storage.get('lastVolume') || 0.5;
+  Q.Audio.player2[0].volume = Q.Storage.get('lastVolume') || 0.5;
   
   this.bindEvents();
 };

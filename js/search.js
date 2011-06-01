@@ -87,34 +87,32 @@ Q.Search.prototype.doSearch = function(value) {
 Q.Search.prototype.grooveshark = function(value) {
   this.app.ui.setSearchStatus(true);
   var that = this;
-  var api = this.app.gsApi;
-  if(api.ready) {
-    api.getSearchResults(value, function(data) {
-      if(data) {
-        var limit = (data.length >= 25) ? 25: data.length;
-        for(var i = 0; i < limit; i++) {
-          var id = hex_sha1(JSON.stringify(data[i]));
-          var cover = (data[i].CoverArtFilename)? 'http://beta.grooveshark.com/static/amazonart/m' 
-              + data[i].CoverArtFilename: '';
-          that.searchPlaylist[id] = {
-            id: id,
-            metadata: {
-              title: data[i].Name,
-              artist: data[i].ArtistName,
-              duration: '',
-              album: data[i].AlbumName,
-              coverart: cover
-            },
-            resource: {
-              type: 'grooveshark',
-              songId: data[i].SongID 
-            }
-          };
-        }
+  var api = Q.Custom.gs;
+  api.getSearchResults(value, function(data) {
+    if(data) {
+      var limit = (data.length >= 25) ? 25: data.length;
+      for(var i = 0; i < limit; i++) {
+        var id = hex_sha1(JSON.stringify(data[i]));
+        var cover = (data[i].CoverArtFilename)? 'http://beta.grooveshark.com/static/amazonart/m' 
+            + data[i].CoverArtFilename: '';
+        that.searchPlaylist[id] = {
+          id: id,
+          metadata: {
+            title: data[i].Name,
+            artist: data[i].ArtistName,
+            duration: '',
+            album: data[i].AlbumName,
+            coverart: cover
+          },
+          resource: {
+            type: 'grooveshark',
+            songId: data[i].SongID 
+          }
+        };
       }
-      that.renderResult();
-    });
-  }
+    }
+    that.renderResult();
+  });
 };
 
 /**

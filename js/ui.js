@@ -313,7 +313,7 @@ Q.UITracklist = function(app) {
         e.preventDefault();
         activeElem.removeClass('clicked');
         activeElem.prev().addClass('clicked');
-        $('#content-main').scrollTop(activeElem.position().top);
+        //$('#content-main').scrollTop(activeElem.position().top);
       }
       
       //Down
@@ -321,7 +321,7 @@ Q.UITracklist = function(app) {
         e.preventDefault();
         activeElem.removeClass('clicked');
         activeElem.next().addClass('clicked');
-        $('#content-main').scrollTop(activeElem.position().top);
+        //$('#content-main').scrollTop(activeElem.position().top);
       }
       
       //Delete

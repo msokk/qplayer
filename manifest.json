@@ -1,5 +1,5 @@
 {
-  "name": "qPlayer (DEV)",
+  "name": "qPlayer",
   "description": "Music Player (GrooveShark, YouTube, SoundCloud & custom server)",
   "version": "0.1",
   "icons": {
@@ -17,6 +17,7 @@
     "notifications",
     "unlimitedStorage",
     "cookies",
-    "http://*.grooveshark.com/"
+    "http://*.grooveshark.com/",
+    "http://*.youtube.com/"
   ]
 }
