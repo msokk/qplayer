@@ -13,7 +13,7 @@ Q.UIVolume = function(app) {
   this.elem = $('#volume-bar > .track:first-child');
   
   var volumeDrag = function(e) {
-    var offsetX = e.screenX - that.elem.position().left;
+    var offsetX = e.pageX - that.elem.position().left;
     var perc = Math.ceil(((offsetX+5) / that.elem.width()) * 100);
       
     if(perc >= 100) {
@@ -107,7 +107,7 @@ Q.UISeekbar = function(app) {
   this.elem = $('#seek-bar > .track:first-child');
   
   var seekDrag = function(e) {
-    var offsetX = e.screenX - that.elem.position().left;
+    var offsetX = e.pageX - that.elem.position().left;
     var perc = Math.round( ( (offsetX+5) / that.elem.width()) * 100000)/1000;
     if(perc >= 100) {
       perc = 100;
