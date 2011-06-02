@@ -5,6 +5,7 @@
   border-bottom: solid 1px hsl(0, 0%, 35%);
   border-radius: 10px;
   background: -webkit-linear-gradient(top, #2f2f2f, #393939);
+  background: -webkit-gradient(linear,left top,left bottom,color-stop(0, #2f2f2f),color-stop(1, #393939));
   background: -moz-linear-gradient(top, #2f2f2f, #393939);
   background: -ms-linear-gradient(top, #2f2f2f, #393939);
   position: relative;
@@ -19,6 +20,7 @@
   width: 0%;
   border: none;
   background: -webkit-linear-gradient(top, #65C5EF, #0292D1);
+  background: -webkit-gradient(linear,left top,left bottom,color-stop(0, #65C5EF),color-stop(1, #0292D1));
   background: -moz-linear-gradient(top, #65C5EF, #0292D1);
   background: -ms-linear-gradient(top, #65C5EF, #0292D1);
   z-index: 2;
@@ -30,6 +32,7 @@
   top: 0px;
   border: none;
   background: -webkit-linear-gradient(top, #2f2f2f, #393939);
+  background: -webkit-gradient(linear,left top,left bottom,color-stop(0, #2f2f2f),color-stop(1, #393939));
   background: -moz-linear-gradient(top, #2f2f2f, #393939);
   background: -ms-linear-gradient(top, #2f2f2f, #393939);
   z-index: 1;
@@ -43,6 +46,7 @@
   margin: -1.5px -1px 0 0;
   border: none;
   background: -webkit-radial-gradient(45% 45%, circle cover, rgba(255,255,255,0) 43%, rgba(255,255,255, .5)), -webkit-linear-gradient(#999, #222);
+  background: -webkit-gradient(radial, 5 5, 3, 5 5, 10, from(rgba(255,255,255,0)), to(rgba(255,255,255, .5))), -webkit-gradient(linear, 0% 0%, 0% 100%, from(#999), to(#222));
   background: -moz-radial-gradient(45% 45%, circle cover, rgba(255,255,255,0) 43%, rgba(255,255,255, .5)), -moz-linear-gradient(#999, #222);
   background: -ms-radial-gradient(45% 45%, circle cover, rgba(255,255,255,0) 43%, rgba(255,255,255, .5)), -ms-linear-gradient(#999, #222);
   box-shadow: 0 1px 4px rgba(0,0,0, 0.7);
