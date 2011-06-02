@@ -11,12 +11,15 @@ Q.App = function() {
   var that = this;
   this.scKey = "46q8ZDUJD6nbBsaka0DgfA";
   this.initUI();
+  this.gsApi = new GrooveShark(function() {
+    that.gsApi.ready = true;
+    that.ui.setStatus(true);
+  });
 
   this.search = new Q.Search(this);
   this.playlist = new Q.Playlist(this);
   this.player = new Q.Player(this);
   
-  this.ui.setStatus(true);
 };
 Q.inherit(Q.App, Q.Event);
 
@@ -33,4 +36,5 @@ Q.App.prototype.initUI = function() {
   Q.UITracklist(this); //Playlist tracks
   Q.UIPlayback(this); //Playback buttons, shuffle, etc.
   Q.UISearch(this); //Search bar
+  Q.UIKeyboard(this); //Keyboard shortcuts
 };

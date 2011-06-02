@@ -52,8 +52,11 @@ Q.Player.prototype.bindUIHandlers = function() {
   });
   
   //Song selection
-  this.app.on('UISelectSong', function(id) {
-    that.playlist = that.app.playlist.getCurrentPlaylist();
+  this.app.on('UISelectSong', function(id, fromCode) {
+    if(!fromCode) {
+      that.playlist = that.app.playlist.getCurrentPlaylist();
+      that.app.ui.activatePlaylist(that.app.playlist.currentId);
+    }
     var song = that.song = that.playlist[id];
 
     if(that.currentBackend.unload) {
@@ -63,7 +66,7 @@ Q.Player.prototype.bindUIHandlers = function() {
     that.app.ui.setPlayButton(true);
     that.app.ui.seekbar.setProgress('0');
     that.app.ui.seekbar.setDownloaded('100');
-    that.app.ui.setMetadata(song.metadata);
+    that.app.ui.setMetadata(song.metadata, song.resource.type);
     that.currentBackend.load(song.resource);
   });
   
@@ -114,17 +117,63 @@ Q.Player.prototype.go = function(offset) {
  * @param {Q.App} qPlayer
  */
 Q.gsPlayer = function(app) {
-
+  this.app = app;
+  Q.Audio.player1[0].volume = Q.Storage.get('lastVolume') || 0.5;
+  Q.Audio.player2[0].volume = Q.Storage.get('lastVolume') || 0.5;
+  this.duration = 0;
+  
+  this.bindEvents();
 };
 
 Q.gsPlayer.prototype.bindEvents = function() {
   var that = this;
+  this.startedLoading = false;
+  that.duration = 0;
+  
+  Q.Audio.bind('timeupdate', function(data) {
+    if($(this)[0] == that.player()) {
+      var perc = (that.player().currentTime / that.duration) * 100;
+      that.app.ui.seekbar.setProgress(perc);
+    }
+  });
+  
+  Q.Audio.bind('progress', function(data) {
+    if($(this)[0] == that.player() && that.startedLoading) {
+      var perc = (that.player().buffered.end() / that.duration) * 100;
+      that.app.ui.seekbar.setDownloaded(perc);
+    }
+  });
 
+  Q.Audio.bind('loadedmetadata', function() {
+    that.startedLoading = true;
+    that.duration = that.player().duration;
+  });
+
+  Q.Audio.bind('canplay', function() {
+    that.player().play();
+    that.app.ui.setPlayButton(false);
+  });
+  
+  Q.Audio.bind('ended', function() {
+    that.app.ui.setPlayButton(true);
+    that.app.ui.seekbar.setProgress('0');
+    that.app.ui.seekbar.setDownloaded('100');
+    that.app.emit('PlayNext');
+  });
 };
 
+Q.gsPlayer.prototype.player = function() {
+  return Q.Audio.current();
+};
 
 Q.gsPlayer.prototype.load = function(resource) {
-
+  var that = this;
+  this.startedLoading = false;
+  var song = new GrooveSharkSong(this.app.gsApi, resource.songId);
+  song.getStreamURL(function(url) {
+    Q.Audio.load(url);
+    that.play();
+  });
 };
 
 Q.gsPlayer.prototype.unload = function() {
@@ -133,19 +182,21 @@ Q.gsPlayer.prototype.unload = function() {
 };
 
 Q.gsPlayer.prototype.play = function() {
-
+  this.player().play();
 };
 
 Q.gsPlayer.prototype.pause = function() {
-
+  this.player().pause();
 };
 
 Q.gsPlayer.prototype.seek = function(time) {
-
+  var position = (time / 100) * this.duration;
+  this.player().currentTime = position;
 };
 
 Q.gsPlayer.prototype.setVolume = function(volume) {
-
+  var vol = volume / 100;
+  this.player().volume = vol;
 };
 
 /**
@@ -172,7 +223,6 @@ Q.ytPlayer = function(app) {
     this.player = player;
   };
   this.player = Q.Youtube.getPlayer();
-  //this.player.setVolume(Q.Storage.get('lastVolume')*100 || 50);
   this.bindEvents();
 };
   
@@ -180,6 +230,7 @@ Q.ytPlayer.prototype.bindEvents = function() {
   var that = this;
   
   var videoBuffering = function() {
+    that.player.setVolume(Q.Storage.get('lastVolume')*100 || 50);
     that.duration = that.player.getDuration();
     clearInterval(that.progressTimer);
     that.progressTimer = setInterval(function() {

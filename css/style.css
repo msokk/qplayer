@@ -170,6 +170,7 @@ input#editPlaylist {
 
 #song-data #tracktitle, #albumtitle {
   text-align: center;
+  overflow: auto;
   overflow: -webkit-marquee;
   white-space: nowrap;
   -webkit-marquee-speed: slow;

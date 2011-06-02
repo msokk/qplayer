@@ -9,6 +9,7 @@ Q.UIVolume = function(app) {
   }
   
   this.app = app;
+  this.volume = 0;
   app.ui.volume = this;
   this.elem = $('#volume-bar > .track:first-child');
   
@@ -47,6 +48,7 @@ Q.UIVolume = function(app) {
  * @param {Number} Volume
  */
 Q.UIVolume.prototype.setVolume = function(volume) {
+  this.volume = (volume >= 100)? 100: (volume <= 0)? 0 : volume;
   var perc = Math.floor((volume + 11)/1.1);
   if(perc >= 100) {
     perc = 100;
@@ -58,6 +60,13 @@ Q.UIVolume.prototype.setVolume = function(volume) {
   this.elem.find('.done').css('width', perc + '%');
   $('#volume-icon').css('opacity', perc/100);
   this.app.emit('UIVolume', volume);
+};
+
+/**
+ * Get UIVolume value
+ */
+Q.UIVolume.prototype.getVolume = function() {
+  return this.volume;
 };
 
 /**
@@ -295,54 +304,8 @@ Q.UITracklist = function(app) {
     var elem = $('#tracklist tr[data-id='+id+']');
     $('#tracklist tr').removeClass('selected');
     elem.addClass('selected');
-    app.emit('UISelectSong', id);
+    app.emit('UISelectSong', id, true);
   };
-  
-  $(window).keydown(function(e) {
-    var activeElem = $('#tracklist tr.clicked');
-    if(activeElem.length == 1 && $('*:focus').length == 0) {
-      //Enter
-      if(e.which == 13) {
-        $('#tracklist tr').removeClass('clicked')
-                          .removeClass('selected');
-        activeElem.addClass('selected').addClass('clicked');
-        app.emit('UISelectSong', activeElem.data('id'));
-      }
-      
-      //Up
-      if(e.which == 38 && activeElem.prev().length != 0) {
-        e.preventDefault();
-        activeElem.removeClass('clicked');
-        activeElem.prev().addClass('clicked');
-        if(activeElem.prev().offset().top < $('#searchBar').height()*2) {
-          $('#content-main').scrollTop($('#content-main').scrollTop() - activeElem.height());
-        }
-      }
-      
-      //Down
-      if(e.which == 40 && activeElem.next().length != 0) {
-        e.preventDefault();
-        activeElem.removeClass('clicked');
-        activeElem.next().addClass('clicked');
-        if(activeElem.next().offset().top > $('#seek-bar').offset().top - activeElem.height()*2) {
-          $('#content-main').scrollTop($('#content-main').scrollTop() + activeElem.height());
-        }
-      }
-      
-      //Delete
-      if(e.which == 46) {
-        app.emit('UIDeleteSong', activeElem.data('id'));
-        activeElem.next().addClass('clicked');
-        activeElem.remove();
-      }
-      
-      //Space
-      if(e.which == 32) {
-        $('#playBtn').click();
-      }
-    }
-  });
-
 };
 
 /**
@@ -406,8 +369,8 @@ Q.UIPlayback = function(app) {
  */
 Q.UISearch = function(app) {
   
-  //Grooveshark filter -- DISABLED
-  /*$('#gsBtn').click(function() {
+  //Grooveshark filter
+  $('#gsBtn').click(function() {
     $(this).toggleClass('gs-active');
     $(this).toggleClass('gs-disabled');
     if($(this).hasClass('gs-active')) {
@@ -415,7 +378,7 @@ Q.UISearch = function(app) {
     } else {
       app.emit('UISearchFilter', { grooveshark: false });
     }
-  });*/
+  });
   
   //Youtube filter
   $('#ytBtn').click(function() {
@@ -484,6 +447,77 @@ Q.UISearch = function(app) {
 };
 
 /**
+ * Bind keyboard
+ * @param {Q.App} QPlayer
+ */
+Q.UIKeyboard = function(app) {
+  $(window).keydown(function(e) {
+    var activeElem = $('#tracklist tr.clicked');
+    if($('*:focus').length == 0) {
+      if(activeElem.length == 1) {
+        //Enter
+        if(e.which == 13) {
+          $('#tracklist tr').removeClass('clicked')
+                            .removeClass('selected');
+          activeElem.addClass('selected').addClass('clicked');
+          app.emit('UISelectSong', activeElem.data('id'));
+        }
+        
+        //Up
+        if(e.which == 38 && activeElem.prev().length != 0) {
+          e.preventDefault();
+          activeElem.removeClass('clicked');
+          activeElem.prev().addClass('clicked');
+          if(activeElem.prev().offset().top < $('#searchBar').height()*2) {
+            $('#content-main').scrollTop($('#content-main').scrollTop() - activeElem.height());
+          }
+        }
+        
+        //Down
+        if(e.which == 40 && activeElem.next().length != 0) {
+          e.preventDefault();
+          activeElem.removeClass('clicked');
+          activeElem.next().addClass('clicked');
+          if(activeElem.next().offset().top > $('#seek-bar').offset().top - activeElem.height()*2) {
+            $('#content-main').scrollTop($('#content-main').scrollTop() + activeElem.height());
+          }
+        }
+        
+        //Delete
+        if(e.which == 46) {
+          app.emit('UIDeleteSong', activeElem.data('id'));
+          activeElem.next().addClass('clicked');
+          activeElem.remove();
+        }
+      }
+      
+      //Space
+      if(e.which == 32) {
+        e.preventDefault();
+        $('#playBtn').click();
+      }
+      
+      //KP Plus
+      if(e.which == 107) {
+        app.ui.volume.setVolume(app.ui.volume.getVolume() + 5);
+      }
+      
+      //KP Minus
+      if(e.which == 109) {
+        app.ui.volume.setVolume(app.ui.volume.getVolume() - 5);
+      }
+    }
+    
+    //CTRL+F
+    if(e.ctrlKey && e.which == 70) {
+      e.preventDefault();
+      $('#searchBox').focus();
+    }
+  });
+};
+
+
+/**
  * Bind generic small objects
  * @param {Q.App} QPlayer
  */
@@ -507,20 +541,42 @@ Q.UIGeneric = function(app) {
     }
   };
   
-  app.ui.setMetadata = function(metadata) {
-    console.log(metadata); //DEBUG
-    if(metadata.title.indexOf(metadata.artist) == -1 && metadata.album) {
-      metadata.title = metadata.artist + ' - ' + metadata.title;
-    }    
-    $('#tracktitle').html(metadata.title);
-    if(!metadata.album) {
-      metadata.album = metadata.artist;
+  app.ui.setMetadata = function(metadata, type) {
+    var meta = metadata;
+    console.log(meta);
+    var coverart = '../img/disc.png';
+
+    var youtube = function() {
+      if(!metadata.album) {
+        metadata.album = metadata.artist;
+      }    
+    };
+    
+    var soundcloud = function() {
+      if(!metadata.album) {
+        metadata.album = metadata.artist;
+      }  
+    };
+    
+    var grooveshark = function() {
+      meta.title = meta.artist + ' - ' + meta.title;
+    };
+
+    if(meta.coverart) {
+      coverart = meta.coverart;
     }
-    $('#albumtitle').html(metadata.album);
-    if(metadata.coverart) {
-      $('#albumart').css('background', 'url('+metadata.coverart+') no-repeat center center');
-    } else {
-      $('#albumart').css('background', 'url(../img/disc.png) no-repeat center center');
-    }
+    
+    switch(type) {
+      case 'youtube': youtube();
+        break;
+      case 'soundcloud': soundcloud();
+        break;
+      case 'grooveshark': grooveshark();
+        break;
+    };
+    
+    $('#tracktitle').html(meta.title);
+    $('#albumtitle').html(meta.album);
+    $('#albumart').css('background', 'url('+coverart+') no-repeat center center');
   };
 };

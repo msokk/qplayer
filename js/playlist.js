@@ -76,7 +76,8 @@ Q.Playlist.prototype.renderPlaylist = function(id) {
   for(var i = 0; i < keys.length; i++) {
     var item = pl[keys[i]];
     var type = this.app.ui.filterMap[item.resource.type];
-    result += '<tr data-type="'+item.resource.type+'" data-id="'+item.id+'">'+
+    var active = (this.app.player && this.app.player.song.id == item.id)? 'class="selected"': '';
+    result += '<tr data-type="'+item.resource.type+'" data-id="'+item.id+'" '+active+'>'+
                 '<td><span class="icon '+type+'-active"></span></td>'+
                 '<td>'+_.truncate(item.metadata.title, 50, ' ')+'</td>'+
                 '<td>'+item.metadata.artist+'</td>'+
@@ -84,7 +85,6 @@ Q.Playlist.prototype.renderPlaylist = function(id) {
                 '<td>'+item.metadata.album+'</td>'+
               '</tr>';
   }
-  
   $('#tracklist').empty();
   $('#tracklist').append(result);
 };

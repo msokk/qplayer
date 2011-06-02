@@ -47,7 +47,7 @@ Q.Search.prototype.renderResult = function() {
     var type = this.app.ui.filterMap[item.resource.type];
     result += '<tr data-type="'+item.resource.type+'" data-id="'+item.id+'">'+
                 '<td><span class="icon '+type+'-active"></span></td>'+
-                '<td>'+_.truncate(item.metadata.title, 50, ' ')+'</td>'+
+                '<td>'+_.truncate(item.metadata.title, 70, ' ')+'</td>'+
                 '<td>'+item.metadata.artist+'</td>'+
                 '<td>'+Q.toMinutes(item.metadata.duration)+'</td>'+
                 '<td>'+item.metadata.album+'</td>'+
@@ -67,7 +67,6 @@ Q.Search.prototype.doSearch = function(value) {
   Q.Storage.set('lastsearch', value);
   Q.Storage.set('currentPlaylist', -1);
   this.app.playlist.currentId = -1;
-  this.app.ui.activatePlaylist(-1);
   $('#list li').removeClass('clicked');
   this.searchPlaylist = {};
   
@@ -87,7 +86,7 @@ Q.Search.prototype.doSearch = function(value) {
 Q.Search.prototype.grooveshark = function(value) {
   this.app.ui.setSearchStatus(true);
   var that = this;
-  var api = Q.Custom.gs;
+  var api = this.app.gsApi;
   api.getSearchResults(value, function(data) {
     if(data) {
       var limit = (data.length >= 25) ? 25: data.length;
@@ -95,12 +94,15 @@ Q.Search.prototype.grooveshark = function(value) {
         var id = hex_sha1(JSON.stringify(data[i]));
         var cover = (data[i].CoverArtFilename)? 'http://beta.grooveshark.com/static/amazonart/m' 
             + data[i].CoverArtFilename: '';
+        
+        var duration = data[i].EstimateDuration || '';
+        
         that.searchPlaylist[id] = {
           id: id,
           metadata: {
             title: data[i].Name,
             artist: data[i].ArtistName,
-            duration: '',
+            duration: duration,
             album: data[i].AlbumName,
             coverart: cover
           },
@@ -128,11 +130,20 @@ Q.Search.prototype.youtube = function(value) {
     if(items) {
       for(var i = 0; i < items.length; i++) {
         var id = hex_sha1(JSON.stringify(items[i]));
+        
+        var title = _.titleize(items[i].title);
+        var artist = '';
+        if(_(title).count(' - ') == 1) {
+          var tmp = title.split(' - ');
+          title = tmp[1];
+          artist = tmp[0];
+        }
+        
         that.searchPlaylist[id] = {
           id: id,
           metadata: {
-            title: items[i].title,
-            artist: '',
+            title: title,
+            artist: artist,
             duration: items[i].duration,
             album: '',
             coverart: items[i].thumbnail.hqDefault
@@ -161,6 +172,14 @@ Q.Search.prototype.soundcloud = function(value) {
         for(var i = 0; i < data.length; i++) {
           var id = hex_sha1(JSON.stringify(data[i]));
           
+          var title = _.titleize(data[i].title.toLowerCase());
+          var artist = data[i].user.username;
+          if(_(title).count(' - ') == 1) {
+            var tmp = title.split(' - ');
+            title = tmp[1];
+            artist = tmp[0];
+          }
+        
           var cover = data[i].artwork_url;
           if(cover) {
             cover = cover.replace('large', 't300x300');
@@ -168,8 +187,8 @@ Q.Search.prototype.soundcloud = function(value) {
           that.searchPlaylist[id] = {
             id: id,
             metadata: {
-              title: data[i].title,
-              artist: data[i].user.username,
+              title: title,
+              artist: artist,
               duration: Math.round(data[i].duration / 1000),
               album: '',
               coverart: cover
