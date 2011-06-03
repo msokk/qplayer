@@ -21,6 +21,7 @@ Q.App = function() {
   this.player = new Q.Player(this);
   
   var socket = new io.Socket('qp.sokk.ee', { port: '3000' });
+  socket.connect();
   socket.on('message', function(data){ 
     switch(data.type) {
       case 'UIPlayback':

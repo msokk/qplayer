@@ -3,7 +3,7 @@ $(function() {
   $('#accent').attr('href', 'css/accents/' + accent + '.css');
 
   var socket = new io.Socket('qp.sokk.ee', { port: '3000' });
-
+  socket.connect();
   var playFlag = false;
   $('#playBtn').click(function() {
     if(playFlag) {
