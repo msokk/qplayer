@@ -25,14 +25,22 @@ Q.App = function() {
   socket.on('message', function(data){ 
     switch(data.type) {
       case 'UIPlayback':
-        if(state == 'play') {
-          app.emit('UIPlayback', 'play');
-          app.ui.setPlayButton(true);
+        if(data.state == 'play') {
+          that.emit('UIPlayback', 'play');
+          that.ui.setPlayButton(false);
         }
-        if(state == 'pause') {
-          app.emit('UIPlayback', 'pause');
-          app.ui.setPlayButton(false);
+        if(data.state == 'pause') {
+          that.emit('UIPlayback', 'pause');
+          that.ui.setPlayButton(true);
         }
+        
+        if(data.state == 'prev') {
+          that.emit('UIPlayback', 'prev');
+        }
+        if(data.state == 'next') {
+          that.emit('UIPlayback', 'prev');
+        }
+        break;
     }
   });
   

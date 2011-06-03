@@ -14,4 +14,12 @@ $(function() {
       socket.send({ type: 'UIPlayback', state: 'pause' });
     }
   });
+  
+  $('#prevBtn').click(function() {
+    socket.send({ type: 'UIPlayback', state: 'prev' });
+  });
+  
+  $('#nextBtn').click(function() {
+    socket.send({ type: 'UIPlayback', state: 'next' });
+  });
 });
