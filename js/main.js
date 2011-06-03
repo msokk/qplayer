@@ -20,6 +20,21 @@ Q.App = function() {
   this.playlist = new Q.Playlist(this);
   this.player = new Q.Player(this);
   
+  var socket = new io.Socket('qp.sokk.ee', { port: 3000 });
+  socket.on('message', function(data){ 
+    switch(data.type) {
+      case 'UIPlayback':
+        if(state == 'play') {
+          app.emit('UIPlayback', 'play');
+          app.ui.setPlayButton(true);
+        }
+        if(state == 'pause') {
+          app.emit('UIPlayback', 'pause');
+          app.ui.setPlayButton(false);
+        }
+    }
+  });
+  
 };
 Q.inherit(Q.App, Q.Event);
 
