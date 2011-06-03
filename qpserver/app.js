@@ -1,5 +1,6 @@
-var gsapi = require(__dirname +'/gs');
-var express = require('express');
+var io = require('socket.io'),
+    express = require('express'),
+    gsapi = require(__dirname +'/gs');
 
 var GrooveShark = gsapi.api;
 var GrooveSharkSong = gsapi.song;
@@ -10,7 +11,7 @@ var gs = new GrooveShark(function() {
   var app = express.createServer(); 
   
   app.get('/gs/search/:query', function(req, res){
-    this.getSearchResults(req.params.query, function(result) {
+    that.getSearchResults(req.params.query, function(result) {
       res.send(result);
     });
   });
@@ -22,4 +23,12 @@ var gs = new GrooveShark(function() {
   });
   
   app.listen(3000);
+  
+  var socket = io.listen(app);
+  
+  socket.on('connection', function(client){
+    client.on('message', function(data){
+      client.broadcast(data);
+    });
+  });
 });
