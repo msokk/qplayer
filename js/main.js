@@ -20,7 +20,7 @@ Q.App = function() {
   this.playlist = new Q.Playlist(this);
   this.player = new Q.Player(this);
   
-  var socket = new io.Socket('qp.sokk.ee', { port: 3000 });
+  var socket = new io.Socket('qp.sokk.ee', { port: '3000' });
   socket.on('message', function(data){ 
     switch(data.type) {
       case 'UIPlayback':
