@@ -1,9 +1,20 @@
 var io = require('socket.io'),
     express = require('express'),
-    gsapi = require(__dirname +'/gs');
+    QPWalker = require(__dirname + '/qpwalker'),
+    gsapi = require(__dirname + '/gs');
 
 var GrooveShark = gsapi.api;
 var GrooveSharkSong = gsapi.song;
+
+
+if(process.argv[2]) {
+  var walker = new QPWalker(process.argv[2]);
+  walker.on('done', function() {
+    process.exit();
+  });
+  return;
+}
+
 
 var gs = new GrooveShark(function() {
   var that = this;
