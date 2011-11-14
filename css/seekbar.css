@@ -43,7 +43,7 @@
   border-radius: 10px;
   width: 11px;
   height: 11px;
-  margin: -1.5px -1px 0 0;
+  margin: -1.8px -1px 0 0;
   border: none;
   background: -webkit-radial-gradient(45% 45%, circle cover, rgba(255,255,255,0) 43%, rgba(255,255,255, .5)), -webkit-linear-gradient(#999, #222);
   background: -webkit-gradient(radial, 5 5, 3, 5 5, 10, from(rgba(255,255,255,0)), to(rgba(255,255,255, .5))), -webkit-gradient(linear, 0% 0%, 0% 100%, from(#999), to(#222));
@@ -57,3 +57,4 @@
   background: -moz-radial-gradient(45% 45%, circle cover, rgba(255,255,255,.3) 43%, rgba(255,255,255, .5)), -moz-linear-gradient(#999, #222) !important;
   background: -ms-radial-gradient(45% 45%, circle cover, rgba(255,255,255,.3) 43%, rgba(255,255,255, .5)), -ms-linear-gradient(#999, #222) !important;
 }
+
