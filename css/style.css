@@ -13,7 +13,7 @@ body {
   -moz-user-select: none;
   user-select: none;
   color: hsl(0, 0%, 88%);
-  background-color: hsl(0, 0%, 22%); 
+  background-color: hsl(0, 0%, 22%);
 }
 
 ::selection{
@@ -56,7 +56,7 @@ body {
   bottom: 0px;
 }
 
-#upper { 
+#upper {
   -webkit-box-flex: 1;
   -moz-box-flex: 1;
   -ms-box-flex: 1;
@@ -306,7 +306,7 @@ input#editPlaylist {
 }
 
 #content-main tr:nth-child(odd) {
-  background-color: hsl(0, 0%, 25%); 
+  background-color: hsl(0, 0%, 25%);
 }
 
 #content-main tr:hover {
@@ -510,13 +510,6 @@ input#editPlaylist {
   display: inline-block;
 }
 
-.gs-active {
-  background: url(../img/gs-active.png) no-repeat;
-}
-.gs-disabled {
-  background: url(../img/gs-disabled.png) no-repeat;
-}
-
 .yt-active {
   background: url(../img/yt-active.png) no-repeat;
 }
@@ -554,3 +547,4 @@ input#editPlaylist {
 #ytOverlay.show {
   display: block;
 }
+

@@ -7,20 +7,20 @@ Q.UIVolume = function(app) {
   if(!(this instanceof Q.UIVolume)) {
     return new Q.UIVolume(app);
   }
-  
+
   this.app = app;
   this.volume = 0;
   app.ui.volume = this;
   this.elem = $('#volume-bar > .track:first-child');
-  
+
   var volumeDrag = function(e) {
     var offsetX = e.pageX - that.elem.position().left;
     var perc = Math.ceil(((offsetX+5) / that.elem.width()) * 100);
-      
+
     if(perc >= 100) {
       perc = 100;
     }
-    
+
     if(perc <= 10) {
       perc = 10;
     }
@@ -28,18 +28,18 @@ Q.UIVolume = function(app) {
     that.elem.find('.done').css('width', perc + '%');
     that.app.emit('UIVolume', Math.ceil((perc*1.1) - 11));
   };
-  
+
   var volumeUp = function(e) {
     $('body').unbind('mousemove', volumeDrag);
     $('body').unbind('mouseup', volumeUp);
     volumeDrag(e);
   };
-  
+
   this.elem.mousedown(function(e) {
     $('body').bind('mousemove', volumeDrag);
     $('body').bind('mouseup', volumeUp);
   });
-  
+
   this.elem.mouseup(volumeUp);
 };
 
@@ -53,7 +53,7 @@ Q.UIVolume.prototype.setVolume = function(volume) {
   if(perc >= 100) {
     perc = 100;
   }
-  
+
   if(perc <= 10) {
     perc = 10;
   }
@@ -82,7 +82,7 @@ Q.UISettings = function(app) {
       $('.settingsContainer').removeClass('show');
     });
   });
-  
+
   //Accent selection
   var accent = Q.Storage.get('accent') || 'blue';
   $('#accentSelection').val(accent);
@@ -90,9 +90,9 @@ Q.UISettings = function(app) {
     $('#accent').attr('href', 'css/accents/' + $(this).val() + '.css');
     Q.Storage.set('accent', $(this).val());
   });
-  
+
   $('#accentSelection').change();
-  
+
   //Settings flush
   $('#resetAppBtn').click(function(e) {
     if(confirm('This clears everything - playlists, songs, accounts! Are you sure?')) {
@@ -114,33 +114,33 @@ Q.UISeekbar = function(app) {
   this.app = app;
   app.ui.seekbar = this;
   this.elem = $('#seek-bar > .track:first-child');
-  
+
   var seekDrag = function(e) {
     var offsetX = e.pageX - that.elem.position().left;
     var perc = Math.round( ( (offsetX+5) / that.elem.width()) * 100000)/1000;
     if(perc >= 100) {
       perc = 100;
     }
-  
+
     if(perc <= 0) {
       perc = 0;
-    } 
-      
+    }
+
     that.setProgress(perc);
     that.app.emit('UISeek', perc);
   };
-  
+
   var seekUp = function(e) {
     $('body').unbind('mousemove', seekDrag);
     $('body').unbind('mouseup', seekUp);
     seekDrag(e);
   };
-  
+
   this.elem.mousedown(function(e) {
     $('body').bind('mousemove', seekDrag);
     $('body').bind('mouseup', seekUp);
   });
-  
+
   this.elem.mouseup(seekUp);
 };
 
@@ -152,22 +152,22 @@ Q.UISeekbar.prototype.setProgress = function(perc) {
   if(perc >= 100) {
     perc = 100;
   }
-  
+
   if(perc <= 0) {
     perc = 0;
   }
-  this.elem.find('.done').css('width', perc + '%'); 
+  this.elem.find('.done').css('width', perc + '%');
 };
 
 Q.UISeekbar.prototype.setDownloaded = function(perc) {
   if(perc >= 100) {
     perc = 100;
   }
-  
+
   if(perc <= 0) {
     perc = 0;
   }
-  this.elem.find('.downloaded').css('width', perc + '%'); 
+  this.elem.find('.downloaded').css('width', perc + '%');
 };
 
 /**
@@ -179,16 +179,16 @@ Q.UIPlaylist = function(app) {
   $('#treeview .new').live('click', function() {
     $(this).html('+ <input class="editBox" id="newPlaylist" type="text" value="New Playlist" />');
     $('#newPlaylist').select();
-    
+
     var newOne = function() {
       if($('#newPlaylist').length != 0 && $('#newPlaylist').val() != 'New Playlist') {
         $('#treeview #list').append('<li>' + $('#newPlaylist').val() + '</li>');
         app.emit('UINewPlaylist', $('#treeview #list li:last-child'));
       }
-      
+
       $('#treeview .new').html('+ New Playlist');
     };
-    
+
     $('#newPlaylist').blur(newOne);
     $('#newPlaylist').keypress(function(e) {
       if(e.charCode == 13) {
@@ -196,7 +196,7 @@ Q.UIPlaylist = function(app) {
       }
     });
   });
-  
+
   //Select playlist
   $('#treeview #list li').live('click', function() {
     if(!$(this).hasClass('clicked')) {
@@ -205,10 +205,10 @@ Q.UIPlaylist = function(app) {
       app.emit('UIViewPlaylist', $(this).data('id'));
     }
   });
-  
+
   //Change name and delete
   $('#treeview #list li').live('dblclick', function(e) {
-    
+
     if($(this).hasClass('clicked')) {
       var oldname = $(this).html();
       var that = this;
@@ -231,28 +231,28 @@ Q.UIPlaylist = function(app) {
           $(that).html($('#editPlaylist').val());
         }
       };
-      
+
       $('#editPlaylist').blur(editOne);
       $('#editPlaylist').keypress(function(e) {
         if(e.charCode == 13) {
           editOne();
         }
       });
-      
+
       $('#editPlaylist').dblclick(function(e) {
         e.stopPropagation();
       });
     }
   });
-  
+
   //Sort
-  $('#treeview #list').sortable({ 
+  $('#treeview #list').sortable({
     opacity: 0.6,
     axis: 'y',
     delay: 200,
     containment: '#treeview'
   });
-    
+
   //Activate playlist
   app.ui.activatePlaylist = function(id) {
     var elem = $('li[data-id="'+id+'"]');
@@ -267,11 +267,11 @@ Q.UIPlaylist = function(app) {
  * @param {Q.App} QPlayer
  */
 Q.UITracklist = function(app) {
-  $('#tracklist').sortable({ 
+  $('#tracklist').sortable({
     opacity: 0.6,
     delay: 200
   });
-  
+
   app.ui.attachDrop = function() {
     $('#treeview #list li').droppable({
       drop: function(e) {
@@ -285,13 +285,13 @@ Q.UITracklist = function(app) {
     });
   };
   app.ui.attachDrop();
-  
+
   //Click
   $('#tracklist tr').live('click', function() {
     $('#tracklist tr').removeClass('clicked');
     $(this).addClass('clicked');
   });
-  
+
   //Play song
   $('#tracklist tr').live('dblclick', function() {
     $('#tracklist tr').removeClass('clicked')
@@ -299,7 +299,7 @@ Q.UITracklist = function(app) {
     $(this).addClass('selected').addClass('clicked');
     app.emit('UISelectSong', $(this).data('id'));
   });
-  
+
   app.ui.selectSong = function(id) {
     var elem = $('#tracklist tr[data-id='+id+']');
     $('#tracklist tr').removeClass('selected');
@@ -321,9 +321,9 @@ Q.UIPlayback = function(app) {
     } else {
       app.emit('UIPlayback', 'pause');
     }
-    
+
   });
-  
+
   app.ui.setPlayButton = function(play) {
     if(play) {
       $('#playBtn').removeClass('pause');
@@ -331,17 +331,17 @@ Q.UIPlayback = function(app) {
       $('#playBtn').addClass('pause');
     }
   };
-  
+
   //Previous song
   $('#prevBtn').click(function() {
     app.emit('UIPlayback', 'prev');
   });
-  
+
   //Next song
   $('#nextBtn').click(function() {
     app.emit('UIPlayback', 'next');
   });
-  
+
   //Shuffle
   $('#shuffle').click(function() {
     $(this).toggleClass('active');
@@ -351,7 +351,7 @@ Q.UIPlayback = function(app) {
       app.emit('UIPlayback', 'shuffleOff');
     }
   });
-  
+
   //Repeat
   $('#repeat').click(function() {
     $(this).toggleClass('active');
@@ -368,18 +368,7 @@ Q.UIPlayback = function(app) {
  * @param {Q.App} QPlayer
  */
 Q.UISearch = function(app) {
-  
-  //Grooveshark filter
-  $('#gsBtn').click(function() {
-    $(this).toggleClass('gs-active');
-    $(this).toggleClass('gs-disabled');
-    if($(this).hasClass('gs-active')) {
-      app.emit('UISearchFilter', { grooveshark: true });
-    } else {
-      app.emit('UISearchFilter', { grooveshark: false });
-    }
-  });
-  
+
   //Youtube filter
   $('#ytBtn').click(function() {
     $(this).toggleClass('yt-active');
@@ -390,7 +379,7 @@ Q.UISearch = function(app) {
       app.emit('UISearchFilter', { youtube: false });
     }
   });
-  
+
   //Soundcloud filter
   $('#scBtn').click(function() {
     $(this).toggleClass('sc-active');
@@ -401,13 +390,12 @@ Q.UISearch = function(app) {
       app.emit('UISearchFilter', { soundcloud: false });
     }
   });
-  
+
   var filterMap = app.ui.filterMap = {
     'soundcloud': 'sc',
-    'youtube': 'yt',
-    'grooveshark': 'gs'
+    'youtube': 'yt'
   };
-  
+
   app.ui.setFilters = function(obj) {
     var keys = Object.keys(obj);
     for(var i = 0; i < keys.length; i++) {
@@ -421,21 +409,21 @@ Q.UISearch = function(app) {
       }
     };
   };
-  
+
   //Search input
   var search = function() {
     if($('#searchBox').val() != "") {
       app.emit('UISearchValue', $('#searchBox').val());
     }
   }
-  
+
   $('#searchBox').keypress(function(e) {
     if(e.which == 13) {
       search();
     }
   });
   $('#searchBtn').click(search);
-  
+
   //Indicator
   app.ui.setSearchStatus = function(ongoing) {
     if(ongoing) {
@@ -462,7 +450,7 @@ Q.UIKeyboard = function(app) {
           activeElem.addClass('selected').addClass('clicked');
           app.emit('UISelectSong', activeElem.data('id'));
         }
-        
+
         //Up
         if(e.which == 38 && activeElem.prev().length != 0) {
           e.preventDefault();
@@ -472,7 +460,7 @@ Q.UIKeyboard = function(app) {
             $('#content-main').scrollTop($('#content-main').scrollTop() - activeElem.height());
           }
         }
-        
+
         //Down
         if(e.which == 40 && activeElem.next().length != 0) {
           e.preventDefault();
@@ -482,7 +470,7 @@ Q.UIKeyboard = function(app) {
             $('#content-main').scrollTop($('#content-main').scrollTop() + activeElem.height());
           }
         }
-        
+
         //Delete
         if(e.which == 46) {
           app.emit('UIDeleteSong', activeElem.data('id'));
@@ -490,24 +478,24 @@ Q.UIKeyboard = function(app) {
           activeElem.remove();
         }
       }
-      
+
       //Space
       if(e.which == 32) {
         e.preventDefault();
         $('#playBtn').click();
       }
-      
+
       //KP Plus
       if(e.which == 107) {
         app.ui.volume.setVolume(app.ui.volume.getVolume() + 5);
       }
-      
+
       //KP Minus
       if(e.which == 109) {
         app.ui.volume.setVolume(app.ui.volume.getVolume() - 5);
       }
     }
-    
+
     //CTRL+F
     if(e.ctrlKey && e.which == 70) {
       e.preventDefault();
@@ -527,12 +515,12 @@ Q.UIGeneric = function(app) {
   $('#miniBtn').click(function() {
     var width = 250;
     var height = 500;
-    app.popup = window.open('popup.html', 
+    app.popup = window.open('popup.html',
       'Player', 'menubar=no,location=no,resizable=no,scrollbars=no,status=no,'
       + 'width=' + width + ',height=' + height + ',left=' + (window.outerWidth - (width+33))
       + ',top=' + (window.screen.height - window.screen.availHeight+55));
   });
-  
+
   app.ui.setStatus = function(ready) {
     if(ready) {
       $('#status').addClass('ready');
@@ -540,7 +528,7 @@ Q.UIGeneric = function(app) {
       $('#status').removeClass('ready');
     }
   };
-  
+
   app.ui.setMetadata = function(metadata, type) {
     var meta = metadata;
     console.log(meta);
@@ -549,34 +537,29 @@ Q.UIGeneric = function(app) {
     var youtube = function() {
       if(!metadata.album) {
         metadata.album = metadata.artist;
-      }    
+      }
     };
-    
+
     var soundcloud = function() {
       if(!metadata.album) {
         metadata.album = metadata.artist;
-      }  
-    };
-    
-    var grooveshark = function() {
-      meta.title = meta.artist + ' - ' + meta.title;
+      }
     };
 
     if(meta.coverart) {
       coverart = meta.coverart;
     }
-    
+
     switch(type) {
       case 'youtube': youtube();
         break;
       case 'soundcloud': soundcloud();
         break;
-      case 'grooveshark': grooveshark();
-        break;
     };
-    
+
     $('#tracktitle').html(meta.title);
     $('#albumtitle').html(meta.album);
     $('#albumart').css('background', 'url('+coverart+') no-repeat center center');
   };
 };
+

@@ -5,11 +5,11 @@
 Q.Search = function(app) {
   this.app = app;
   this.searchPlaylist = {};
-  
-  this.filterstate = Q.Storage.get('filterstate') || 
-    { grooveshark: false, youtube: true, soundcloud: true }; //DISABLE Grooveshark for now
+
+  this.filterstate = Q.Storage.get('filterstate') ||
+    { youtube: true, soundcloud: true };
   app.ui.setFilters(this.filterstate);
-  
+
   this.lastSearch = Q.Storage.get('lastsearch') || '';
   $('#searchBox').val(this.lastSearch);
 
@@ -24,13 +24,13 @@ Q.Search.prototype.bindUIHandlers = function() {
   this.app.on('UISearchValue', function(value) {
     that.doSearch(_.trim(value));
   });
-  
+
   this.app.on('UISearchFilter', function(obj) {
     var key = Object.keys(obj)[0];
     that.filterstate[key] = obj[key];
     Q.Storage.set('filterstate', that.filterstate);
   });
-  
+
   $('#searchBox').blur(function() {
     Q.Storage.set('lastsearch', $(this).val());
   });
@@ -53,7 +53,7 @@ Q.Search.prototype.renderResult = function() {
                 '<td>'+item.metadata.album+'</td>'+
               '</tr>';
   }
-  
+
   $('#tracklist').empty();
   $('#tracklist').append(result);
   this.app.ui.setSearchStatus(false);
@@ -69,7 +69,7 @@ Q.Search.prototype.doSearch = function(value) {
   this.app.playlist.currentId = -1;
   $('#list li').removeClass('clicked');
   this.searchPlaylist = {};
-  
+
   $('#tracklist').empty();
   var filters = Object.keys(this.filterstate);
   for(var i = 0; i < filters.length; i++) {
@@ -79,43 +79,6 @@ Q.Search.prototype.doSearch = function(value) {
   }
 };
 
-/**
- * Search from GrooveShark
- * @param {String} query
- */
-Q.Search.prototype.grooveshark = function(value) {
-  this.app.ui.setSearchStatus(true);
-  var that = this;
-  var api = this.app.gsApi;
-  api.getSearchResults(value, function(data) {
-    if(data) {
-      var limit = (data.length >= 25) ? 25: data.length;
-      for(var i = 0; i < limit; i++) {
-        var id = hex_sha1(JSON.stringify(data[i]));
-        var cover = (data[i].CoverArtFilename)? 'http://beta.grooveshark.com/static/amazonart/m' 
-            + data[i].CoverArtFilename: '';
-        
-        var duration = data[i].EstimateDuration || '';
-        
-        that.searchPlaylist[id] = {
-          id: id,
-          metadata: {
-            title: data[i].Name,
-            artist: data[i].ArtistName,
-            duration: duration,
-            album: data[i].AlbumName,
-            coverart: cover
-          },
-          resource: {
-            type: 'grooveshark',
-            songId: data[i].SongID 
-          }
-        };
-      }
-    }
-    that.renderResult();
-  });
-};
 
 /**
  * Search from YouTube
@@ -130,7 +93,7 @@ Q.Search.prototype.youtube = function(value) {
     if(items) {
       for(var i = 0; i < items.length; i++) {
         var id = hex_sha1(JSON.stringify(items[i]));
-        
+
         var title = _.titleize(items[i].title);
         var artist = '';
         if(_(title).count(' - ') == 1) {
@@ -138,7 +101,7 @@ Q.Search.prototype.youtube = function(value) {
           title = tmp[1];
           artist = tmp[0];
         }
-        
+
         that.searchPlaylist[id] = {
           id: id,
           metadata: {
@@ -150,7 +113,7 @@ Q.Search.prototype.youtube = function(value) {
           },
           resource: {
             type: 'youtube',
-            videoId: items[i].id 
+            videoId: items[i].id
           }
         };
       }
@@ -166,12 +129,12 @@ Q.Search.prototype.youtube = function(value) {
 Q.Search.prototype.soundcloud = function(value) {
   this.app.ui.setSearchStatus(true);
   var that = this;
-  $.getJSON('http://api.soundcloud.com/tracks.json?filter=streamable&q=' + value + '&consumer_key=' + 
+  $.getJSON('http://api.soundcloud.com/tracks.json?filter=streamable&q=' + value + '&consumer_key=' +
     this.app.scKey, function(data) {
       if(data) {
         for(var i = 0; i < data.length; i++) {
           var id = hex_sha1(JSON.stringify(data[i]));
-          
+
           var title = _.titleize(data[i].title.toLowerCase());
           var artist = data[i].user.username;
           if(_(title).count(' - ') == 1) {
@@ -179,7 +142,7 @@ Q.Search.prototype.soundcloud = function(value) {
             title = tmp[1];
             artist = tmp[0];
           }
-        
+
           var cover = data[i].artwork_url;
           if(cover) {
             cover = cover.replace('large', 't300x300');
@@ -203,3 +166,4 @@ Q.Search.prototype.soundcloud = function(value) {
       }
   });
 };
+

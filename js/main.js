@@ -1,7 +1,6 @@
 ﻿$(function() {
-  window.qp = new Q.App(); 
+  window.qp = new Q.App();
 });
-
 
 
 /**
@@ -11,39 +10,12 @@ Q.App = function() {
   var that = this;
   this.scKey = "46q8ZDUJD6nbBsaka0DgfA";
   this.initUI();
-  this.gsApi = new GrooveShark(function() {
-    that.gsApi.ready = true;
-    that.ui.setStatus(true);
-  });
+  this.ui.setStatus(true);
 
   this.search = new Q.Search(this);
   this.playlist = new Q.Playlist(this);
   this.player = new Q.Player(this);
-  
-  var socket = new io.Socket('qp.sokk.ee', { port: '3000' });
-  socket.connect();
-  socket.on('message', function(data){ 
-    switch(data.type) {
-      case 'UIPlayback':
-        if(data.state == 'play') {
-          that.emit('UIPlayback', 'play');
-          that.ui.setPlayButton(false);
-        }
-        if(data.state == 'pause') {
-          that.emit('UIPlayback', 'pause');
-          that.ui.setPlayButton(true);
-        }
-        
-        if(data.state == 'prev') {
-          that.emit('UIPlayback', 'prev');
-        }
-        if(data.state == 'next') {
-          that.emit('UIPlayback', 'prev');
-        }
-        break;
-    }
-  });
-  
+
 };
 Q.inherit(Q.App, Q.Event);
 
@@ -52,7 +24,7 @@ Q.inherit(Q.App, Q.Event);
  */
 Q.App.prototype.initUI = function() {
   this.ui = {};
-  Q.UIGeneric(this); //Generic 
+  Q.UIGeneric(this); //Generic
   Q.UISettings(this); //Settings btn, tab
   Q.UIVolume(this); //Volume bar
   Q.UISeekbar(this); //Seek bar
@@ -62,3 +34,4 @@ Q.App.prototype.initUI = function() {
   Q.UISearch(this); //Search bar
   Q.UIKeyboard(this); //Keyboard shortcuts
 };
+
