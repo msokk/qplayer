@@ -1,0 +1,16 @@
+.player-header {
+  background-color: #695b8e;
+}
+
+.track .position {
+  background-color: #695b8e;
+}
+
+.track .loaded {
+  background-color: hsla(256, 22%, 46%, .25);
+}
+
+.player-controls .button:active {
+  background-color: hsla(256, 22%, 46%, .35);
+  font-size: 120%;
+}
