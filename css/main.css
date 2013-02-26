@@ -13,14 +13,9 @@
 }
 
 html, body { height: 100%; }
-
-.flex {
-  display: -webkit-flex;
-}
-
-.flex.row {
-  -webkit-flex-direction: column;
-}
+.flex { display: -webkit-flex; }
+.flex.row { -webkit-flex-direction: column; }
+.fill { -webkit-flex: 1; }
 
 
 body {
@@ -47,12 +42,11 @@ input[type=search] {
   -webkit-appearance: none;
 }
 
-.fill {
-  -webkit-flex: 1;
-}
+
 
 /* PLAYER UI */
 
+/* HEADER */
 .player-header {
   height: 30px;
   padding: 5px;
@@ -60,7 +54,7 @@ input[type=search] {
   cursor: move;
 }
 
-.player-header  div {
+.player-header > * {
   float: left;
 }
 
@@ -73,15 +67,57 @@ input[type=search] {
 .player-header > .close:hover {
   color: #2e2e2e;
   cursor: pointer;
-
 }
 
+.logo img {
+  width: 30px;
+}
+
+.logo:hover {
+  opacity: .7;
+}
+
+
+
+/* SIDEBAR */
+.player-sidebar {
+  width: -webkit-calc(200px + 10%);
+  border-right: solid 1px #2e2e2e;
+}
+
+
+
+/* LIST */
+.player-list {
+  font-family: 'Open Sans', sans-serif;
+}
+
+.player-list ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.player-list ul li {
+  font-size: .8em;
+  padding: 8px;
+}
+
+.player-list ul li:nth-child(odd) {
+  background-color: #333;
+}
+
+.player-list ul li:hover {
+  background-color: #444;
+}
+
+
+
+/* PLAYER CONTROLS */
 .player-controls {
   border-top: solid 1px #2e2e2e;
   height: 40px;
 }
-
-/* Play/pause/skip buttons */
 
 .player-controls .control-group {
   border-right: solid 1px #2e2e2e;
@@ -106,49 +142,12 @@ input[type=search] {
 }
 
 .player-controls .button:active {
-  background-color: hsla(256, 22%, 46%, .35);
   font-size: 120%;
 }
 
-.player-sidebar {
-  width: -webkit-calc(200px + 10%);
-  border-right: solid 1px #2e2e2e;
-}
-
-.player-list {
-  font-family: 'Open Sans', sans-serif;
-}
-
-.player-list ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-
-.player-list ul li {
-  font-size: .8em;
-  padding: 8px;
-}
-
-.player-list ul li:nth-child(odd) {
-  background-color: #333;
-}
-
-.player-list ul li:hover {
-  background-color: #444;
-}
-
-.seekbar {
-  padding: 10px 15px;
-}
-
-.seekbar .track {
-  height: 20px;
-}
-
-.volume {
+.player-controls .control-group > .volume {
   -webkit-flex: 2;
-  padding: 14px 10px 14px 0 !important; /* BAD */
+  padding: 14px 10px 14px 0;
 }
 
 .control-group > .volume > div {
@@ -159,6 +158,16 @@ input[type=search] {
   border-right: none;
   -webkit-flex: .3;
 }
+
+
+.seekbar {
+  padding: 10px 15px;
+}
+
+.seekbar .track {
+  height: 20px;
+}
+
 
 .track {
   background-color: #2e2e2e;

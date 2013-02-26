@@ -12,6 +12,13 @@ var currentWin = chrome.app.window.current();
 
 $('.close').click(function() {currentWin.close();});
 
+var colors = ['purple', 'green', 'peach', 'yellow'];
+var idx = 0;
+$('.color').click(function() {
+  $('body').toggleClass(colors[idx % colors.length]);
+  idx++;
+  $('body').toggleClass(colors[idx % colors.length]);
+});
 
 
 // Resize window

@@ -9,7 +9,9 @@
     "notifications"
   ],
   "icons": {
-    //"128": "sqp-128color.png"
+    "16": "img/logo_16.png",
+    "48": "img/logo_48.png",
+    "128": "img/logo_128.png"
   },
   "app": {
      "background": {
