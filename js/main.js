@@ -7,11 +7,6 @@ $('.track').click(function(e) {
   $(this).find('.position').width(perc + '%');
 });
 
-var currentWin = chrome.app.window.current();
-
-
-$('.close').click(function() {currentWin.close();});
-
 var colors = ['purple', 'green', 'peach', 'yellow'];
 var idx = 0;
 $('.color').click(function() {
@@ -20,46 +15,3 @@ $('.color').click(function() {
   $('body').toggleClass(colors[idx % colors.length]);
 });
 
-
-// Resize window
-var lastX;
-var lastY;
-var dragWindow = function(e) {
-
-  if(lastX && lastY) {
-    var bounds = chrome.app.window.current().getBounds();
-    var deltaX = e.screenX - lastX;
-    var deltaY = e.screenY - lastY;
-    currentWin.moveTo(bounds.left + deltaX, bounds.top + deltaY - 22); // Always moves 22 pixels down?
-  }
-
-  lastX = e.screenX;
-  lastY = e.screenY;
-};
-
-$('.player-header').mousedown(function() {
-  $(window).on('mousemove', dragWindow);
-});
-
-$(window, '.player-header').mouseup(function() {
-  $(window).off('mousemove', dragWindow);
-  lastX = null;
-  lastY = null;
-});
-
-
-var getAudioFs = function(cb) {
-  chrome.mediaGalleries.getMediaFileSystems({ interactive : 'if_needed' }, function(filesystems) {
-    filesystems.forEach(function(filesystem) {
-      if(JSON.parse(filesystem.name).name === 'Music') {
-        cb && cb(filesystem.root);
-        return;
-      }
-    });
-  });
-};
-
-
-getAudioFs(function(fs) {
-  console.log(fs);
-})

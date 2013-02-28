@@ -3,7 +3,7 @@
   <head>
     <title>Squareplayer</title>
     <meta charset="utf-8">
-    <link href="css/mfglabs_iconset.css" rel="stylesheet">
+    <link href="css/icons.css" rel="stylesheet">
     <link href="css/main.css" rel="stylesheet">
     <link href="css/accents.css" rel="stylesheet">
   </head>
@@ -14,8 +14,8 @@
       </a>
 
       <input type="search" placeholder="Search..." />
-      <div class="color icon icon-settings"></div>
-      <div class="close icon icon-cross_mark"></div>
+      <div class="color icon icon-cog"></div>
+      <div class="close icon icon-cancel"></div>
     </div>
     <div class="fill flex">
       <div class="player-sidebar">
@@ -34,10 +34,10 @@
     </div>
     <div class="player-controls flex">
       <div class="control-group flex">
-        <div class="button icon icon-fast_backward"></div>
+        <div class="button zoom icon icon-fast-backward"></div>
         <div class="playpause button icon icon-play"></div>
-        <div class="button icon icon-fast_forward"></div>
-        <div class="mute button icon icon-mute_on"></div>
+        <div class="button zoom icon icon-fast-forward"></div>
+        <div class="mute button icon icon-volume-off"></div>
         <div class="volume">
           <div class="track">
             <div class="position" style="width: 45%"></div>
@@ -46,13 +46,23 @@
       </div>
       <div class="seekbar fill">
         <div class="track">
-          <div class="loaded" style="width: 60%"></div>
+          <div class="loaded" style="width: 100%"></div>
           <div class="position" style="width: 45%"><span>45%</span></div>
         </div>
       </div>
+
+      <div class="button active icon icon-shuffle"></div>
+      <div class="button icon icon-ccw"></div>
     </div>
 
-    <script src="js/jquery-1.9.1.js"></script>
+    <script src="js/libs/jquery-1.9.1.js"></script>
+    <script src="js/libs/jquery-ui-1.10.1.custom.js"></script>
+    <script src="js/libs/lucid.js"></script>
+    <script src="js/libs/id3-min.js"></script>
+
+    <script src="js/utils.js"></script>
+    <script src="js/song.js"></script>
+    <script src="js/fsaudio.js"></script>
     <script src="js/main.js"></script>
   </body>
 </html>

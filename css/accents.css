@@ -1,69 +1,27 @@
 /* VIOLET */
-
-.purple .player-header {
-  background-color: #695b8e;
-}
-
-.purple .track .position {
-  background-color: #695b8e;
-}
-
-.purple .track .loaded {
-  background-color: hsla(256, 22%, 46%, .25);
-}
-
-.purple .player-controls .button:active {
-  background-color: hsla(256, 22%, 46%, .35);
-}
-
+.purple .player-header { background-color: #695b8e; }
+.purple .track .position { background-color: #695b8e; }
+.purple .track .loaded { background-color: hsla(256, 22%, 46%, .25); }
+.purple .player-controls .button:active { background-color: hsla(256, 22%, 46%, .35); }
+.purple .player-controls .button.active { background-color: #695b8e; }
 
 /* GREEN */
-.green .player-header {
-  background-color: #497857;
-}
-
-.green .track .position {
-  background-color: #497857;
-}
-
-.green .track .loaded {
-  background-color: hsla(138, 24%, 38%, .25);
-}
-
-.green .player-controls .button:active {
-  background-color: hsla(138, 24%, 38%, .35);
-}
+.green .player-header { background-color: #497857; }
+.green .track .position { background-color: #497857; }
+.green .track .loaded { background-color: hsla(138, 24%, 38%, .25); }
+.green .player-controls .button:active { background-color: hsla(138, 24%, 38%, .35); }
+.green .player-controls .button.active { background-color: #497857; }
 
 /* PEACH */
-.peach .player-header {
-  background-color: #e76e65;
-}
-
-.peach .track .position {
-  background-color: #e76e65;
-}
-
-.peach .track .loaded {
-  background-color: hsla(4, 56%, 90%, .25);
-}
-
-.peach .player-controls .button:active {
-  background-color: hsla(4, 56%, 90%, .35);
-}
+.peach .player-header { background-color: #e76e65; }
+.peach .track .position { background-color: #e76e65; }
+.peach .track .loaded { background-color: hsla(4, 56%, 90%, .25); }
+.peach .player-controls .button:active { background-color: hsla(4, 56%, 90%, .35); }
+.peach .player-controls .button.active { background-color: #e76e65; }
 
 /* YELLOW */
-.yellow .player-header {
-  background-color: #e18649;
-}
-
-.yellow .track .position {
-  background-color: #e18649;
-}
-
-.yellow .track .loaded {
-  background-color: hsla(4, 56%, 90%, .25);
-}
-
-.yellow .player-controls .button:active {
-  background-color: hsla(4, 56%, 90%, .35);
-}
+.yellow .player-header { background-color: #e18649; }
+.yellow .track .position { background-color: #e18649; }
+.yellow .track .loaded { background-color: hsla(4, 56%, 90%, .25); }
+.yellow .player-controls .button:active { background-color: hsla(4, 56%, 90%, .35); }
+.yellow .player-controls .button.active { background-color: #e18649; }
