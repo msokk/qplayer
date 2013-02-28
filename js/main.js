@@ -15,3 +15,14 @@ $('.color').click(function() {
   $('body').toggleClass(colors[idx % colors.length]);
 });
 
+
+
+LocalMusic.scanLibrary(function(songs) {
+
+  songs.forEach(function(song) {
+    song.getObjectUrl(function(url) {
+      $('.player-list ul').append(
+        '<li>' + song.artist + ' - ' + song.title +'<br><audio controls src="' + url + '" /></li>');
+    });
+  });
+});

@@ -6,7 +6,8 @@
   "permissions": [
     "http://code.jquery.com/jquery-1.9.1.min.js",
     {"mediaGalleries": ["read", "allAutoDetected"]},
-    "notifications"
+    "notifications",
+    "storage"
   ],
   "icons": {
     "16": "img/logo_16.png",

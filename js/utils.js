@@ -29,6 +29,6 @@
   });
 
   // Close the window
-  $('.close').click(function() {currentWin.close();});
+  $('.close').click(function() {currentWin.hide();});
 
 })();

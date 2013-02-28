@@ -7,3 +7,13 @@ var Song = function(data) {
   jQuery.extend(this, data);
 };
 
+Song.prototype.getObjectUrl = function(cb) {
+  if(this.fs) {
+    this.fs.getFile(this.path, {create: false}, function(fileEntry) {
+      fileEntry.file(function(file) {
+        cb && cb(window.URL.createObjectURL(file));
+      });
+    });
+  }
+};
+

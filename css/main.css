@@ -34,7 +34,7 @@ body {
 
 input {
   font-family: 'Open Sans', sans-serif;
-  font-size: 1em;
+  font-size: .9em;
   border: none;
   color: white;
   border-bottom: solid 1px white;
@@ -124,12 +124,16 @@ input[type="search"]::-webkit-search-cancel-button:before {
 /* LIST */
 .player-list {
   font-family: 'Open Sans', sans-serif;
+  -webkit-flex: 1 1 auto;
+  overflow-y: scroll;
+
 }
 
 .player-list ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
+  height: 0;
 }
 
 .player-list ul li {

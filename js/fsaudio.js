@@ -1,5 +1,7 @@
 var LocalMusic = {};
 
+LocalMusic.formats = ['wav', 'mp3', 'ogg', 'm4a', 'mp4'];
+
 LocalMusic.scanLibrary = function(cb) {
   this.getAudioFs(function(fs) {
     this.populateEntries([fs], function(paths) {
@@ -29,7 +31,9 @@ LocalMusic.populateEntries = function(entries, cb) {
     for(var i = 0; i < entries.length; i++) {
       var entry = entries[i];
       if(entry.isFile) {
-        paths.push(entry.fullPath);
+        var path = entry.fullPath;
+        var ext = path.substr(path.lastIndexOf('.') + 1).toLowerCase();
+        if(LocalMusic.formats.indexOf(ext) >= 0) paths.push(path);
       } else if(entry.isDirectory) {
         var reader = entry.createReader();
         reader.readEntries(scan);
@@ -53,6 +57,7 @@ LocalMusic.parseTracks = function(fs, paths, cb) {
       fileEntry.file(function(file) {
         ID3.loadTags({file: file, success: function(tags) {
           tags.path = path;
+          tags.fs = fs;
           result.push(new Song(tags));
 
           if(--count === 0) cb && cb(result);
@@ -62,8 +67,3 @@ LocalMusic.parseTracks = function(fs, paths, cb) {
 
   });
 };
-
-
-LocalMusic.scanLibrary(function(songs) {
-  console.log(songs);
-});
