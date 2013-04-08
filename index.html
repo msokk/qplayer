@@ -8,20 +8,33 @@
     <link href="css/accents.css" rel="stylesheet">
   </head>
   <body class="flex row purple">
-    <div class="player-header">
+    <div class="player-header flex">
       <a href="http://mihkel.sokk.ee" target="_blank" class="logo">
         <img src="img/logo_48.png" />
       </a>
 
       <input type="search" placeholder="Search..." />
       <div class="color icon icon-cog"></div>
+      <div class="fill"></div>
       <div class="close icon icon-cancel"></div>
     </div>
     <div class="fill flex">
       <div class="player-sidebar">
+        <div id="depth"></div>
+        <div id="depth2"></div>
         <ul>
-          <li class="icon icon-plus">New Playlist</li>
           <li>Rock</li>
+          <li>House</li>
+          <li class="selected">Electronica</li>
+          <li>Garage</li>
+          <li>Dubstep</li>
+          <li>Chillwave</li>
+          <li>Trance</li>
+          <li>Metal</li>
+          <li>Jazz</li>
+          <li>Chillout</li>
+          <li class="icon icon-plus">New Playlist</li>
+
         </ul>
       </div>
       <div class="player-list">
@@ -43,7 +56,7 @@
       <div class="seekbar fill">
         <div class="track">
           <div class="loaded" style="width: 100%"></div>
-          <div class="position" style="width: 45%"><span>45%</span></div>
+          <div class="position" style="width: 45%"></div>
         </div>
       </div>
 
@@ -57,8 +70,12 @@
     <script src="js/libs/id3-min.js"></script>
 
     <script src="js/utils.js"></script>
-    <script src="js/song.js"></script>
     <script src="js/fsaudio.js"></script>
+    <script src="js/backends/localbackend.js"></script>
+
+    <script src="js/song.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/ui.js"></script>
     <script src="js/main.js"></script>
   </body>
 </html>

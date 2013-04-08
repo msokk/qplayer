@@ -1,6 +1,9 @@
+window.Q = {};
+LucidJS.emitter(Q);
+
 // Move window
 (function() {
-
+  if(!chrome.app.window) return;
   var currentWin = chrome.app.window.current();
   var lastX = null;
   var lastY = null;
@@ -29,6 +32,9 @@
   });
 
   // Close the window
-  $('.close').click(function() {currentWin.hide();});
+  $('.close').click(function() {
+    currentWin.hide();
+    Q.trigger('window.closed', currentWin);
+  });
 
 })();

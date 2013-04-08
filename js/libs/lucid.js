@@ -137,7 +137,7 @@
 			var args = Array.prototype.slice.apply(arguments, [1]), aI, sI;
 
 			//recurse over a batch of events
-			if(typeof event === 'object' && typeof event.push === 'function') { 
+			if(typeof event === 'object' && typeof event.push === 'function') {
 				for(sI = 0; sI < event.length; sI += 1) {
 					off.apply(null, [event[sI]].concat(args));
 				}
@@ -207,7 +207,7 @@
 					if(longArgs) {
 						trigger.apply(this, [].concat('emitter.event', event.join('.'), longArgs));
 					} else {
-						trigger('emitter.event', a1, a2, a3, a4);
+						trigger('emitter.event', event, a1, a2, a3, a4);
 					}
 				}
 

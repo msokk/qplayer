@@ -28,13 +28,14 @@ body {
 
   border: solid 1px black;
   background-color: #232323;
+  box-sizing: border-box;
 
   -webkit-user-select: none;
 }
 
 input {
   font-family: 'Open Sans', sans-serif;
-  font-size: .9em;
+  font-size: 1em;
   border: none;
   color: white;
   border-bottom: solid 1px white;
@@ -47,6 +48,10 @@ input {
 input:focus {
   outline: none;
   background: rgba(255, 255, 255, .1);
+}
+
+input[type="search"] {
+  width: -webkit-calc(150px + 5%);
 }
 
 input[type="search"]::-webkit-search-cancel-button {
@@ -117,9 +122,59 @@ input[type="search"]::-webkit-search-cancel-button:before {
 .player-sidebar {
   width: -webkit-calc(200px + 5%);
   border-right: solid 1px #2e2e2e;
+  position: relative;
+}
+
+.player-sidebar ul {
+  position: absolute;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  padding-top: 9px;
+  overflow: scroll;
+  max-height: -webkit-calc(100% - 18px);
+  -webkit-font-smoothing: antialiased;
+  font-size: 1.1em;
 }
 
 
+.player-sidebar ul li {
+  height: 25px;
+  background: #333;
+  -webkit-transform: scale(0.9);
+  -webkit-transition: -webkit-transform .2s ease-in-out;
+  line-height: 25px;
+  padding: 15px;
+}
+
+.player-sidebar ul li:hover {
+  -webkit-transform: scale(1) translateY(-10px);
+}
+
+.player-sidebar ul li.selected {
+  -webkit-transform: scale(1) translateY(-10px);
+  background: white;
+  color: #333;
+}
+
+#depth {
+  position: absolute;
+  right: 0;
+  width: 20px;
+  height: 100%;
+  -webkit-transform: perspective(300px) rotateY(-45deg) translate3d(-3px, 0, -7px);
+  background-image: -webkit-linear-gradient(left , #232323, #333);
+}
+
+#depth2 {
+  position: absolute;
+  left: 0;
+  width: 20px;
+  height: 100%;
+  -webkit-transform: perspective(300px) rotateY(45deg) translate3d(3px, 0, -7px);
+  background-image: -webkit-linear-gradient(left , #333, #232323);
+}
 
 /* LIST */
 .player-list {
@@ -184,6 +239,7 @@ input[type="search"]::-webkit-search-cancel-button:before {
 
 .player-controls .button.zoom:active {
   font-size: 120%;
+  padding: 10px 7.5px;
 }
 
 

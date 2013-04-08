@@ -1,20 +1,9 @@
-$('.playpause').click(function() {
-  $(this).toggleClass('icon-play').toggleClass('icon-pause');
-});
+Q.Player = new Player();
+Q.attachUI();
 
-$('.track').click(function(e) {
-  var perc = e.offsetX / $(this).width() * 100;
-  $(this).find('.position').width(perc + '%');
+Q.on('emitter.event', function(event, arg1) {
+  console.log('DEBUG: ', event, arg1);
 });
-
-var colors = ['purple', 'green', 'peach', 'yellow'];
-var idx = 0;
-$('.color').click(function() {
-  $('body').toggleClass(colors[idx % colors.length]);
-  idx++;
-  $('body').toggleClass(colors[idx % colors.length]);
-});
-
 
 
 LocalMusic.scanLibrary(function(songs) {

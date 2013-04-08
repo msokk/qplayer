@@ -7,6 +7,8 @@ var Song = function(data) {
   jQuery.extend(this, data);
 };
 
+
+
 Song.prototype.getObjectUrl = function(cb) {
   if(this.fs) {
     this.fs.getFile(this.path, {create: false}, function(fileEntry) {
@@ -16,4 +18,3 @@ Song.prototype.getObjectUrl = function(cb) {
     });
   }
 };
-

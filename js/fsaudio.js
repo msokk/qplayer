@@ -3,6 +3,7 @@ var LocalMusic = {};
 LocalMusic.formats = ['wav', 'mp3', 'ogg', 'm4a', 'mp4'];
 
 LocalMusic.scanLibrary = function(cb) {
+  if(!chrome.mediaGalleries) return;
   this.getAudioFs(function(fs) {
     this.populateEntries([fs], function(paths) {
       this.parseTracks(fs, paths, cb);

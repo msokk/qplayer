@@ -6,9 +6,9 @@ var playerWin;
 
 chrome.app.runtime.onLaunched.addListener(function(data) {
     if(playerWin) return;
-    playerWin =chrome.app.window.create('index.html', {
+    playerWin = chrome.app.window.create('index.html', {
       id: "qplayer_main",
-      width: 800, height: 600,
+      width: 960, height: 800,
       frame: 'none', singleton: true
     }, function(appWin) {
       console.debug("qPlayer: window created!");
